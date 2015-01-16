@@ -28,6 +28,7 @@ public class MecanumDrive extends CommandBase {
 	protected void execute() {
 		driveTrain.mecanumDrive(-OI.xboxController.getLeftStickX(), -OI.xboxController.getRightStickX(), -OI.xboxController.getLeftStickY(), driveTrain.getGyro().getAngle());
 		so(driveTrain.getGyro().getAngle());
+		so(driveTrain.getGyro().getRate()+"\n");
 	}
 
 	@Override

@@ -37,6 +37,7 @@ public class MikeDriveTrain extends BadSubsystem {
         backRight = new Talon(RobotMap.backRightController); 
     	
         gyro = new Gyro(RobotMap.gyro);
+        gyro.initGyro();
         gyro.reset();
         
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
