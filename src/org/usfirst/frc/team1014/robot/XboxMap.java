@@ -103,11 +103,11 @@ public class XboxMap extends Joystick
     }
     
     public double getRightTrigger() {
-    	return 0.0;
+    	return this.getRightTrigger();
     }
 
     public double getLeftTrigger() {
-    	return 0.0;
+    	return this.getLeftTrigger();
     }
     
     public void checkControllerPorts()

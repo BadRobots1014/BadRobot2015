@@ -1,8 +1,9 @@
 package org.usfirst.frc.team1014.robot.subsystems;
 
+import org.usfirst.frc.team1014.robot.Logger;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public abstract class BadSubsystem extends Subsystem {
+public abstract class BadSubsystem extends Subsystem implements Logger {
     protected BadSubsystem()
     {
         initialize();
