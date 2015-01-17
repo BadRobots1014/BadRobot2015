@@ -4,18 +4,18 @@ import org.usfirst.frc.team1014.robot.OI;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class MecanumDrive extends CommandBase {
+public class MecanumDriveCartesian extends CommandBase {
 
 	public static int soCounter;
 	
-	public MecanumDrive()
+	public MecanumDriveCartesian()
 	{
 		requires((Subsystem) driveTrain);
+		requires((Subsystem) mxp);
 		soCounter = 0;
 	}
 	@Override
 	protected void initialize() {
-		driveTrain.getGyro().reset();
 		driveTrain.tankDrive(0, 0);
 	}
 
@@ -26,9 +26,10 @@ public class MecanumDrive extends CommandBase {
 
 	@Override
 	protected void execute() {
-		driveTrain.mecanumDrive(-OI.xboxController.getLeftStickX(), -OI.xboxController.getRightStickX(), -OI.xboxController.getLeftStickY(), driveTrain.getGyro().getAngle());
-		so(driveTrain.getGyro().getAngle());
-		so(driveTrain.getGyro().getRate()+"\n");
+		driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), -OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle());
+		//TODO Remember, flipped the .getRightStickX(), should be -OI.xbo...
+
+		
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class MecanumDrive extends CommandBase {
 		// TODO Auto-generated method stub
 		
 	}
-	public static void so(Object so)
+	public static void soc(Object so)
 	{
 		if(soCounter > 50)
 		{
@@ -56,6 +57,10 @@ public class MecanumDrive extends CommandBase {
 			soCounter = 0;
 		}
 		soCounter++;
+	}
+	public static void so(Object so)
+	{
+		System.out.println("MecanumDrive: " + so);
 	}
 
 }

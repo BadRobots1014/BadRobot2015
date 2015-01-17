@@ -1,18 +1,21 @@
 package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
+import org.usfirst.frc.team1014.robot.commands.DpadDrive;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class MikeDriveTrain extends BadSubsystem {
 	private static MikeDriveTrain instance;
 	
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
-	Gyro gyro;
+	Gyro brokenGyro;
+	Ultrasonic backUltrasonic;
 	
     public static MikeDriveTrain getInstance()
     {
@@ -36,11 +39,19 @@ public class MikeDriveTrain extends BadSubsystem {
         frontRight = new Talon(RobotMap.frontRightController);
         backRight = new Talon(RobotMap.backRightController); 
     	
-        gyro = new Gyro(RobotMap.gyro);
-        gyro.initGyro();
-        gyro.reset();
+        brokenGyro = new Gyro(RobotMap.brokenGyro);
+        brokenGyro.initGyro();
+        brokenGyro.reset();
+               
+        backUltrasonic = new Ultrasonic(RobotMap.backUltrasonicPing, RobotMap.backUltrasonicEcho);
+        backUltrasonic.setEnabled(true);
+        backUltrasonic.setAutomaticMode(false);
         
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
+    	
+    	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); 
+    	train.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+    	
 	}
 
 	@Override
@@ -52,14 +63,14 @@ public class MikeDriveTrain extends BadSubsystem {
 	@Override
 	protected void initDefaultCommand() 
 	{
-		//this.setDefaultCommand(new DpadDrive()); //??
+		this.setDefaultCommand(new DpadDrive()); 
 	}
 	
     public void tankDrive(double leftY, double rightY) //analogs
     {
         train.tankDrive(leftY, rightY);
     }
-    public void dpadDrive(double leftX, double leftY, double rightX)
+    public void dpadDrive(double leftX, double leftY, double rightX) // broken
     {
     	if((Math.abs(leftX)+Math.abs(leftY)) > 
 		(Math.abs(rightX)*2))// if left stick is being used more than the right, this works 
@@ -90,12 +101,51 @@ public class MikeDriveTrain extends BadSubsystem {
     	
     	
     }
-    public void mecanumDrive(double leftX, double leftY, double rightX, double gyro) 
+    public double getDistanceToWall()
     {
-        train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
+        double dist = backUltrasonic.getRangeMM();
+        
+        //backUltrasonic.ping();
+        
+        return dist;
     }
-    public Gyro getGyro()
+    public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
     {
-    	return gyro;
+        train.mecanumDrive_Cartesian(leftX, -leftY, rightX, gyro);
+//    	so("Left X Value: "+leftX);
+//    	so("Left Y Value: "+leftY);
+//    	so("Right X Value: "+rightX);
     }
+    
+    public void setMotors(double fl, double bl, double fr, double br)
+    {
+    	frontLeft.set(fl);
+    	backLeft.set(bl);
+    	frontRight.set(fr);
+    	backRight.set(br);
+    }
+    public Gyro getBrokenGyro()
+    {
+    	return brokenGyro;
+    }
+    public double getGyroAngle()
+    {
+    	return brokenGyro.getAngle();
+    }
+    public Ultrasonic getBackUltrasonic()
+    {
+    	return backUltrasonic;
+    }
+    public double getBackUltrasonicDistanceMM()
+    {
+    	if(backUltrasonic.isRangeValid())
+    	{
+    		return backUltrasonic.getRangeMM();
+    	}
+    	return 0.0;
+    }
+	public static void so(Object so)
+	{
+		System.out.println("MikeDriveTainr: " + so);
+	}
 }
