@@ -49,8 +49,8 @@ public class MikeDriveTrain extends BadSubsystem {
         
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
     	
-    	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); 
-    	train.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+    	//train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); 
+    	//train.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
     	
 	}
 
