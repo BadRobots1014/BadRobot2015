@@ -14,7 +14,6 @@ public class MikeDriveTrain extends BadSubsystem {
 	
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
-	Gyro brokenGyro;
 	Ultrasonic backUltrasonic;
 	
     public static MikeDriveTrain getInstance()
@@ -38,11 +37,7 @@ public class MikeDriveTrain extends BadSubsystem {
         backLeft = new Talon(RobotMap.backLeftController);
         frontRight = new Talon(RobotMap.frontRightController);
         backRight = new Talon(RobotMap.backRightController); 
-    	
-        brokenGyro = new Gyro(RobotMap.brokenGyro);
-        brokenGyro.initGyro();
-        brokenGyro.reset();
-               
+
         backUltrasonic = new Ultrasonic(RobotMap.backUltrasonicPing, RobotMap.backUltrasonicEcho);
         backUltrasonic.setEnabled(true);
         backUltrasonic.setAutomaticMode(false);
@@ -70,7 +65,7 @@ public class MikeDriveTrain extends BadSubsystem {
     {
         train.tankDrive(leftY, rightY);
     }
-    public void dpadDrive(double leftX, double leftY, double rightX) // broken
+    public void dpadDrive(double leftX, double leftY, double rightX)
     {
     	if((Math.abs(leftX)+Math.abs(leftY)) > 
 		(Math.abs(rightX)*2))// if left stick is being used more than the right, this works 
@@ -111,10 +106,17 @@ public class MikeDriveTrain extends BadSubsystem {
     }
     public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
     {
-        train.mecanumDrive_Cartesian(leftX, -leftY, rightX, gyro);
-//    	so("Left X Value: "+leftX);
-//    	so("Left Y Value: "+leftY);
-//    	so("Right X Value: "+rightX);
+    	if((Math.abs(leftX)+Math.abs(leftY)) > (Math.abs(rightX)*2))// if left stick is being used more than the right, this works
+    	{
+        	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
+    	}
+    	else
+    	{
+    		frontLeft.set(rightX); // rotate robot 
+    		frontRight.set(rightX);
+    		backLeft.set(rightX);
+    		backRight.set(rightX);
+    	}
     }
     
     public void setMotors(double fl, double bl, double fr, double br)
@@ -123,14 +125,6 @@ public class MikeDriveTrain extends BadSubsystem {
     	backLeft.set(bl);
     	frontRight.set(fr);
     	backRight.set(br);
-    }
-    public Gyro getBrokenGyro()
-    {
-    	return brokenGyro;
-    }
-    public double getGyroAngle()
-    {
-    	return brokenGyro.getAngle();
     }
     public Ultrasonic getBackUltrasonic()
     {

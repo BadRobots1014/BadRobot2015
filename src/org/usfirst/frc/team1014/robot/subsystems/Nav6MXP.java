@@ -52,5 +52,9 @@ public class Nav6MXP extends BadSubsystem {
 	{
 		return (double)imu.getYaw();
 	}
+	public IMU getMXP()
+	{
+		return imu;
+	}
 
 }
