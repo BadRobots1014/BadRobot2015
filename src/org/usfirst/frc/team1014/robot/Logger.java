@@ -1,13 +1,12 @@
 package org.usfirst.frc.team1014.robot;
 
+
 /**
- * This class manages the logging stuff.
+ * Sets up the logging for the robot.
  * @author Manu S.
  *
  */
 public interface Logger {
-	
-	public static void log() {
-	}
 
+	public static void log(String out){}
 }
