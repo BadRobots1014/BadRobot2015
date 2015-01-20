@@ -68,33 +68,31 @@ public class TankDriveTrain extends BadSubsystem {
     public void dpadDrive(double leftX, double leftY, double rightX)
     {
     	if((Math.abs(leftX)+Math.abs(leftY)) > 
-		(Math.abs(rightX)*2))// if left stick is being used more than the right, this works 
-	{
-		
-		if(Math.abs(leftX) < Math.abs(leftY)) // if more Y than X
+			(Math.abs(rightX)*2))// if left stick is being used more than the right, this works 
 		{
-			frontLeft.set(-(leftY));// move forward/back
-			frontRight.set((leftY));
-			backLeft.set(-(leftY));
-			backRight.set((leftY));
+			
+			if(Math.abs(leftX) < Math.abs(leftY)) // if more Y than X
+			{
+				frontLeft.set(-(leftY));// move forward/back
+				frontRight.set((leftY));
+				backLeft.set(-(leftY));
+				backRight.set((leftY));
+			}
+			else
+			{
+				frontLeft.set(-(leftX));  // strafe works
+				frontRight.set(-(leftX));
+				backLeft.set(leftX);
+				backRight.set(leftX);
+			}
 		}
 		else
 		{
-			frontLeft.set(-(leftX));  // strafe works
-			frontRight.set(-(leftX));
-			backLeft.set(leftX);
-			backRight.set(leftX);
+			frontLeft.set(rightX); // rotate robot 
+			frontRight.set(rightX);
+			backLeft.set(rightX);
+			backRight.set(rightX);
 		}
-	}
-	else
-	{
-		frontLeft.set(rightX); // rotate robot 
-		frontRight.set(rightX);
-		backLeft.set(rightX);
-		backRight.set(rightX);
-	}
-    	
-    	
     }
     public double getDistanceToWall()
     {
