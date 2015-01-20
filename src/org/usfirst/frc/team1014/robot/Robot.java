@@ -32,6 +32,9 @@ public class Robot extends IterativeRobot {
 		
     	CommandBase.init();
         // instantiate the command used for the autonomous period
+    	
+    	//instantiate the Logger
+    	LogJistics.init();
     }
 	
 	public void disabledPeriodic() {
