@@ -24,7 +24,7 @@ public class TankDrive extends CommandBase{
 
 	protected void execute() 
 	{
-		driveTrain.tankDrive(OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickY());
+		driveTrain.tankDrive(-OI.xboxController.getLeftStickY(), -OI.xboxController.getRightStickY());
 	}
 
 	@Override
