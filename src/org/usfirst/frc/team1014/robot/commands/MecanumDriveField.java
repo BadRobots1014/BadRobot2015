@@ -27,7 +27,9 @@ public class MecanumDriveField extends CommandBase {
 
 	@Override
 	protected void execute() {
-		driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickY(), -OI.xboxController.getLeftStickX(), OI.xboxController.getRightStickX(), mxp.getAngle());
+		driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle());
+		so(mxp.getAngle());
+		//driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickY(), -OI.xboxController.getLeftStickX(), OI.xboxController.getRightStickX(), mxp.getAngle());
 	}
 
 	@Override

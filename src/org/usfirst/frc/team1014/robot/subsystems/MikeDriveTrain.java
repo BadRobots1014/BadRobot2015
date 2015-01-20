@@ -106,7 +106,7 @@ public class MikeDriveTrain extends BadSubsystem {
     }
     public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
     {
-    	if((Math.abs(leftX)+Math.abs(leftY)) > (Math.abs(rightX)*2))// if left stick is being used more than the right, this works
+    	/*if((Math.abs(leftX)+Math.abs(leftY)) > (Math.abs(rightX)*2))// if left stick is being used more than the right, this works
     	{
         	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
     	}
@@ -116,7 +116,8 @@ public class MikeDriveTrain extends BadSubsystem {
     		frontRight.set(rightX);
     		backLeft.set(rightX);
     		backRight.set(rightX);
-    	}
+    	}*/
+    	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
     }
     
     public void setMotors(double fl, double bl, double fr, double br)
