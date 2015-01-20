@@ -1,37 +1,21 @@
 package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
+import org.usfirst.frc.team1014.robot.commands.DpadDrive;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
-/**
- * This class is refers to the drive train object
- * of Mike, our 2012 robot that is being used for 
- * testing our code.
- * @author Steve Popovich
- *
- */
 public class MikeDriveTrain extends BadSubsystem {
-	
-	// this is the actual object of Mike's drive train
 	private static MikeDriveTrain instance;
 	
-	// these are the objects that we need in order to have
-	// the drive train. In other words, these are the "soft"
-	// versions of the physical objects on our robot
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
-	Gyro gyro;
+	Ultrasonic backUltrasonic;
 	
-	/**
-	 * Gets the current instance of this class.
-	 * If it doesn't exist, make one.
-	 * @return instance - the current instance of 
-	 * MikeDriveTrain
-	 */
     public static MikeDriveTrain getInstance()
     {
         if (instance == null)
@@ -43,7 +27,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	
     private MikeDriveTrain()
     {
-    	initialize(); // I think this goes here
+    	
     }
     
     @Override
@@ -53,11 +37,16 @@ public class MikeDriveTrain extends BadSubsystem {
         backLeft = new Talon(RobotMap.backLeftController);
         frontRight = new Talon(RobotMap.frontRightController);
         backRight = new Talon(RobotMap.backRightController); 
-    	
-        gyro = new Gyro(RobotMap.gyro);
-        gyro.reset();
+
+        backUltrasonic = new Ultrasonic(RobotMap.backUltrasonicPing, RobotMap.backUltrasonicEcho);
+        backUltrasonic.setEnabled(true);
+        backUltrasonic.setAutomaticMode(false);
         
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
+    	
+    	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); 
+    	train.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+    	
 	}
 
 	@Override
@@ -69,72 +58,88 @@ public class MikeDriveTrain extends BadSubsystem {
 	@Override
 	protected void initDefaultCommand() 
 	{
-		//this.setDefaultCommand(new DpadDrive()); //??
+		this.setDefaultCommand(new DpadDrive()); 
 	}
 	
-	/**
-	 * This is the basic way to drive.
-	 * @param leftY - the speed at which to drive the left side
-	 * @param rightY - the speed at which to drive the right side
-	 */
     public void tankDrive(double leftY, double rightY) //analogs
     {
         train.tankDrive(leftY, rightY);
     }
-    
-    /**
-     * This is the driving using the dpad. It begins
-     * to use the strafing ability, as well as the rotating the robot
-     * on its internal pivot point.
-     * @param leftX - the speed at which to strafe
-     * @param leftY - the speed at which to move forward
-     * @param rightX - the speed at which to rotate the robot
-     */
     public void dpadDrive(double leftX, double leftY, double rightX)
     {
     	if((Math.abs(leftX)+Math.abs(leftY)) > 
 		(Math.abs(rightX)*2))// if left stick is being used more than the right, this works 
-    	{
+	{
 		
-			if(Math.abs(leftX) < Math.abs(leftY)) // if more Y than X
-			{
-				frontLeft.set(-(leftY));// move forward/back
-				frontRight.set((leftY));
-				backLeft.set(-(leftY));
-				backRight.set((leftY));
-			}
-			else
-			{
-				frontLeft.set(-(leftX));  // strafe works
-				frontRight.set(-(leftX));
-				backLeft.set(leftX);
-				backRight.set(leftX);
-			}
-    	}
+		if(Math.abs(leftX) < Math.abs(leftY)) // if more Y than X
+		{
+			frontLeft.set(-(leftY));// move forward/back
+			frontRight.set((leftY));
+			backLeft.set(-(leftY));
+			backRight.set((leftY));
+		}
 		else
 		{
-			frontLeft.set(rightX); // rotate robot 
-			frontRight.set(rightX);
-			backLeft.set(rightX);
-			backRight.set(rightX);
-		}    	
+			frontLeft.set(-(leftX));  // strafe works
+			frontRight.set(-(leftX));
+			backLeft.set(leftX);
+			backRight.set(leftX);
+		}
+	}
+	else
+	{
+		frontLeft.set(rightX); // rotate robot 
+		frontRight.set(rightX);
+		backLeft.set(rightX);
+		backRight.set(rightX);
+	}
+    	
+    	
+    }
+    public double getDistanceToWall()
+    {
+        double dist = backUltrasonic.getRangeMM();
+        
+        //backUltrasonic.ping();
+        
+        return dist;
+    }
+    public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
+    {
+    	if((Math.abs(leftX)+Math.abs(leftY)) > (Math.abs(rightX)*2))// if left stick is being used more than the right, this works
+    	{
+        	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
+    	}
+    	else
+    	{
+    		frontLeft.set(rightX); // rotate robot 
+    		frontRight.set(rightX);
+    		backLeft.set(rightX);
+    		backRight.set(rightX);
+    	}
     }
     
-    /**
-     * This is mechanum drive. This allows us to strafe and move
-     * in almost any direction. 
-     * @param leftX
-     * @param leftY
-     * @param rightX
-     * @param gyro
-     */
-    public void mecanumDrive(double leftX, double leftY, double rightX, double gyro) 
+    public void setMotors(double fl, double bl, double fr, double br)
     {
-        train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
+    	frontLeft.set(fl);
+    	backLeft.set(bl);
+    	frontRight.set(fr);
+    	backRight.set(br);
     }
-    
-    public Gyro getGyro()
+    public Ultrasonic getBackUltrasonic()
     {
-    	return gyro;
+    	return backUltrasonic;
     }
+    public double getBackUltrasonicDistanceMM()
+    {
+    	if(backUltrasonic.isRangeValid())
+    	{
+    		return backUltrasonic.getRangeMM();
+    	}
+    	return 0.0;
+    }
+	public static void so(Object so)
+	{
+		System.out.println("MikeDriveTainr: " + so);
+	}
 }
