@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import org.usfirst.frc.team1014.robot.commands.CommandBase;
 import org.usfirst.frc.team1014.robot.commands.MikeDriveGroup;
+import org.usfirst.frc.team1014.robot.commands.TankDriveGroup;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,6 +33,9 @@ public class Robot extends IterativeRobot {
 		
     	CommandBase.init();
         // instantiate the command used for the autonomous period
+    	
+    	//instantiate the Logger
+    	//LogJistics.init();
     }
 	
 	public void disabledPeriodic() {
@@ -55,7 +59,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
 
-        Scheduler.getInstance().add(new MikeDriveGroup());
+        Scheduler.getInstance().add(new TankDriveGroup());
     }
 
     /**
