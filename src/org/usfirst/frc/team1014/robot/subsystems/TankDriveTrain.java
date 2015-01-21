@@ -98,7 +98,7 @@ public class TankDriveTrain extends BadSubsystem {
     {
         double dist = backUltrasonic.getRangeMM();
         
-        //backUltrasonic.ping();
+        backUltrasonic.ping();
         
         return dist;
     }
@@ -134,7 +134,7 @@ public class TankDriveTrain extends BadSubsystem {
     	{
     		return backUltrasonic.getRangeMM();
     	}
-    	return 0.0;
+    	return -1.0;
     }
 	public static void so(Object so)
 	{
