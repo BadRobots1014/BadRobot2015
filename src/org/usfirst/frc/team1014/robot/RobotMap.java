@@ -12,16 +12,16 @@ public class RobotMap {
     // public static int rightMotor = 2;
 	
 	//Analogs
-	public static int frontLeftController = 1; // 0
-	public static int backLeftController = 0; // 1
-	public static int frontRightController = 3; //2
-	public static int backRightController = 2; // 3
+	public static final int frontLeftController = 1; // 0
+	public static final int backLeftController = 0; // 1
+	public static final int frontRightController = 3; //2
+	public static final int backRightController = 2; // 3
 	
 	//DIO
-	public static int brokenGyro = 0;
-	public static int properGyro = 1;
-	public static int backUltrasonicPing = 8;
-	public static int backUltrasonicEcho  = 9;
+	public static final int brokenGyro = 0;
+	public static final int properGyro = 1;
+	public static final int backUltrasonicPing = 8;
+	public static final int backUltrasonicEcho  = 9;
     
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
