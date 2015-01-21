@@ -4,5 +4,5 @@ import org.apache.log4j.Logger;
 
 public class LogJistics {
 
-	public static Logger logjistics;
+  public static Logger logjistics;
 }

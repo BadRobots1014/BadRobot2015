@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team1014.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -19,64 +18,64 @@ import org.usfirst.frc.team1014.robot.commands.MikeDriveGroup;
  */
 public class Robot extends IterativeRobot {
 
-	public static OI oi;
+  public static OI oi;
 
-    Command teleCommand;
-    SendableChooser autoChooser;
+  Command teleCommand;
+  SendableChooser autoChooser;
 
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
-    public void robotInit() {
-		
-    	CommandBase.init();
-        // instantiate the command used for the autonomous period
-    }
-	
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
+  /**
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
+   */
+  public void robotInit() {
 
-    public void autonomousInit() {
-        // schedule the autonomous command (example)
-    }
+    CommandBase.init();
+    // instantiate the command used for the autonomous period
+  }
 
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
-    }
+  public void disabledPeriodic() {
+    Scheduler.getInstance().run();
+  }
 
-    public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
+  public void autonomousInit() {
+    // schedule the autonomous command (example)
+  }
 
-        Scheduler.getInstance().add(new MikeDriveGroup());
-    }
+  /**
+   * This function is called periodically during autonomous
+   */
+  public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
+  }
 
-    /**
-     * This function is called when the disabled button is hit.
-     * You can use it to reset subsystems before shutting down.
-     */
-    public void disabledInit(){
+  public void teleopInit() {
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
 
-    }
+    Scheduler.getInstance().add(new MikeDriveGroup());
+  }
 
-    /**
-     * This function is called periodically during operator control
-     */
-    public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-    }
-    
-    /**
-     * This function is called periodically during test mode
-     */
-    public void testPeriodic() {
-        LiveWindow.run();
-    }
+  /**
+   * This function is called when the disabled button is hit. You can use it to
+   * reset subsystems before shutting down.
+   */
+  public void disabledInit() {
+
+  }
+
+  /**
+   * This function is called periodically during operator control
+   */
+  public void teleopPeriodic() {
+    Scheduler.getInstance().run();
+  }
+
+  /**
+   * This function is called periodically during test mode
+   */
+  public void testPeriodic() {
+    LiveWindow.run();
+  }
 }
