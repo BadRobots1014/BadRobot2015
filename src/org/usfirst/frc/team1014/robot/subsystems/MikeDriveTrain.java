@@ -99,24 +99,47 @@ public class MikeDriveTrain extends BadSubsystem {
     	{
         	double angleDif = 0;
         	boolean turnLeft = false;
-    		
-        	if(dpadAngle > mxpAngle) // rotate left
+
+        	if(dpadAngle == 0 && mxpAngle > 180)
         	{
-        		angleDif = dpadAngle - mxpAngle;
-        		turnLeft = false; // yes it is redundant but I dont care
+        		angleDif = mxpAngle - dpadAngle;
+        		double motorSpeedToPut = convertToMotorSpeed(angleDif);
+        		rotateRobotDifference(-motorSpeedToPut);
         	}
         	else
         	{
-        		angleDif = mxpAngle - dpadAngle;
-        		turnLeft = true; 
+            	if(dpadAngle > mxpAngle) // rotate left
+            	{
+            		angleDif = dpadAngle - mxpAngle;
+            		if(angleDif > 180)
+            		{
+            			angleDif = Math.abs(angleDif - 360);
+            		}
+            			
+            		turnLeft = false; // yes it is redundant but I dont care
+            	}
+            	else
+            	{
+            		angleDif = mxpAngle - dpadAngle;
+            		if(angleDif > 180)
+            		{
+            			angleDif = Math.abs(angleDif - 360);
+            		}
+            		
+            		turnLeft = true; 
+            	}
+            	
+            	
+            	
+        		double motorSpeedToPut = convertToMotorSpeed(angleDif);
+        		
+        		if(turnLeft)
+        			rotateRobotDifference(motorSpeedToPut);
+        		else
+        			rotateRobotDifference(-motorSpeedToPut);
         	}
         	
-    		double motorSpeedToPut = convertToMotorSpeed(angleDif);
-    		
-    		if(turnLeft)
-    			rotateRobotDifference(motorSpeedToPut);
-    		else
-    			rotateRobotDifference(-motorSpeedToPut);
+
         	
         	
     	}
