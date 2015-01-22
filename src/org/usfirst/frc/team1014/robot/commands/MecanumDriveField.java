@@ -12,7 +12,6 @@ public class MecanumDriveField extends CommandBase {
 	{
 		requires((Subsystem) driveTrain);
 		requires((Subsystem) mxp);
-		soCounter = 0;
 	}
 	@Override
 	protected void initialize() {
@@ -27,9 +26,14 @@ public class MecanumDriveField extends CommandBase {
 
 	@Override
 	protected void execute() {
-		driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle());
-		so(mxp.getAngle());
-		//driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickY(), -OI.xboxController.getLeftStickX(), OI.xboxController.getRightStickX(), mxp.getAngle());
+		if(OI.xboxController.getPOV() == -1) // not using dpad
+		{
+			driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle()); // just do mecanum
+		}
+		else // use dpad
+		{
+			driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
+		}
 	}
 
 	@Override
@@ -46,7 +50,7 @@ public class MecanumDriveField extends CommandBase {
 
 	@Override
 	protected void interrupted() {
-		// TODO Auto-generated method stub
+		so("I Have been interrupted and am deferring");
 		
 	}
 	public static void soc(Object so)

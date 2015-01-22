@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
-import org.usfirst.frc.team1014.robot.commands.DpadDrive;
+import org.usfirst.frc.team1014.robot.commands.TankDrive;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -58,7 +58,7 @@ public class TankDriveTrain extends BadSubsystem {
 	@Override
 	protected void initDefaultCommand() 
 	{
-		this.setDefaultCommand(new DpadDrive()); 
+		this.setDefaultCommand(new TankDrive()); 
 	}
 	
     public void tankDrive(double leftY, double rightY) //analogs

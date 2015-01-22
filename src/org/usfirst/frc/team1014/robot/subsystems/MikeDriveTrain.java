@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
-import org.usfirst.frc.team1014.robot.commands.DpadDrive;
+import org.usfirst.frc.team1014.robot.commands.MecanumDriveField;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -14,7 +14,6 @@ public class MikeDriveTrain extends BadSubsystem {
 	
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
-	Ultrasonic backUltrasonic;
 	
     public static MikeDriveTrain getInstance()
     {
@@ -38,10 +37,6 @@ public class MikeDriveTrain extends BadSubsystem {
         frontRight = new Talon(RobotMap.frontRightController);
         backRight = new Talon(RobotMap.backRightController); 
 
-        backUltrasonic = new Ultrasonic(RobotMap.backUltrasonicPing, RobotMap.backUltrasonicEcho);
-        backUltrasonic.setEnabled(true);
-        backUltrasonic.setAutomaticMode(false);
-        
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
     	
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); 
@@ -58,65 +53,16 @@ public class MikeDriveTrain extends BadSubsystem {
 	@Override
 	protected void initDefaultCommand() 
 	{
-		this.setDefaultCommand(new DpadDrive()); 
+		this.setDefaultCommand(new MecanumDriveField()); 
 	}
 	
     public void tankDrive(double leftY, double rightY) //analogs
     {
         train.tankDrive(leftY, rightY);
     }
-    public void dpadDrive(double leftX, double leftY, double rightX)
-    {
-    	if((Math.abs(leftX)+Math.abs(leftY)) > 
-		(Math.abs(rightX)*2))// if left stick is being used more than the right, this works 
-	{
-		
-		if(Math.abs(leftX) < Math.abs(leftY)) // if more Y than X
-		{
-			frontLeft.set(-(leftY));// move forward/back
-			frontRight.set((leftY));
-			backLeft.set(-(leftY));
-			backRight.set((leftY));
-		}
-		else
-		{
-			frontLeft.set(-(leftX));  // strafe works
-			frontRight.set(-(leftX));
-			backLeft.set(leftX);
-			backRight.set(leftX);
-		}
-	}
-	else
-	{
-		frontLeft.set(rightX); // rotate robot 
-		frontRight.set(rightX);
-		backLeft.set(rightX);
-		backRight.set(rightX);
-	}
     	
-    	
-    }
-    public double getDistanceToWall()
-    {
-        double dist = backUltrasonic.getRangeMM();
-        
-        //backUltrasonic.ping();
-        
-        return dist;
-    }
     public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
     {
-    	/*if((Math.abs(leftX)+Math.abs(leftY)) > (Math.abs(rightX)*2))// if left stick is being used more than the right, this works
-    	{
-        	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
-    	}
-    	else
-    	{
-    		frontLeft.set(rightX); // rotate robot 
-    		frontRight.set(rightX);
-    		backLeft.set(rightX);
-    		backRight.set(rightX);
-    	}*/
     	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
     }
     
@@ -127,17 +73,111 @@ public class MikeDriveTrain extends BadSubsystem {
     	frontRight.set(fr);
     	backRight.set(br);
     }
-    public Ultrasonic getBackUltrasonic()
+    
+    
+    /**
+     * rotates the robot at a given speed
+     * 
+     * if speed > 0, rotates counter clockwise right
+     * @param speed
+     */
+    public void rotateRobotDifference(double speed) // works
     {
-    	return backUltrasonic;
+    	frontLeft.set(speed);
+    	frontRight.set(-speed);
+    	backLeft.set(-speed);
+    	backRight.set(speed);
     }
-    public double getBackUltrasonicDistanceMM()
+    
+    public void lineUpWithField(int dpadAngle, double mxpAngle)
     {
-    	if(backUltrasonic.isRangeValid())
+    	if(mxpAngle < 0) // makes mxpAngle comparable to gyro, works
     	{
-    		return backUltrasonic.getRangeMM();
+        	mxpAngle = mxpAngle + 360;
     	}
-    	return 0.0;
+    	if(!isNear(dpadAngle, mxpAngle))
+    	{
+        	double angleDif = 0;
+        	boolean turnLeft = false;
+    		
+        	if(dpadAngle > mxpAngle) // rotate left
+        	{
+        		angleDif = dpadAngle - mxpAngle;
+        		turnLeft = false; // yes it is redundant but I dont care
+        	}
+        	else
+        	{
+        		angleDif = mxpAngle - dpadAngle;
+        		turnLeft = true; 
+        	}
+        	
+    		double motorSpeedToPut = convertToMotorSpeed(angleDif);
+    		
+    		if(turnLeft)
+    			rotateRobotDifference(motorSpeedToPut);
+    		else
+    			rotateRobotDifference(-motorSpeedToPut);
+        	
+        	
+    	}
+
+    }
+    
+    /**
+     * This method takes an angle difference and converts to a motor speed.  Basically to fake PID
+     * 
+     * Meant to really only be used with the mxp and dpad, but can be converted
+     * 
+     * If angleDif > 0, turn left or counter clockwise
+     * 
+     * @return yourmom
+     */
+    
+    public double convertToMotorSpeed(double angleDifference) // this never works if given a negative value
+    {    	
+    	
+    	if(angleDifference/90 < .01) // 360 would give a perfect linear speed but I want it faster with a little overshoot
+    	{
+    		return 0;
+    	}
+    	else
+    	{
+    		so(angleDifference);
+    		so(angleDifference/90 + "\n");
+    		return clampMotorValues(Math.abs(angleDifference/90));
+    	}
+    }
+    
+    /**
+     * this is for the dpadRotation.  The Gyro will never return a value exactly equal to the POV from the Controller so this just gets it close
+     * You can make it closer by lowering the magic number .1 in the if statement
+     * 
+     * 
+     * @param num1
+     * @param num2
+     * @return is the number near
+     */
+    public boolean isNear(double num1, double num2)
+    {
+    	if(Math.abs(num2-num1) < .01)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+    
+    private double clampMotorValues(double scaledStrafe)
+    {
+
+        if (scaledStrafe > 1)
+        {
+            scaledStrafe = 1;
+        }
+        if (scaledStrafe < -1)
+        {
+            scaledStrafe = -1;
+        }
+        return scaledStrafe;
     }
 	public static void so(Object so)
 	{
