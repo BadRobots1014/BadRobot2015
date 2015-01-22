@@ -124,4 +124,9 @@ public class Extreme3DPro extends Joystick {
     {
     	return this.getRawButton(BUTTON_12);
     }
+    
+    public int getDPad()
+    {
+    	return this.getPOV();
+    }
 }
