@@ -55,17 +55,37 @@ public class MikeDriveTrain extends BadSubsystem {
 	{
 		this.setDefaultCommand(new SafeMecanumDriveField()); 
 	}
+	/**
+	 * Tank drives the robot
+	 * 
+	 * @param leftY
+	 * @param rightY
+	 */
 	
     public void tankDrive(double leftY, double rightY) //analogs
     {
         train.tankDrive(leftY, rightY);
     }
-    	
+    /**
+     * This drive the robot with in orienation with the field with mecanum wheels where the axels of the rollers form an X across the robot
+     * 
+     * @param leftX
+     * @param leftY
+     * @param rightX
+     * @param gyro
+     */
+    
     public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
     {
     	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
     }
-    
+    /**
+     * Sets each motor speeds at a certain value
+     * @param fl
+     * @param bl
+     * @param fr
+     * @param br
+     */
     public void setMotors(double fl, double bl, double fr, double br)
     {
     	frontLeft.set(fl);
@@ -88,6 +108,14 @@ public class MikeDriveTrain extends BadSubsystem {
     	backLeft.set(-speed);
     	backRight.set(speed);
     }
+    
+    /**
+     * This method, using the gyro and the dpad, lines up the robot in orientation with the field.  
+     * 
+     * Please don't look at it
+     * @param dpadAngle
+     * @param mxpAngle
+     */
     
     public void lineUpWithField(int dpadAngle, double mxpAngle)
     {
@@ -189,19 +217,45 @@ public class MikeDriveTrain extends BadSubsystem {
     	return false;
     }
     
-    private double clampMotorValues(double scaledStrafe)
+    /**
+     * This method clamps down values to give to the motors
+     * 
+     * @param value
+     * @return
+     */
+    
+    
+    private double clampMotorValues(double value)
     {
 
-        if (scaledStrafe > 1)
+        if (value > 1)
         {
-            scaledStrafe = 1;
+            value = 1;
         }
-        if (scaledStrafe < -1)
+        if (value < -1)
         {
-            scaledStrafe = -1;
+            value = -1;
         }
-        return scaledStrafe;
+        return value;
     }
+    
+    public boolean isSafeToDrive(double pitch, double roll)
+    {
+    	if(Math.abs(roll) > 10)
+    		return false;
+    	if(Math.abs(pitch) > 10)
+    	{
+    		if(pitch > 0)
+    		{
+    			frontleft.set(0.0);
+    		}
+    			
+    	}
+    }
+    
+    /**
+     *Used for easy output to the roboRIO
+     */
 	public static void so(Object so)
 	{
 		System.out.println("MikeDriveTainr: " + so);
