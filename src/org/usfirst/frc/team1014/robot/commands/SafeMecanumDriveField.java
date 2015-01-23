@@ -17,6 +17,7 @@ public class SafeMecanumDriveField extends CommandBase {
 	protected void initialize() {
 		driveTrain.tankDrive(0, 0);
 		mxp.getMXP().zeroYaw();
+		driveTrain.setInitalGyro((double)mxp.getMXP().getPitch(), (double)mxp.getMXP().getRoll());
 	}
 
 	@Override
@@ -26,14 +27,20 @@ public class SafeMecanumDriveField extends CommandBase {
 
 	@Override
 	protected void execute() {
-		if(OI.xboxController.getPOV() == -1) // not using dpad
+		
+		if(driveTrain.isSafeToDrive((double)mxp.getMXP().getPitch(), (double)mxp.getMXP().getRoll()))
 		{
-			driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle()); // just do mecanum
-		}
-		else // use dpad
-		{
-			driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
-		}
+			if(OI.xboxController.getPOV() == -1) // not using dpad
+			{
+				driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle()); // just do mecanum
+			}
+			else // use dpad
+			{
+				driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
+			}
+		}		
+
+
 	}
 
 	@Override

@@ -14,6 +14,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
+	double startPitch, startRoll;
 	
     public static MikeDriveTrain getInstance()
     {
@@ -239,18 +240,46 @@ public class MikeDriveTrain extends BadSubsystem {
         return value;
     }
     
-    public boolean isSafeToDrive(double pitch, double roll)
+    public boolean isSafeToDrive(double pitch, double roll) // back tip gives negative pitch, tip left gives postive roll
     {
-    	if(Math.abs(roll) > 10)
-    		return false;
-    	if(Math.abs(pitch) > 10)
+    	double rollAmount = startRoll - roll;
+    	double pitchAmount = startPitch - pitch;
+    	
+    	if(Math.abs(rollAmount) > 14)
     	{
-    		if(pitch > 0)
+    		if(startPitch - rollAmount > 0) // rolling left
     		{
-    			frontleft.set(0.0);
+    			frontLeft.set(-clampMotorValues(rollAmount/30));
+    			backLeft.set(-clampMotorValues(rollAmount/30));
     		}
-    			
+    		else
+    		{
+
+    			frontRight.set(clampMotorValues(rollAmount/30));
+    			backRight.set(clampMotorValues(rollAmount/30));
+    		}
+    		return false;
     	}
+    	if(Math.abs(pitchAmount) > 15)
+    	{
+    		if(startPitch - pitch > 0) // pitching back
+    		{
+    			backLeft.set(-clampMotorValues(pitchAmount/30));
+    			backRight.set(-clampMotorValues(pitchAmount/30));
+    		}
+    		else
+    		{
+    			frontLeft.set(clampMotorValues(pitchAmount/30));  
+    			frontRight.set(clampMotorValues(pitchAmount/30));  
+    		}
+    		return false;
+    	}
+    	return true;
+    }
+    public void setInitalGyro(double pitch, double roll)
+    {
+    	startPitch = pitch;
+    	startRoll = roll;
     }
     
     /**
