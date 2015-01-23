@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
-import org.usfirst.frc.team1014.robot.commands.MecanumDriveField;
+import org.usfirst.frc.team1014.robot.commands.SafeMecanumDriveField;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -53,7 +53,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	@Override
 	protected void initDefaultCommand() 
 	{
-		this.setDefaultCommand(new MecanumDriveField()); 
+		this.setDefaultCommand(new SafeMecanumDriveField()); 
 	}
 	
     public void tankDrive(double leftY, double rightY) //analogs

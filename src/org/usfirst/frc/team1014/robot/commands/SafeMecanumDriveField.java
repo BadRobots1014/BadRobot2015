@@ -4,11 +4,11 @@ import org.usfirst.frc.team1014.robot.OI;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class MecanumDriveField extends CommandBase {
+public class SafeMecanumDriveField extends CommandBase {
 
 	public static int soCounter;
 	
-	public MecanumDriveField()
+	public SafeMecanumDriveField()
 	{
 		requires((Subsystem) driveTrain);
 		requires((Subsystem) mxp);
