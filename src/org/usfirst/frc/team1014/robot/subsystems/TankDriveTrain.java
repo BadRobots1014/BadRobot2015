@@ -9,6 +9,13 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
+/**
+ * This is the Tank Drivetrain subsystem that is
+ * meant to work on Sadie, our 2014 robot repurposed
+ * to test out the new robotRIO. 
+ * @author Manu S.
+ *
+ */
 public class TankDriveTrain extends BadSubsystem {
 	private static TankDriveTrain instance;
 	
@@ -42,11 +49,7 @@ public class TankDriveTrain extends BadSubsystem {
         backUltrasonic.setEnabled(true);
         backUltrasonic.setAutomaticMode(false);
         
-    	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
-    	
-    	//train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); 
-    	//train.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
-    	
+    	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);    	
 	}
 
 	@Override
@@ -61,41 +64,57 @@ public class TankDriveTrain extends BadSubsystem {
 		this.setDefaultCommand(new TankDrive()); 
 	}
 	
+	/**
+	 * Drives the robot using traditional tank drive.
+	 * @param leftY
+	 * @param rightY
+	 */
     public void tankDrive(double leftY, double rightY) //analogs
     {
         train.tankDrive(leftY, rightY);
     }
+    
+    /**
+     * @deprecated
+     * 
+     * I don't think this will work either, at least yet. This
+     * will require a lot of changing, but it probably won't be
+     * necessary. 
+     * 
+     * @param leftX
+     * @param leftY
+     * @param rightX
+     */
     public void dpadDrive(double leftX, double leftY, double rightX)
     {
     	if((Math.abs(leftX)+Math.abs(leftY)) > 
 		(Math.abs(rightX)*2))// if left stick is being used more than the right, this works 
-	{
-		
-		if(Math.abs(leftX) < Math.abs(leftY)) // if more Y than X
 		{
-			frontLeft.set(-(leftY));// move forward/back
-			frontRight.set((leftY));
-			backLeft.set(-(leftY));
-			backRight.set((leftY));
+			
+			if(Math.abs(leftX) < Math.abs(leftY)) // if more Y than X
+			{
+				frontLeft.set(-(leftY));// move forward/back
+				frontRight.set((leftY));
+				backLeft.set(-(leftY));
+				backRight.set((leftY));
+			}
+			else
+			{
+				frontLeft.set(-(leftX));  // strafe works
+				frontRight.set(-(leftX));
+				backLeft.set(leftX);
+				backRight.set(leftX);
+			}
 		}
 		else
 		{
-			frontLeft.set(-(leftX));  // strafe works
-			frontRight.set(-(leftX));
-			backLeft.set(leftX);
-			backRight.set(leftX);
-		}
-	}
-	else
-	{
-		frontLeft.set(rightX); // rotate robot 
-		frontRight.set(rightX);
-		backLeft.set(rightX);
-		backRight.set(rightX);
-	}
-    	
-    	
+			frontLeft.set(rightX); // rotate robot 
+			frontRight.set(rightX);
+			backLeft.set(rightX);
+			backRight.set(rightX);
+		}	
     }
+    
     public double getDistanceToWall()
     {
         double dist = backUltrasonic.getRangeMM();
@@ -104,6 +123,17 @@ public class TankDriveTrain extends BadSubsystem {
         
         return dist;
     }
+    
+    /**
+     * @deprecated
+     * 
+     * This was supposed to be used for the mecanum drive, but it
+     * will not work for the tank drive. 
+     * @param leftX
+     * @param leftY
+     * @param rightX
+     * @param gyro
+     */
     public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
     {
     	if((Math.abs(leftX)+Math.abs(leftY)) > (Math.abs(rightX)*2))// if left stick is being used more than the right, this works
@@ -126,10 +156,16 @@ public class TankDriveTrain extends BadSubsystem {
     	frontRight.set(fr);
     	backRight.set(br);
     }
+    
     public Ultrasonic getBackUltrasonic()
     {
     	return backUltrasonic;
     }
+    
+    /**
+     * Gives the distance to the closest thing.
+     * @return
+     */
     public double getBackUltrasonicDistanceMM()
     {
     	if(backUltrasonic.isRangeValid())
@@ -138,6 +174,7 @@ public class TankDriveTrain extends BadSubsystem {
     	}
     	return 0.0;
     }
+    
 	public static void so(Object so)
 	{
 		System.out.println("MikeDriveTainr: " + so);

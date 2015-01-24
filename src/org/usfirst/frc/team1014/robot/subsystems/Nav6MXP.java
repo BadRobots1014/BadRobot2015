@@ -5,6 +5,14 @@ import org.usfirst.frc.team1014.robot.subsystems.IMU.IMU;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 
+/**
+ * This is the class that provides a medium between
+ * the us and the Nav6MXP, basically a ridiculously useful
+ * gyro that apparently has 9 directional inputs, an 
+ * accelerometer, and a magnometer. 
+ * @author Steve P.
+ *
+ */
 public class Nav6MXP extends BadSubsystem {
 
 	private static Nav6MXP instance;

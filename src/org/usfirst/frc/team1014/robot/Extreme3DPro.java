@@ -3,7 +3,9 @@ package org.usfirst.frc.team1014.robot;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
- * 
+ * This class maps the Extreme3DPro's buttons
+ * and joystick to values that we can use to take
+ * values from and send to our robot.
  * @author Manu S.
  *
  */
@@ -44,6 +46,9 @@ public class Extreme3DPro extends Joystick {
         return (d / Math.abs(d)) //gets the sign of d, negative or positive
             * ((Math.abs(d) - DEADZONE_MAGIC_NUMBER) / (1 - DEADZONE_MAGIC_NUMBER)); //scales it
     }
+    
+    // Accessor Methods: These let us get the values
+    // from the joystick
     
     public double getStickX()
     {
@@ -123,5 +128,10 @@ public class Extreme3DPro extends Joystick {
     public boolean getButton12()
     {
     	return this.getRawButton(BUTTON_12);
+    }
+    
+    public int getDPad()
+    {
+    	return this.getPOV();
     }
 }
