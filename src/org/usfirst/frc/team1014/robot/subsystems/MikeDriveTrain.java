@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
-import org.usfirst.frc.team1014.robot.commands.MecanumDriveField;
+import org.usfirst.frc.team1014.robot.commands.SafeMecanumDriveField;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -14,6 +14,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
+	double startPitch, startRoll;
 	
     public static MikeDriveTrain getInstance()
     {
@@ -53,19 +54,39 @@ public class MikeDriveTrain extends BadSubsystem {
 	@Override
 	protected void initDefaultCommand() 
 	{
-		this.setDefaultCommand(new MecanumDriveField()); 
+		this.setDefaultCommand(new SafeMecanumDriveField()); 
 	}
+	/**
+	 * Tank drives the robot
+	 * 
+	 * @param leftY
+	 * @param rightY
+	 */
 	
     public void tankDrive(double leftY, double rightY) //analogs
     {
         train.tankDrive(leftY, rightY);
     }
-    	
+    /**
+     * This drive the robot with in orienation with the field with mecanum wheels where the axels of the rollers form an X across the robot
+     * 
+     * @param leftX
+     * @param leftY
+     * @param rightX
+     * @param gyro
+     */
+    
     public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
     {
     	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
     }
-    
+    /**
+     * Sets each motor speeds at a certain value
+     * @param fl
+     * @param bl
+     * @param fr
+     * @param br
+     */
     public void setMotors(double fl, double bl, double fr, double br)
     {
     	frontLeft.set(fl);
@@ -88,6 +109,14 @@ public class MikeDriveTrain extends BadSubsystem {
     	backLeft.set(-speed);
     	backRight.set(speed);
     }
+    
+    /**
+     * This method, using the gyro and the dpad, lines up the robot in orientation with the field.  
+     * 
+     * Please don't look at it
+     * @param dpadAngle
+     * @param mxpAngle
+     */
     
     public void lineUpWithField(int dpadAngle, double mxpAngle)
     {
@@ -189,19 +218,73 @@ public class MikeDriveTrain extends BadSubsystem {
     	return false;
     }
     
-    private double clampMotorValues(double scaledStrafe)
+    /**
+     * This method clamps down values to give to the motors
+     * 
+     * @param value
+     * @return
+     */
+    
+    
+    private double clampMotorValues(double value)
     {
 
-        if (scaledStrafe > 1)
+        if (value > 1)
         {
-            scaledStrafe = 1;
+            value = 1;
         }
-        if (scaledStrafe < -1)
+        if (value < -1)
         {
-            scaledStrafe = -1;
+            value = -1;
         }
-        return scaledStrafe;
+        return value;
     }
+    
+    public boolean isSafeToDrive(double pitch, double roll) // back tip gives negative pitch, tip left gives postive roll
+    {
+    	double rollAmount = startRoll - roll;
+    	double pitchAmount = startPitch - pitch;
+    	
+    	if(Math.abs(rollAmount) > 14)
+    	{
+    		if(startPitch - rollAmount > 0) // rolling left
+    		{
+    			frontLeft.set(-clampMotorValues(rollAmount/30));
+    			backLeft.set(-clampMotorValues(rollAmount/30));
+    		}
+    		else
+    		{
+
+    			frontRight.set(clampMotorValues(rollAmount/30));
+    			backRight.set(clampMotorValues(rollAmount/30));
+    		}
+    		return false;
+    	}
+    	if(Math.abs(pitchAmount) > 15)
+    	{
+    		if(startPitch - pitch > 0) // pitching back
+    		{
+    			backLeft.set(-clampMotorValues(pitchAmount/30));
+    			backRight.set(-clampMotorValues(pitchAmount/30));
+    		}
+    		else
+    		{
+    			frontLeft.set(clampMotorValues(pitchAmount/30));  
+    			frontRight.set(clampMotorValues(pitchAmount/30));  
+    		}
+    		return false;
+    	}
+    	return true;
+    }
+    public void setInitalGyro(double pitch, double roll)
+    {
+    	startPitch = pitch;
+    	startRoll = roll;
+    }
+    
+    /**
+     *Used for easy output to the roboRIO
+     */
 	public static void so(Object so)
 	{
 		System.out.println("MikeDriveTainr: " + so);
