@@ -15,6 +15,10 @@ public class XboxMap extends Joystick
                         LB = 4, RB = 5, SELECT = 6, START = 7, LEFT_JOY_CLICK = 8, RIGHT_JOY_CLICK = 9;
     private static int LEFT_TRIGGER = 2, RIGHT_TRIGGER = 3;
     
+    /*
+     * The dpad gives int angles where 0 is up and adds clockwise.  -1 is center
+     */
+    
     public XboxMap(int port)
     {
         super(port);
@@ -24,6 +28,7 @@ public class XboxMap extends Joystick
      * Creates a deadzone for joysticks, the controllers sticks are a little
      * loose and so there is a margin of error for where they should be
      * considered "neutral/not pushed"
+     * 
      *
      * @param d Double between -1 and 1 to be deadzoned
      * @return The deadzoned value

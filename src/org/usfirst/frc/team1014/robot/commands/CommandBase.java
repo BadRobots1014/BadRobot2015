@@ -48,4 +48,5 @@ public abstract class CommandBase extends Command {
         
     
     public abstract String getConsoleIdentity();
+
 }
