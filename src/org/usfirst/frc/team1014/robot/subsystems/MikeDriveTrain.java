@@ -9,12 +9,22 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
+/**
+ * This is the subsystem for our prototype 
+ * drive train, code named Mike. 
+ * @author Steve P.
+ *
+ */
 public class MikeDriveTrain extends BadSubsystem {
 	private static MikeDriveTrain instance;
 	
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
 	double startPitch, startRoll;
+	
+	// these 
+	static final int ROLL_MAGIC_NUMBER = 14;
+	static final int PITCH_MAGIC_NUMBER = 15;
 	
     public static MikeDriveTrain getInstance()
     {
@@ -56,30 +66,31 @@ public class MikeDriveTrain extends BadSubsystem {
 	{
 		this.setDefaultCommand(new SafeMecanumDriveField()); 
 	}
+	
 	/**
 	 * Tank drives the robot
 	 * 
 	 * @param leftY
 	 * @param rightY
-	 */
-	
+	 */	
     public void tankDrive(double leftY, double rightY) //analogs
     {
         train.tankDrive(leftY, rightY);
     }
+    
     /**
-     * This drive the robot with in orienation with the field with mecanum wheels where the axels of the rollers form an X across the robot
+     * This drive the robot with in orientation with the field with mecanum wheels where the axles of the rollers form an X across the robot
      * 
      * @param leftX
      * @param leftY
      * @param rightX
      * @param gyro
      */
-    
     public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
     {
     	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
     }
+    
     /**
      * Sets each motor speeds at a certain value
      * @param fl
@@ -117,13 +128,15 @@ public class MikeDriveTrain extends BadSubsystem {
      * @param dpadAngle
      * @param mxpAngle
      */
-    
     public void lineUpWithField(int dpadAngle, double mxpAngle)
     {
     	if(mxpAngle < 0) // makes mxpAngle comparable to gyro, works
     	{
         	mxpAngle = mxpAngle + 360;
     	}
+    	
+    	// basically, is the dpad's angle and the robot's angle sufficiently
+    	// different enough
     	if(!isNear(dpadAngle, mxpAngle))
     	{
         	double angleDif = 0;
@@ -184,7 +197,6 @@ public class MikeDriveTrain extends BadSubsystem {
      * 
      * @return yourmom
      */
-    
     public double convertToMotorSpeed(double angleDifference) // this never works if given a negative value
     {    	
     	
@@ -223,9 +235,7 @@ public class MikeDriveTrain extends BadSubsystem {
      * 
      * @param value
      * @return
-     */
-    
-    
+     */    
     private double clampMotorValues(double value)
     {
 
@@ -240,12 +250,22 @@ public class MikeDriveTrain extends BadSubsystem {
         return value;
     }
     
+    /**
+     * This method checks to see if the robot is tipping over,
+     * and corrects it by moving the wheels backwards to get the robot
+     * down. Great safety feature.
+     * 
+     * @param pitch - the back-forth tilt
+     * @param roll - the side to side tilt
+     * @return - is the robot safe to drive?
+     */
     public boolean isSafeToDrive(double pitch, double roll) // back tip gives negative pitch, tip left gives postive roll
     {
     	double rollAmount = startRoll - roll;
     	double pitchAmount = startPitch - pitch;
     	
-    	if(Math.abs(rollAmount) > 14)
+    	// is the robot rolling too much
+    	if(Math.abs(rollAmount) > ROLL_MAGIC_NUMBER)
     	{
     		if(startPitch - rollAmount > 0) // rolling left
     		{
@@ -260,7 +280,8 @@ public class MikeDriveTrain extends BadSubsystem {
     		}
     		return false;
     	}
-    	if(Math.abs(pitchAmount) > 15)
+    	// is the robot pitching too much
+    	if(Math.abs(pitchAmount) > PITCH_MAGIC_NUMBER)
     	{
     		if(startPitch - pitch > 0) // pitching back
     		{
@@ -276,6 +297,14 @@ public class MikeDriveTrain extends BadSubsystem {
     	}
     	return true;
     }
+    
+    /**
+     * Does what is sounds like. Sets the initial 
+     * gyro value to the pitch and roll we want it
+     * to be at.
+     * @param pitch
+     * @param roll
+     */
     public void setInitalGyro(double pitch, double roll)
     {
     	startPitch = pitch;
@@ -283,7 +312,7 @@ public class MikeDriveTrain extends BadSubsystem {
     }
     
     /**
-     *Used for easy output to the roboRIO
+     * Used for easy output to the roboRIO
      */
 	public static void so(Object so)
 	{
