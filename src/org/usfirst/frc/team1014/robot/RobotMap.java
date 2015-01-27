@@ -17,12 +17,11 @@ public class RobotMap {
 	public static int frontRightController = 3; //2
 	public static int backRightController = 2; // 3
 	
-	//DIO
-	public static int brokenGyro = 0;
-	public static int properGyro = 1;
-	public static int backUltrasonicPing = 8;
-	public static int backUltrasonicEcho  = 9;
-    
+	public static int lift1 = 7;
+	public static int lift2 = 8;
+	public static int lift3 = 9;
+	
+
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;
