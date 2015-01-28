@@ -19,7 +19,6 @@ public class Grab extends CommandBase {
 
 	@Override
 	public String getConsoleIdentity() {
-		// TODO Auto-generated method stub
 		return "Grab";
 	}
 
@@ -31,7 +30,6 @@ public class Grab extends CommandBase {
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

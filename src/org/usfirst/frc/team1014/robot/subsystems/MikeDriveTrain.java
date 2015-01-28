@@ -42,6 +42,7 @@ public class MikeDriveTrain extends BadSubsystem {
     	
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+    	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
     	
 	}
 
@@ -245,18 +246,18 @@ public class MikeDriveTrain extends BadSubsystem {
     	double rollAmount = startRoll - roll;
     	double pitchAmount = startPitch - pitch;
     	
-    	if(Math.abs(rollAmount) > 14)
+    	if(Math.abs(rollAmount) > 12)
     	{
     		if(startPitch - rollAmount > 0) // rolling left
     		{
-    			frontLeft.set(-clampMotorValues(rollAmount/30));
-    			backLeft.set(-clampMotorValues(rollAmount/30));
+    			frontLeft.set(-clampMotorValues(rollAmount/60));
+    			backLeft.set(-clampMotorValues(rollAmount/60));
     		}
     		else
     		{
 
-    			frontRight.set(clampMotorValues(rollAmount/30));
-    			backRight.set(clampMotorValues(rollAmount/30));
+    			frontRight.set(clampMotorValues(rollAmount/60));
+    			backRight.set(clampMotorValues(rollAmount/60));
     		}
     		return false;
     	}
@@ -264,13 +265,13 @@ public class MikeDriveTrain extends BadSubsystem {
     	{
     		if(startPitch - pitch > 0) // pitching back
     		{
-    			backLeft.set(-clampMotorValues(pitchAmount/30));
-    			backRight.set(-clampMotorValues(pitchAmount/30));
+    			backLeft.set(-clampMotorValues(pitchAmount/60));
+    			backRight.set(-clampMotorValues(pitchAmount/60));
     		}
     		else
     		{
-    			frontLeft.set(clampMotorValues(pitchAmount/30));  
-    			frontRight.set(clampMotorValues(pitchAmount/30));  
+    			frontLeft.set(clampMotorValues(pitchAmount/60));  
+    			frontRight.set(clampMotorValues(pitchAmount/60));  
     		}
     		return false;
     	}
