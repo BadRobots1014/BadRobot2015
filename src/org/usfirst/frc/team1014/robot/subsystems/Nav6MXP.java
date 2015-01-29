@@ -56,5 +56,9 @@ public class Nav6MXP extends BadSubsystem {
 	{
 		return imu;
 	}
+	public void resetGyro()
+	{
+		imu.zeroYaw();
+	}
 
 }

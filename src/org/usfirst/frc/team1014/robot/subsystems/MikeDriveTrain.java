@@ -42,8 +42,6 @@ public class MikeDriveTrain extends BadSubsystem {
     	
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
-    	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
-    	
 	}
 
 	@Override
@@ -88,6 +86,7 @@ public class MikeDriveTrain extends BadSubsystem {
      * @param fr
      * @param br
      */
+
     public void setMotors(double fl, double bl, double fr, double br)
     {
     	frontLeft.set(fl);
@@ -261,7 +260,7 @@ public class MikeDriveTrain extends BadSubsystem {
     		}
     		return false;
     	}
-    	if(Math.abs(pitchAmount) > 15)
+    	if(Math.abs(pitchAmount) > 18)
     	{
     		if(startPitch - pitch > 0) // pitching back
     		{
