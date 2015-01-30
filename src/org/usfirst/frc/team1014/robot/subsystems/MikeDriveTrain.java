@@ -287,6 +287,10 @@ public class MikeDriveTrain extends BadSubsystem {
      */
 	public static void so(Object so)
 	{
-		System.out.println("MikeDriveTainr: " + so);
+		System.out.println("MikeDriveTrain: " + so);
 	}
 }
+
+
+
+
