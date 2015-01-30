@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1014.robot.commands.autonomous;
 
 import org.usfirst.frc.team1014.robot.commands.CommandBase;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class AutoTurn extends CommandBase {
@@ -56,12 +55,14 @@ public class AutoTurn extends CommandBase {
 			currentGyro = mxp.getAngle();
 		
 		finishAngle = currentGyro + angleToMoveThrough;
+		if(finishAngle > 360)
+			finishAngle -= 360;
 	}
 
 	@Override
 	protected void interrupted() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override

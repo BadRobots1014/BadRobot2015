@@ -6,13 +6,13 @@ public class DriveSquareTest extends CommandGroup {
 
 	public DriveSquareTest()
 	{
-		this.addSequential(new DriveStraightForward(500000));
+		this.addSequential(new DriveStraightForward(.5));
 		//this.addSequential(new AutoTurn(90, true));
-		this.addSequential(new DriveStraightForward(500000));
+		this.addSequential(new DriveStraightForward(.5));
 		//this.addSequential(new AutoTurn(90, true));
-		this.addSequential(new DriveStraightForward(500000));
+		this.addSequential(new DriveStraightForward(.5));
 		//this.addSequential(new AutoTurn(90, true));
-		this.addSequential(new DriveStraightForward(500000));
+		this.addSequential(new DriveStraightForward(.5));
 		//this.addSequential(new AutoTurn(90, true));
 	}
 	

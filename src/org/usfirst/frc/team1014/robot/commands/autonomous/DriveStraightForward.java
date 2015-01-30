@@ -14,10 +14,10 @@ public class DriveStraightForward extends CommandBase {
 	
 	public boolean hasStarted;
 	
-	public DriveStraightForward(double runTimeMicroSeconds)
+	public DriveStraightForward(double runTimeSeconds)
 	{
 		requires((Subsystem) driveTrain);
-		runTime = (long) runTimeMicroSeconds;
+		runTime = (long) (runTimeSeconds * 1000000);
 	}
 	
 	@Override
