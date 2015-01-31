@@ -43,7 +43,7 @@ public class DriveStraightForward extends CommandBase {
 			hasStarted = true;
 		}
 		currentTime = Utility.getFPGATime();
-		driveTrain.mecanumDriveCartesian(0.0, 1.0, 0.0, 0.0);
+		driveTrain.mecanumDriveCartesian(0.0, 0.2, 0.0, 0.0); // this drives it backwards
 	}
 
 	@Override

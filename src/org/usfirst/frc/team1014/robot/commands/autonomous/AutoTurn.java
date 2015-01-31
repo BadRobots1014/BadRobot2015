@@ -14,6 +14,7 @@ public class AutoTurn extends CommandBase {
 	public AutoTurn(double angle, boolean direc)
 	{
 		requires((Subsystem) driveTrain);
+		System.out.println("This is my fault!");
 		requires((Subsystem) mxp);
 		angleToMoveThrough = angle;
 		direction = direc;
@@ -68,7 +69,7 @@ public class AutoTurn extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		if(currentGyro == finishAngle)
+		if(currentGyro >= finishAngle) // yes, this is wrong, I'll fix it
 			return true;
 		return false;
 	}
