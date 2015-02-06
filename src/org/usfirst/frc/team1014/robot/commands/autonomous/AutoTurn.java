@@ -1,83 +1,88 @@
 package org.usfirst.frc.team1014.robot.commands.autonomous;
-
 import org.usfirst.frc.team1014.robot.commands.CommandBase;
-import edu.wpi.first.wpilibj.command.Subsystem;
 
+import edu.wpi.first.wpilibj.Utility;
+import edu.wpi.first.wpilibj.command.Subsystem;
 public class AutoTurn extends CommandBase {
 
-	boolean hasFinished;
-	double currentGyro;
-	double angleToMoveThrough;
-	double finishAngle;
-	boolean direction; // true for right, false for left
+	public double degree;
+	public double difference;	
 	
-	public AutoTurn(double angle, boolean direc)
+	public double startTime, passedTime;
+	
+	public AutoTurn(double degree)
 	{
+		this.degree = degree;
+		this.difference = 0;
+		this.passedTime = 0;
+		this.startTime = Utility.getFPGATime();
 		requires((Subsystem) driveTrain);
-		System.out.println("This is my fault!");
 		requires((Subsystem) mxp);
-		angleToMoveThrough = angle;
-		direction = direc;
+		mxp.resetGyro();
 	}
 	
 	@Override
-	protected void end() {
-		// TODO Auto-generated method stub
-		driveTrain.mecanumDriveCartesian(0, 0, 0, 0);
+	protected void initialize() {
+		driveTrain.tankDrive(0, 0);
+		
+	}
+
+	@Override
+	public String getConsoleIdentity() {
+		return "AutoTurn";
 	}
 
 	@Override
 	protected void execute() {
-		// TODO Auto-generated method stub
-		if(mxp.getAngle() < 0)
-			currentGyro = mxp.getAngle() + 360;
-		else
-			currentGyro = mxp.getAngle();
-		
-		if(mxp.getAngle() < finishAngle && direction)
-		{
-			driveTrain.mecanumDriveCartesian(0.0, 0.0, .20, 0);
-		}
-		else if(mxp.getAngle() > finishAngle && !direction)
-		{
-			driveTrain.mecanumDriveCartesian(0.0, 0.0, -.20, 0);
-		}
-		
-	}
-
-	@Override
-	protected void initialize() {
-		// TODO Auto-generated method stub
-		hasFinished = false;
-		
-		if(mxp.getAngle() < 0)
-			currentGyro = mxp.getAngle() + 360;
-		else
-			currentGyro = mxp.getAngle();
-		
-		finishAngle = currentGyro + angleToMoveThrough;
-		if(finishAngle > 360)
-			finishAngle -= 360;
-	}
-
-	@Override
-	protected void interrupted() {
-		// TODO Auto-generated method stub
+		passedTime = Utility.getFPGATime() - startTime;
+		difference = mxp.getAngle() - degree;// negative for counterclockwise
+		driveTrain.mecanumDriveCartesian(0, 0, deadzone(rotation()), 0);
 		
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		if(currentGyro >= finishAngle) // yes, this is wrong, I'll fix it
+		if(deadzone(difference) == 0 || passedTime/1000000 > 2)
+		{
+			System.out.println("AutoTurnFinished");
 			return true;
+		}
+
 		return false;
 	}
 
 	@Override
-	public String getConsoleIdentity() {
-		// TODO Auto-generated method stub
-		return "AutoTurn";
+	protected void end() {
+		driveTrain.tankDrive(0, 0);
+		
 	}
+
+	@Override
+	protected void interrupted() {
+		System.out.println("AutoTurn interuppted");
+		
+	}
+	
+	public double rotation()
+	{
+		return -(difference/60);
+	}
+    public static double deadzone(double d) {
+        //whenever the controller moves LESS than the magic number, the 
+        //joystick is in the loose position so return zero - as if the 
+        //joystick was not moved
+        if (Math.abs(d) < .1) {
+            return 0;
+        }
+        
+        if (d == 0)
+        {
+            return 0;
+        }
+        //When the joystick is used for a purpose (passes the if statements, 
+        //hence not just being loose), do math
+        return (d / Math.abs(d)) //gets the sign of d, negative or positive
+            * ((Math.abs(d) - .1) / (1 - .1)); //scales it
+    }
 
 }
