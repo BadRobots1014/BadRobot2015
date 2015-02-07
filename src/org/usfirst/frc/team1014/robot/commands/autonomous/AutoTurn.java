@@ -3,6 +3,13 @@ import org.usfirst.frc.team1014.robot.commands.CommandBase;
 
 import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+/**
+ * This is the turning command for autonomous.
+ * 
+ * @author Manu S.
+ *
+ */
 public class AutoTurn extends CommandBase {
 
 	public double degree;
