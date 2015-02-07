@@ -42,7 +42,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
-    	Scheduler.getInstance().add(new DriveSquare(500000, .5, 90));
+    	Scheduler.getInstance().add(new DriveSquare(.5, .2, 90));
     }
 
     /**
