@@ -16,15 +16,14 @@ public class DriveStraightForward extends CommandBase {
 		requires((Subsystem) mxp);
 		this.driveTime = driveTime;
 		this.speed = speed;
-		mxp.resetGyro();// makes start angle zero
-		startTime = Utility.getFPGATime();
-		passedTime = 0;
 	}
 	
 	@Override
 	protected void initialize() {
 		driveTrain.tankDrive(0, 0);
-		
+		mxp.resetGyro();// makes start angle zero
+		startTime = Utility.getFPGATime();
+		passedTime = 0;		
 	}
 
 	@Override
