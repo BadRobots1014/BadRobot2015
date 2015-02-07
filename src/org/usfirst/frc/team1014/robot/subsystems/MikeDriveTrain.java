@@ -194,8 +194,6 @@ public class MikeDriveTrain extends BadSubsystem {
     	}
     	else
     	{
-    		so(angleDifference);
-    		so(angleDifference/90 + "\n");
     		return clampMotorValues(Math.abs(angleDifference/90));
     	}
     }

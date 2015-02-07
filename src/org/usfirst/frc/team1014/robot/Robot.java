@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import org.usfirst.frc.team1014.robot.commands.CommandBase;
 import org.usfirst.frc.team1014.robot.commands.MikeDriveGroup;
-import org.usfirst.frc.team1014.robot.commands.autonomous.DriveSquareTest;
+import org.usfirst.frc.team1014.robot.commands.autonomous.AutoTurn;
+import org.usfirst.frc.team1014.robot.commands.autonomous.DriveSquare;
+import org.usfirst.frc.team1014.robot.commands.autonomous.DriveStraightForward;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,7 +42,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
-    	Scheduler.getInstance().add(new DriveSquareTest());
+    	Scheduler.getInstance().add(new DriveSquare());
     }
 
     /**

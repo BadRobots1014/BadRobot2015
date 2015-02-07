@@ -43,9 +43,7 @@ public class SafeMecanumDriveField extends CommandBase {
 				driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
 			}
 
-		}		
-		System.out.println(mxp.getAngle());
-
+		}		  
 	}
 
 	@Override

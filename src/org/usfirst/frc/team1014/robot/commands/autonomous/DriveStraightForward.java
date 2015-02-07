@@ -7,64 +7,90 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveStraightForward extends CommandBase {
 
-	public long startTime;
-	public long endTime;
-	public long runTime;
-	public long currentTime;
+	public double driveTime, speed;
+	public double startTime, passedTime;
 	
-	public boolean hasStarted;
-	
-	public DriveStraightForward(double runTimeSeconds)
+	public DriveStraightForward(double driveTime, double speed)
 	{
 		requires((Subsystem) driveTrain);
-		runTime = (long) (runTimeSeconds * 1000000);
+		requires((Subsystem) mxp);
+		this.driveTime = driveTime;
+		this.speed = speed;
+		mxp.resetGyro();// makes start angle zero
+		startTime = Utility.getFPGATime();
+		passedTime = 0;
 	}
 	
 	@Override
 	protected void initialize() {
+		driveTrain.tankDrive(0, 0);
 		
-		hasStarted = false;
-		currentTime = Utility.getFPGATime();		
 	}
 
 	@Override
 	public String getConsoleIdentity() {
-		
 		return "DriveStraightForward";
 	}
 
 	@Override
 	protected void execute() {
-		
-		if(!hasStarted)
-		{
-			startTime = Utility.getFPGATime();
-			endTime = startTime + runTime;
-			hasStarted = true;
-		}
-		currentTime = Utility.getFPGATime();
-		driveTrain.mecanumDriveCartesian(0.0, 0.2, 0.0, 0.0); // this drives it backwards
+		passedTime = Utility.getFPGATime() - startTime;
+		driveTrain.mecanumDriveCartesian(0, -speed, deadzone(rotation()), 0.0);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		
-		if(currentTime > endTime)
+		if((passedTime / 1000000) > driveTime)
+		{
+			System.out.println("DriveStraightForward is done");
 			return true;
-		return false;
+		}
+		else
+			return false;
 	}
 
 	@Override
 	protected void end() {
-		
-		driveTrain.mecanumDriveCartesian(0, 0, 0, 0);
+		driveTrain.tankDrive(0, 0);
 		
 	}
 
 	@Override
 	protected void interrupted() {
 		
-		
 	}
+	
+	/**
+	 * This method returns an adjusted value to give the motors to keep the robot straight
+	 * For days
+	 * 
+	 * Assumes you are using it with tankDrive with positive angleDifference
+	 * returns 2 for zero degree turn and 0 for straight driving
+	 * 
+	 * @return
+	 */
+	
+	public static double rotation()
+	{
+		return -(mxp.getAngle()/45);
+	}
+	
+    public static double deadzone(double d) {
+        //whenever the controller moves LESS than the magic number, the 
+        //joystick is in the loose position so return zero - as if the 
+        //joystick was not moved
+        if (Math.abs(d) < .1) {
+            return 0;
+        }
+        
+        if (d == 0)
+        {
+            return 0;
+        }
+        //When the joystick is used for a purpose (passes the if statements, 
+        //hence not just being loose), do math
+        return (d / Math.abs(d)) //gets the sign of d, negative or positive
+            * ((Math.abs(d) - .1) / (1 - .1)); //scales it
+    }
 
 }
