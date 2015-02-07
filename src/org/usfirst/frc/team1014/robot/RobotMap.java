@@ -12,14 +12,17 @@ public class RobotMap {
     // public static int rightMotor = 2;
 	
 	//Analogs
-	public static int backLeftController = 1; // 0
-	public static int frontLeftController = 0; // 1
-	public static int frontRightController = 2; //2
-	public static int backRightController = 3; // 3
+	public static int backLeftController = 1; // PWM
+	public static int frontLeftController = 0; // PWM
+	public static int frontRightController = 2; //PWM
+	public static int backRightController = 3; // PWM
 	
-	public static int lift1 = 7;
-	public static int lift2 = 8;
-	public static int lift3 = 9;
+	public static int lift1 = 7;//PWM
+	public static int lift2 = 8;//PWM
+	public static int lift3 = 9;//PWM
+	
+	public static int opticalSensorPing = 0;
+	public static int opticalSensorCatch = 1;
 	
 
     // If you are using multiple modules, make sure to define both the port

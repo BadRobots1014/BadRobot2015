@@ -9,5 +9,6 @@ public class MikeDriveGroup extends CommandGroup {
 	{
 		this.addParallel(new SafeMecanumDriveField());
 		this.addParallel(new Grab());
+		this.addParallel(new OpticalSensing());
 	}
 }
