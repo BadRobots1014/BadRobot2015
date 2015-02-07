@@ -12,7 +12,7 @@ public class Grabber extends BadSubsystem {
 	public static Grabber instance;
 	
 	SpeedController lift1, lift2, lift3;
-	
+	public int currentLevel;
 	
 	public static Grabber getInstance()
 	{
@@ -28,6 +28,7 @@ public class Grabber extends BadSubsystem {
 	{
 		
 	}
+	
 	@Override
 	protected void initialize() {
 		lift1 = new Talon(RobotMap.lift1);//create Grabber
@@ -37,6 +38,7 @@ public class Grabber extends BadSubsystem {
 		lift3 = new Talon(RobotMap.lift3);
 		lift3.set(0);
 		
+		currentLevel = 0;
 	}
 
 	@Override
