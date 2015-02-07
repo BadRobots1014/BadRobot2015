@@ -12,19 +12,18 @@ public class AutoTurn extends CommandBase {
 	
 	public AutoTurn(double degree)
 	{
-		this.degree = degree;
-		this.difference = 0;
-		this.passedTime = 0;
-		this.startTime = Utility.getFPGATime();
 		requires((Subsystem) driveTrain);
 		requires((Subsystem) mxp);
-		mxp.resetGyro();
+		this.degree = degree;
 	}
 	
 	@Override
 	protected void initialize() {
 		driveTrain.tankDrive(0, 0);
-		
+		this.difference = 0;
+		this.passedTime = 0;
+		this.startTime = Utility.getFPGATime();
+		mxp.resetGyro();		
 	}
 
 	@Override
