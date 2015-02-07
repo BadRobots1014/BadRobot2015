@@ -48,13 +48,24 @@ public class Nav6MXP extends BadSubsystem {
 		// TODO Auto-generated method stub
 		
 	}
-	public double getAngle()
+	public double getAngle()// return -180 - 180
 	{
 		return (double)imu.getYaw();
+	}
+	public double getAngle360() // returns 0 -360
+	{
+		if(imu.getYaw() < 0)
+			return imu.getYaw() + 360;
+		else
+			return imu.getYaw();
 	}
 	public IMU getMXP()
 	{
 		return imu;
+	}
+	public void resetGyro()
+	{
+		imu.zeroYaw();
 	}
 
 }

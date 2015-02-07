@@ -28,6 +28,10 @@ public class SafeMecanumDriveField extends CommandBase {
 	@Override
 	protected void execute() {
 		
+		if(OI.xboxController.isBButtonPressed())// this line works
+		{
+			mxp.resetGyro();
+		}
 		if(driveTrain.isSafeToDrive((double)mxp.getMXP().getPitch(), (double)mxp.getMXP().getRoll()))
 		{
 			if(OI.xboxController.getPOV() == -1) // not using dpad
@@ -38,9 +42,8 @@ public class SafeMecanumDriveField extends CommandBase {
 			{
 				driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
 			}
-		}		
 
-
+		}		  
 	}
 
 	@Override
