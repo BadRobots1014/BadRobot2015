@@ -15,6 +15,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
 	double startPitch, startRoll;
+	public boolean speedHigh;
 	
     public static MikeDriveTrain getInstance()
     {
@@ -42,7 +43,7 @@ public class MikeDriveTrain extends BadSubsystem {
     	
     	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-    	
+    	speedHigh = false;
 	}
 
 	@Override
@@ -63,10 +64,16 @@ public class MikeDriveTrain extends BadSubsystem {
 	 * @param rightY
 	 */
 	
+	public void toggleSpeed()
+	{
+		speedHigh = !speedHigh;
+	}
+	
     public void tankDrive(double leftY, double rightY) //analogs
     {
         train.tankDrive(leftY, rightY);
     }
+    
     /**
      * This drive the robot with in orienation with the field with mecanum wheels where the axels of the rollers form an X across the robot
      * 
