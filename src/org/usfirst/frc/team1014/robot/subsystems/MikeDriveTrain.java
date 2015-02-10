@@ -43,12 +43,13 @@ public class MikeDriveTrain extends BadSubsystem {
 	
     private MikeDriveTrain()
     {
-    	initialize(); // I think this goes here
+    	//initialize(); // I think this goes here
     }
     
     @Override
 	protected void initialize()
     {
+    	//System.out.println("Here");
         frontLeft = new Talon(RobotMap.frontLeftController);
         backLeft = new Talon(RobotMap.backLeftController);
         frontRight = new Talon(RobotMap.frontRightController);
@@ -137,4 +138,11 @@ public class MikeDriveTrain extends BadSubsystem {
     {
     	return gyro;
     }
+
+	@Override
+	public void log()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

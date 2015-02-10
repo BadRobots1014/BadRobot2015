@@ -11,12 +11,16 @@ public class MecanumDrive extends CommandBase {
 	public MecanumDrive()
 	{
 		requires((Subsystem) driveTrain);
+		requires((Subsystem) lights);
 		soCounter = 0;
 	}
 	@Override
 	protected void initialize() {
 		driveTrain.getGyro().reset();
 		driveTrain.tankDrive(0, 0);
+		
+		lights.setColorSweep(true);
+		//lights.setColor(0, 0, 1);
 	}
 
 	@Override
@@ -28,6 +32,8 @@ public class MecanumDrive extends CommandBase {
 	protected void execute() {
 		driveTrain.mecanumDrive(-OI.xboxController.getLeftStickX(), -OI.xboxController.getRightStickX(), -OI.xboxController.getLeftStickY(), driveTrain.getGyro().getAngle());
 		so(driveTrain.getGyro().getAngle());
+		lights.updateLights();
+		//System.out.println("Here");
 	}
 
 	@Override

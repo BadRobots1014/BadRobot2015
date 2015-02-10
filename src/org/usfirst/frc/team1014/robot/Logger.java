@@ -7,7 +7,6 @@ package org.usfirst.frc.team1014.robot;
  */
 public interface Logger {
 	
-	public static void log() {
-	}
+	public void log();
 
 }

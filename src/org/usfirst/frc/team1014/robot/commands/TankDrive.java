@@ -1,6 +1,9 @@
 package org.usfirst.frc.team1014.robot.commands;
 
+import java.awt.Color;
+
 import org.usfirst.frc.team1014.robot.OI;
+import org.usfirst.frc.team1014.robot.subsystems.Lights;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
