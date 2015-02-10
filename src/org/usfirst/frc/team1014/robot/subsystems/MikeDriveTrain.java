@@ -1,37 +1,21 @@
 package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
+import org.usfirst.frc.team1014.robot.commands.SafeMecanumDriveField;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
-/**
- * This class is refers to the drive train object
- * of Mike, our 2012 robot that is being used for 
- * testing our code.
- * @author Steve Popovich
- *
- */
 public class MikeDriveTrain extends BadSubsystem {
-	
-	// this is the actual object of Mike's drive train
 	private static MikeDriveTrain instance;
 	
-	// these are the objects that we need in order to have
-	// the drive train. In other words, these are the "soft"
-	// versions of the physical objects on our robot
 	RobotDrive train;
-	SpeedController frontLeft, backLeft, frontRight, backRight;
-	Gyro gyro;
+	Talon frontLeft, backLeft, frontRight, backRight;
+	double startPitch, startRoll;
 	
-	/**
-	 * Gets the current instance of this class.
-	 * If it doesn't exist, make one.
-	 * @return instance - the current instance of 
-	 * MikeDriveTrain
-	 */
     public static MikeDriveTrain getInstance()
     {
         if (instance == null)
@@ -43,7 +27,11 @@ public class MikeDriveTrain extends BadSubsystem {
 	
     private MikeDriveTrain()
     {
+<<<<<<< HEAD
     	//initialize(); // I think this goes here
+=======
+    	
+>>>>>>> branch 'master' of https://github.com/BadRobots1014/BadRobot2015.git
     }
     
     @Override
@@ -54,11 +42,13 @@ public class MikeDriveTrain extends BadSubsystem {
         backLeft = new Talon(RobotMap.backLeftController);
         frontRight = new Talon(RobotMap.frontRightController);
         backRight = new Talon(RobotMap.backRightController); 
-    	
-        gyro = new Gyro(RobotMap.gyro);
-        gyro.reset();
-        
+
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
+    	
+    	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); 
+    	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+    	train.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false); 
+    	train.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
 	}
 
 	@Override
@@ -70,79 +60,250 @@ public class MikeDriveTrain extends BadSubsystem {
 	@Override
 	protected void initDefaultCommand() 
 	{
-		//this.setDefaultCommand(new DpadDrive()); //??
+		this.setDefaultCommand(new SafeMecanumDriveField()); 
 	}
-	
 	/**
-	 * This is the basic way to drive.
-	 * @param leftY - the speed at which to drive the left side
-	 * @param rightY - the speed at which to drive the right side
+	 * Tank drives the robot
+	 * 
+	 * @param leftY
+	 * @param rightY
 	 */
+	
     public void tankDrive(double leftY, double rightY) //analogs
     {
         train.tankDrive(leftY, rightY);
     }
-    
     /**
-     * This is the driving using the dpad. It begins
-     * to use the strafing ability, as well as the rotating the robot
-     * on its internal pivot point.
-     * @param leftX - the speed at which to strafe
-     * @param leftY - the speed at which to move forward
-     * @param rightX - the speed at which to rotate the robot
-     */
-    public void dpadDrive(double leftX, double leftY, double rightX)
-    {
-    	if((Math.abs(leftX)+Math.abs(leftY)) > 
-		(Math.abs(rightX)*2))// if left stick is being used more than the right, this works 
-    	{
-		
-			if(Math.abs(leftX) < Math.abs(leftY)) // if more Y than X
-			{
-				frontLeft.set(-(leftY));// move forward/back
-				frontRight.set((leftY));
-				backLeft.set(-(leftY));
-				backRight.set((leftY));
-			}
-			else
-			{
-				frontLeft.set(-(leftX));  // strafe works
-				frontRight.set(-(leftX));
-				backLeft.set(leftX);
-				backRight.set(leftX);
-			}
-    	}
-		else
-		{
-			frontLeft.set(rightX); // rotate robot 
-			frontRight.set(rightX);
-			backLeft.set(rightX);
-			backRight.set(rightX);
-		}    	
-    }
-    
-    /**
-     * This is mechanum drive. This allows us to strafe and move
-     * in almost any direction. 
+     * This drive the robot with in orienation with the field with mecanum wheels where the axels of the rollers form an X across the robot
+     * 
      * @param leftX
      * @param leftY
      * @param rightX
      * @param gyro
      */
-    public void mecanumDrive(double leftX, double leftY, double rightX, double gyro) 
+    
+    public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
     {
-        train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
+    	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
+    }
+    /**
+     * Sets each motor speeds at a certain value
+     * @param fl
+     * @param bl
+     * @param fr
+     * @param br
+     */
+    public void setMotors(double fl, double bl, double fr, double br)
+    {
+    	frontLeft.set(fl);
+    	backLeft.set(bl);
+    	frontRight.set(fr);
+    	backRight.set(br);
     }
     
-    public Gyro getGyro()
+    
+    /**
+     * rotates the robot at a given speed
+     * 
+     * if speed > 0, rotates counter clockwise right
+     * @param speed
+     */
+    public void rotateRobotDifference(double speed) // works
     {
-    	return gyro;
+    	frontLeft.set(speed);
+    	frontRight.set(-speed);
+    	backLeft.set(-speed);
+    	backRight.set(speed);
     }
+<<<<<<< HEAD
 
 	@Override
 	public void log()
 	{
 		// TODO Auto-generated method stub
 		
+=======
+    
+    /**
+     * This method, using the gyro and the dpad, lines up the robot in orientation with the field.  
+     * 
+     * Please don't look at it
+     * @param dpadAngle
+     * @param mxpAngle
+     */
+    
+    public void lineUpWithField(int dpadAngle, double mxpAngle)
+    {
+    	if(mxpAngle < 0) // makes mxpAngle comparable to gyro, works
+    	{
+        	mxpAngle = mxpAngle + 360;
+    	}
+    	if(!isNear(dpadAngle, mxpAngle))
+    	{
+        	double angleDif = 0;
+        	boolean turnLeft = false;
+
+        	if(dpadAngle == 0 && mxpAngle > 180)
+        	{
+        		angleDif = mxpAngle - dpadAngle;
+        		double motorSpeedToPut = convertToMotorSpeed(angleDif);
+        		rotateRobotDifference(-motorSpeedToPut);
+        	}
+        	else
+        	{
+            	if(dpadAngle > mxpAngle) // rotate left
+            	{
+            		angleDif = dpadAngle - mxpAngle;
+            		if(angleDif > 180)
+            		{
+            			angleDif = Math.abs(angleDif - 360);
+            		}
+            			
+            		turnLeft = false; // yes it is redundant but I dont care
+            	}
+            	else
+            	{
+            		angleDif = mxpAngle - dpadAngle;
+            		if(angleDif > 180)
+            		{
+            			angleDif = Math.abs(angleDif - 360);
+            		}
+            		
+            		turnLeft = true; 
+            	}
+            	
+            	
+            	
+        		double motorSpeedToPut = convertToMotorSpeed(angleDif);
+        		
+        		if(turnLeft)
+        			rotateRobotDifference(motorSpeedToPut);
+        		else
+        			rotateRobotDifference(-motorSpeedToPut);
+        	}
+        	
+
+        	
+        	
+    	}
+
+    }
+    
+    /**
+     * This method takes an angle difference and converts to a motor speed.  Basically to fake PID
+     * 
+     * Meant to really only be used with the mxp and dpad, but can be converted
+     * 
+     * If angleDif > 0, turn left or counter clockwise
+     * 
+     * @return yourmom
+     */
+    
+    public double convertToMotorSpeed(double angleDifference) // this never works if given a negative value
+    {    	
+    	
+    	if(angleDifference/90 < .01) // 360 would give a perfect linear speed but I want it faster with a little overshoot
+    	{
+    		return 0;
+    	}
+    	else
+    	{
+    		return clampMotorValues(Math.abs(angleDifference/90));
+    	}
+    }
+    
+    /**
+     * this is for the dpadRotation.  The Gyro will never return a value exactly equal to the POV from the Controller so this just gets it close
+     * You can make it closer by lowering the magic number .1 in the if statement
+     * 
+     * 
+     * @param num1
+     * @param num2
+     * @return is the number near
+     */
+    public boolean isNear(double num1, double num2)
+    {
+    	if(Math.abs(num2-num1) < .01)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+    
+    /**
+     * This method clamps down values to give to the motors
+     * 
+     * @param value
+     * @return
+     */
+    
+    
+    private double clampMotorValues(double value)
+    {
+
+        if (value > 1)
+        {
+            value = 1;
+        }
+        if (value < -1)
+        {
+            value = -1;
+        }
+        return value;
+    }
+    
+    public boolean isSafeToDrive(double pitch, double roll) // back tip gives negative pitch, tip left gives postive roll
+    {
+    	double rollAmount = startRoll - roll;
+    	double pitchAmount = startPitch - pitch;
+    	
+    	if(Math.abs(rollAmount) > 12)
+    	{
+    		if(startPitch - rollAmount > 0) // rolling left
+    		{
+    			frontLeft.set(-clampMotorValues(rollAmount/60));
+    			backLeft.set(-clampMotorValues(rollAmount/60));
+    		}
+    		else
+    		{
+
+    			frontRight.set(clampMotorValues(rollAmount/60));
+    			backRight.set(clampMotorValues(rollAmount/60));
+    		}
+    		return false;
+    	}
+    	if(Math.abs(pitchAmount) > 15)
+    	{
+    		if(startPitch - pitch > 0) // pitching back
+    		{
+    			backLeft.set(-clampMotorValues(pitchAmount/60));
+    			backRight.set(-clampMotorValues(pitchAmount/60));
+    		}
+    		else
+    		{
+    			frontLeft.set(clampMotorValues(pitchAmount/60));  
+    			frontRight.set(clampMotorValues(pitchAmount/60));  
+    		}
+    		return false;
+    	}
+    	return true;
+    }
+    public void setInitalGyro(double pitch, double roll)
+    {
+    	startPitch = pitch;
+    	startRoll = roll;
+    }
+    
+    /**
+     *Used for easy output to the roboRIO
+     */
+	public static void so(Object so)
+	{
+		System.out.println("MikeDriveTrain: " + so);
+>>>>>>> branch 'master' of https://github.com/BadRobots1014/BadRobot2015.git
 	}
 }
+
+
+
+

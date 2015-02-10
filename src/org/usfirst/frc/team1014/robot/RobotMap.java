@@ -11,6 +11,7 @@ public class RobotMap {
     // public static int leftMotor = 1;
     // public static int rightMotor = 2;
 	
+<<<<<<< HEAD
 	public static final int LIGHTS_RED = 6;
 	public static final int LIGHTS_GREEN = 7;
 	public static final int LIGHTS_BLUE = 5;
@@ -18,10 +19,28 @@ public class RobotMap {
 	public static int backLeftController = 0; // 1
 	public static int frontRightController = 3; //2
 	public static int backRightController = 2; // 3
+=======
+	//Analogs
+	public static int backLeftController = 1; // PWM
+	public static int frontLeftController = 0; // PWM
+	public static int frontRightController = 2; //PWM
+	public static int backRightController = 3; // PWM
+>>>>>>> branch 'master' of https://github.com/BadRobots1014/BadRobot2015.git
 	
+<<<<<<< HEAD
 	public static int gyro = 0;
 	public static int opticalSensor1;
     
+=======
+	public static int lift1 = 7;//PWM
+	public static int lift2 = 8;//PWM
+	public static int lift3 = 9;//PWM
+	
+	public static int opticalSensorPing = 0;
+	public static int opticalSensorCatch = 1;
+	
+
+>>>>>>> branch 'master' of https://github.com/BadRobots1014/BadRobot2015.git
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;

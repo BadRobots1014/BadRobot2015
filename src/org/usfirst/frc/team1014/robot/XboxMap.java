@@ -11,9 +11,13 @@ public class XboxMap extends Joystick
     public static double DEADZONE_MAGIC_NUMBER = .15;
     
     private static int LEFT_STICK_X = 0, LEFT_STICK_Y = 1, RIGHT_STICK_X = 4, RIGHT_STICK_Y = 5;
-    private static int A_BUTTON = 0, B_BUTTON = 1, X_BUTTON = 2, Y_BUTTON = 3, 
-                        LB = 4, RB = 5, SELECT = 6, START = 7, LEFT_JOY_CLICK = 8, RIGHT_JOY_CLICK = 9;
+    private static int A_BUTTON = 1, B_BUTTON = 2, X_BUTTON = 3, Y_BUTTON = 4, 
+                        LB = 5, RB = 6, SELECT = 7, START = 8, LEFT_JOY_CLICK = 9, RIGHT_JOY_CLICK = 10;
     private static int LEFT_TRIGGER = 2, RIGHT_TRIGGER = 3;
+    
+    /*
+     * The dpad gives int angles where 0 is up and adds clockwise.  -1 is center
+     */
     
     public XboxMap(int port)
     {
@@ -24,6 +28,7 @@ public class XboxMap extends Joystick
      * Creates a deadzone for joysticks, the controllers sticks are a little
      * loose and so there is a margin of error for where they should be
      * considered "neutral/not pushed"
+     * 
      *
      * @param d Double between -1 and 1 to be deadzoned
      * @return The deadzoned value
@@ -103,11 +108,11 @@ public class XboxMap extends Joystick
     }
     
     public double getRightTrigger() {
-    	return this.getRightTrigger();
+    	return 0.0;
     }
 
     public double getLeftTrigger() {
-    	return this.getLeftTrigger();
+    	return 0.0;
     }
     
     public void checkControllerPorts()
