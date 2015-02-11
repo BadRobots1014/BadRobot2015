@@ -250,31 +250,31 @@ public class MikeDriveTrain extends BadSubsystem {
     	double rollAmount = startRoll - roll;
     	double pitchAmount = startPitch - pitch;
     	
-    	if(Math.abs(rollAmount) > 12)
+    	if(Math.abs(rollAmount) > 8)
     	{
     		if(startPitch - rollAmount > 0) // rolling left
     		{
     			frontLeft.set(-clampMotorValues(rollAmount/60));
-    			backLeft.set(-clampMotorValues(rollAmount/60));
+    			frontRight.set(clampMotorValues(rollAmount/60));
     		}
     		else
     		{
 
-    			frontRight.set(clampMotorValues(rollAmount/60));
+    			backLeft.set(-clampMotorValues(rollAmount/60));
     			backRight.set(clampMotorValues(rollAmount/60));
     		}
     		return false;
     	}
-    	if(Math.abs(pitchAmount) > 15)
+    	if(Math.abs(pitchAmount) > 8)
     	{
     		if(startPitch - pitch > 0) // pitching back
     		{
-    			backLeft.set(-clampMotorValues(pitchAmount/60));
+    			frontRight.set(clampMotorValues(pitchAmount/60));
     			backRight.set(-clampMotorValues(pitchAmount/60));
     		}
     		else
     		{
-    			frontLeft.set(clampMotorValues(pitchAmount/60));  
+    			backLeft.set(-clampMotorValues(pitchAmount/60));  
     			frontRight.set(clampMotorValues(pitchAmount/60));  
     		}
     		return false;
