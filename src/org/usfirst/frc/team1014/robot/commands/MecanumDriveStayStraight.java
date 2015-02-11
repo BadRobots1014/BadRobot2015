@@ -2,11 +2,13 @@ package org.usfirst.frc.team1014.robot.commands;
 
 import org.usfirst.frc.team1014.robot.OI;
 
+import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class MecanumDriveStayStraight extends CommandBase {
 
-	public static int soCounter;
+	public static double lastTime = Utility.getFPGATime();
+	public static double passedTime = 0;
 	
 	public MecanumDriveStayStraight()
 	{
@@ -28,28 +30,31 @@ public class MecanumDriveStayStraight extends CommandBase {
 	@Override
 	protected void execute() {
 		
+		passedTime = lastTime + Utility.getFPGATime();
+		
 		if(OI.xboxController.isBButtonPressed())// this line works
 		{
 			mxp.resetGyro();
 		}
-		if(OI.xboxController.isRBButtonPressed())
+		if(OI.xboxController.isRBButtonPressed() || passedTime/1000000 > 1)//convert to second, so basically, if you hit the button and over a second has passed
 		{
 			driveTrain.toggleSpeed();
+			lastTime = Utility.getFPGATime();
 		}
 		if(driveTrain.isSafeToDrive((double)mxp.getMXP().getPitch(), (double)mxp.getMXP().getRoll()))
 		{
-			if(OI.xboxController.getPOV() == -1 && !OI.xboxController.isAButtonPressed()) // not using dpad
+			if(OI.xboxController.getPOV() == -1 && !OI.xboxController.isAButtonPressed()) //Not using dpad and not holding A
 			{
-				if(driveTrain.speedHigh)
+				if(driveTrain.speedHigh)//normal drive
 					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle()); // just do mecanum
 				else
-					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX() / 2, OI.xboxController.getLeftStickY() / 2, OI.xboxController.getRightStickX(), mxp.getAngle());
+					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX() / 2, OI.xboxController.getLeftStickY() / 2, OI.xboxController.getRightStickX() / 2, mxp.getAngle());
 			}
-			else if(OI.xboxController.getPOV() != -1)// use dpad
+			else if(OI.xboxController.getPOV() != -1)// using dpad
 			{
 				driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
 			}
-			else
+			else//a is held down and you are not using dpad = driving with a button down
 			{
 				if(driveTrain.speedHigh)
 					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), deadzone(rotation()), mxp.getAngle());
@@ -110,15 +115,7 @@ public class MecanumDriveStayStraight extends CommandBase {
 		so("I Have been interrupted and am deferring");
 		
 	}
-	public static void soc(Object so)
-	{
-		if(soCounter > 50)
-		{
-			System.out.println("MecanumDrive: " + so);
-			soCounter = 0;
-		}
-		soCounter++;
-	}
+
 	public static void so(Object so)
 	{
 		System.out.println("MecanumDrive: " + so);
