@@ -36,21 +36,22 @@ public class MecanumDriveStayStraight extends CommandBase {
 		{
 			mxp.resetGyro();
 		}
-		if(OI.xboxController.isRBButtonPressed() || passedTime/1000000 > 1)//convert to second, so basically, if you hit the button and over a second has passed
+		if(OI.xboxController.isRBButtonPressed())//convert to second, so basically, if you hit the button and over a second has passed
 		{
+			// do nothing while the bumper is still on
+			while(OI.xboxController.isRBButtonPressed()){ /* do nothing */}
 			driveTrain.toggleSpeed();
-			lastTime = Utility.getFPGATime();
 		}
 		if(driveTrain.isSafeToDrive((double)mxp.getMXP().getPitch(), (double)mxp.getMXP().getRoll()))
 		{
 			if(OI.xboxController.getPOV() == -1 && !OI.xboxController.isAButtonPressed()) //Not using dpad and not holding A
 			{
 				if(driveTrain.speedHigh)//normal drive
-					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle()); // just do mecanum
+					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle()); // just do mecanum	
 				else
 					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX() / 2, OI.xboxController.getLeftStickY() / 2, OI.xboxController.getRightStickX() / 2, mxp.getAngle());
 			}
-			else if(OI.xboxController.getPOV() != -1)// using dpad
+			else if(OI.xboxController.getPOV() != -1 && !OI.xboxController.isAButtonPressed())//using dpad
 			{
 				driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
 			}

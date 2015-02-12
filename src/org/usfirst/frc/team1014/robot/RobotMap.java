@@ -11,11 +11,11 @@ public class RobotMap {
     // public static int leftMotor = 1;
     // public static int rightMotor = 2;
 	
-	//Analogs
-	public static int backLeftController = 1; // 0
-	public static int frontLeftController = 4; // 1
-	public static int frontRightController = 3; //2
-	public static int backRightController = 2; // 3
+	//Analogs					// These are for the practice bot
+	public static int backLeftController = 1; 	// 1
+	public static int frontLeftController = 0; 	// 4
+	public static int frontRightController = 2; 	// 3
+	public static int backRightController = 3; 	// 2
 	
 	public static int lift1 = 7;
 	public static int lift2 = 8;
