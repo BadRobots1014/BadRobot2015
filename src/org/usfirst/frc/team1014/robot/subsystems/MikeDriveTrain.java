@@ -57,17 +57,16 @@ public class MikeDriveTrain extends BadSubsystem {
 	{
 		this.setDefaultCommand(new SafeMecanumDriveField()); 
 	}
+	
 	/**
 	 * Tank drives the robot
 	 * 
 	 * @param leftY
 	 * @param rightY
-	 */
-	
+	 */	
 	public void toggleSpeed()
 	{
 		speedHigh = !speedHigh;
-		so("I am toggling \n");
 	}
 	
     public void tankDrive(double leftY, double rightY) //analogs
@@ -113,8 +112,8 @@ public class MikeDriveTrain extends BadSubsystem {
     public void rotateRobotDifference(double speed) // works
     {
     	frontLeft.set(speed);
-    	frontRight.set(-speed);
-    	backLeft.set(-speed);
+    	frontRight.set(speed);
+    	backLeft.set(speed);
     	backRight.set(speed);
     }
     
@@ -122,10 +121,10 @@ public class MikeDriveTrain extends BadSubsystem {
      * This method, using the gyro and the dpad, lines up the robot in orientation with the field.  
      * 
      * Please don't look at it
+     * too late, I did
      * @param dpadAngle
      * @param mxpAngle
-     */
-    
+     */    
     public void lineUpWithField(int dpadAngle, double mxpAngle)
     {
     	if(mxpAngle < 0) // makes mxpAngle comparable to gyro, works
@@ -255,14 +254,14 @@ public class MikeDriveTrain extends BadSubsystem {
     	{
     		if(startPitch - rollAmount > 0) // rolling left
     		{
-    			frontLeft.set(-clampMotorValues(rollAmount/60));
-    			backLeft.set(clampMotorValues(rollAmount/60));
+    			frontLeft.set(clampMotorValues(rollAmount/60));
+    			backLeft.set(-clampMotorValues(rollAmount/60));
     		}
     		else
     		{
 
-    			frontRight.set(-clampMotorValues(rollAmount/60));
-    			backRight.set(clampMotorValues(rollAmount/60));
+    			frontRight.set(clampMotorValues(rollAmount/60));
+    			backRight.set(-clampMotorValues(rollAmount/60));
     		}
     		return false;
     	}
@@ -270,13 +269,13 @@ public class MikeDriveTrain extends BadSubsystem {
     	{
     		if(startPitch - pitch > 0) // pitching back
     		{
-    			backLeft.set(clampMotorValues(pitchAmount/60));
-    			backRight.set(-clampMotorValues(pitchAmount/60));
+    			backLeft.set(-clampMotorValues(pitchAmount/60));
+    			backRight.set(clampMotorValues(pitchAmount/60));
     		}
     		else
     		{
-    			frontLeft.set(clampMotorValues(pitchAmount/60));  
-    			frontRight.set(-clampMotorValues(pitchAmount/60));  
+    			frontLeft.set(-clampMotorValues(pitchAmount/60));  
+    			frontRight.set(clampMotorValues(pitchAmount/60));  
     		}
     		return false;
     	}
