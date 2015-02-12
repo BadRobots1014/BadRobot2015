@@ -15,6 +15,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
 	double startPitch, startRoll;
+	Ultrasonic ultrasonic;
 	public boolean speedHigh;
 	
     public static MikeDriveTrain getInstance()
