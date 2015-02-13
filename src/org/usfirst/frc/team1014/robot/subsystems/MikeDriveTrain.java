@@ -15,6 +15,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
 	double startPitch, startRoll;
+	Lidar lidarLeft, lidarRight;
 	public boolean speedHigh;
 	
     public static MikeDriveTrain getInstance()
@@ -40,6 +41,7 @@ public class MikeDriveTrain extends BadSubsystem {
         backRight = new Talon(RobotMap.backRightController); 
 
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
+    	//lidarLeft = new Lidar(); lidarRight = new Lidar();
     	
     	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
@@ -281,10 +283,21 @@ public class MikeDriveTrain extends BadSubsystem {
     	}
     	return true;
     }
+    
     public void setInitalGyro(double pitch, double roll)
     {
     	startPitch = pitch;
     	startRoll = roll;
+    }
+    
+    public double getLidarLeft()
+    {
+    	
+    }
+    
+    public double getLidarRight()
+    {
+    	
     }
     
     /**

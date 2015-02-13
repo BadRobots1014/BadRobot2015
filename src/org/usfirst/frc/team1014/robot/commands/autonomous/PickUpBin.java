@@ -12,6 +12,6 @@ public class PickUpBin extends CommandGroup {
 
 	public PickUpBin()
 	{
-		this.addSequential(new AutoGrab(.5, true));
+		this.addSequential(new AutoBinGrab(.5, true));
 	}
 }
