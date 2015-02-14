@@ -2,6 +2,8 @@ package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
 import org.usfirst.frc.team1014.robot.commands.SafeMecanumDriveField;
+import org.usfirst.frc.team1014.robot.sensors.LIDAR;
+import edu.wpi.first.wpilibj.I2C;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -15,7 +17,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
 	double startPitch, startRoll;
-	Lidar lidarLeft, lidarRight;
+	LIDAR lidarLeft, lidarRight;
 	public boolean speedHigh;
 	
     public static MikeDriveTrain getInstance()
@@ -41,7 +43,7 @@ public class MikeDriveTrain extends BadSubsystem {
         backRight = new Talon(RobotMap.backRightController); 
 
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
-    	//lidarLeft = new Lidar(); lidarRight = new Lidar();
+    	lidarLeft = new LIDAR(I2C.Port.kMXP, 0x62); //lidarRight = new Lidar();
     	
     	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
@@ -251,33 +253,34 @@ public class MikeDriveTrain extends BadSubsystem {
     {
     	double rollAmount = startRoll - roll;
     	double pitchAmount = startPitch - pitch;
+    	System.out.println("Isn't safe to drive");
     	
-    	if(Math.abs(rollAmount) > 8)
+    	if(Math.abs(rollAmount) > 6)
     	{
     		if(startPitch - rollAmount > 0) // rolling left
     		{
-    			frontLeft.set(clampMotorValues(rollAmount/60));
-    			backLeft.set(-clampMotorValues(rollAmount/60));
+    			frontLeft.set(-clampMotorValues(rollAmount/60));
+    			frontRight.set(clampMotorValues(rollAmount/60));
     		}
     		else
     		{
 
-    			frontRight.set(clampMotorValues(rollAmount/60));
-    			backRight.set(-clampMotorValues(rollAmount/60));
+    			backLeft.set(-clampMotorValues(rollAmount/60));
+    			backRight.set(clampMotorValues(rollAmount/60));
     		}
     		return false;
     	}
-    	if(Math.abs(pitchAmount) > 8)
+    	if(Math.abs(pitchAmount) > 6)
     	{
     		if(startPitch - pitch > 0) // pitching back
     		{
-    			backLeft.set(-clampMotorValues(pitchAmount/60));
-    			backRight.set(clampMotorValues(pitchAmount/60));
+    			backLeft.set(clampMotorValues(pitchAmount/60));
+    			frontLeft.set(-clampMotorValues(pitchAmount/60));
     		}
     		else
     		{
-    			frontLeft.set(-clampMotorValues(pitchAmount/60));  
-    			frontRight.set(clampMotorValues(pitchAmount/60));  
+    			backRight.set(clampMotorValues(pitchAmount/60));  
+    			frontRight.set(-clampMotorValues(pitchAmount/60));  
     		}
     		return false;
     	}
@@ -290,14 +293,14 @@ public class MikeDriveTrain extends BadSubsystem {
     	startRoll = roll;
     }
     
-    public double getLidarLeft()
+    public int getLidarLeft()
     {
-    	
+    	return lidarLeft.getDistance();
     }
     
     public double getLidarRight()
     {
-    	
+    	return 0.0;	
     }
     
     /**

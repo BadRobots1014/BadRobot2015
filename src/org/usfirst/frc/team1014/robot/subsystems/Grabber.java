@@ -11,7 +11,7 @@ public class Grabber extends BadSubsystem {
 	
 	public static Grabber instance;
 	
-	SpeedController lift1, lift2, lift3;
+	SpeedController lift1;// lift2, lift3;
 	
 	
 	public static Grabber getInstance()
@@ -32,10 +32,10 @@ public class Grabber extends BadSubsystem {
 	protected void initialize() {
 		lift1 = new Talon(RobotMap.lift1);//create Grabber
 		lift1.set(0);
-		lift2 = new Talon(RobotMap.lift2);
+		/*lift2 = new Talon(RobotMap.lift2);
 		lift2.set(0);
 		lift3 = new Talon(RobotMap.lift3);
-		lift3.set(0);
+		lift3.set(0);*/
 		
 	}
 
@@ -53,8 +53,8 @@ public class Grabber extends BadSubsystem {
 	public void lift(double l)
 	{
 		lift1.set(l);
-		lift2.set(l);
-		lift3.set(l);
+		/*lift2.set(l);
+		lift3.set(l);*/
 	}
 
 }

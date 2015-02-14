@@ -32,35 +32,35 @@ public class MecanumDriveStayStraight extends CommandBase {
 		
 		passedTime = lastTime + Utility.getFPGATime();
 		
-		if(OI.xboxController.isBButtonPressed())// this line works
+		if(OI.priXboxController.isBButtonPressed())// this line works
 		{
 			mxp.resetGyro();
 		}
-		if(OI.xboxController.isRBButtonPressed())//convert to second, so basically, if you hit the button and over a second has passed
+		if(OI.priXboxController.isRBButtonPressed())//convert to second, so basically, if you hit the button and over a second has passed
 		{
 			// do nothing while the bumper is still on
-			while(OI.xboxController.isRBButtonPressed()){ /* do nothing */}
+			while(OI.priXboxController.isRBButtonPressed()){ /* do nothing */}
 			driveTrain.toggleSpeed();
 		}
 		if(driveTrain.isSafeToDrive((double)mxp.getMXP().getPitch(), (double)mxp.getMXP().getRoll()))
 		{
-			if(OI.xboxController.getPOV() == -1 && !OI.xboxController.isAButtonPressed()) //Not using dpad and not holding A
+			if(OI.priXboxController.getPOV() == -1 && !OI.priXboxController.isAButtonPressed()) //Not using dpad and not holding A
 			{
 				if(driveTrain.speedHigh)//normal drive
-					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle()); // just do mecanum	
+					driveTrain.mecanumDriveCartesian(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX(), mxp.getAngle()); // just do mecanum	
 				else
-					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX() / 2, OI.xboxController.getLeftStickY() / 2, OI.xboxController.getRightStickX() / 2, mxp.getAngle());
+					driveTrain.mecanumDriveCartesian(OI.priXboxController.getLeftStickX() / 2, OI.priXboxController.getLeftStickY() / 2, OI.priXboxController.getRightStickX() / 2, mxp.getAngle());
 			}
-			else if(OI.xboxController.getPOV() != -1 && !OI.xboxController.isAButtonPressed())//using dpad
+			else if(OI.priXboxController.getPOV() != -1 && !OI.priXboxController.isAButtonPressed())//using dpad
 			{
-				driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
+				driveTrain.lineUpWithField(OI.priXboxController.getPOV(), mxp.getAngle());
 			}
 			else//a is held down and you are not using dpad = driving with a button down
 			{
 				if(driveTrain.speedHigh)
-					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), deadzone(rotation()), mxp.getAngle());
+					driveTrain.mecanumDriveCartesian(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), deadzone(rotation()), mxp.getAngle());
 				else
-					driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX() / 2, OI.xboxController.getLeftStickY() / 2, deadzone(rotation()), mxp.getAngle());
+					driveTrain.mecanumDriveCartesian(OI.priXboxController.getLeftStickX() / 2, OI.priXboxController.getLeftStickY() / 2, deadzone(rotation()), mxp.getAngle());
 			}
 
 		}		  

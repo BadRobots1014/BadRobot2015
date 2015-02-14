@@ -28,19 +28,19 @@ public class SafeMecanumDriveField extends CommandBase {
 	@Override
 	protected void execute() {
 		
-		if(OI.xboxController.isBButtonPressed())// this line works
+		if(OI.priXboxController.isBButtonPressed())// this line works
 		{
 			mxp.resetGyro();
 		}
 		if(driveTrain.isSafeToDrive((double)mxp.getMXP().getPitch(), (double)mxp.getMXP().getRoll()))
 		{
-			if(OI.xboxController.getPOV() == -1) // not using dpad
+			if(OI.priXboxController.getPOV() == -1) // not using dpad
 			{
-				driveTrain.mecanumDriveCartesian(OI.xboxController.getLeftStickX(), OI.xboxController.getLeftStickY(), OI.xboxController.getRightStickX(), mxp.getAngle()); // just do mecanum
+				driveTrain.mecanumDriveCartesian(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX(), mxp.getAngle()); // just do mecanum
 			}
 			else // use dpad
 			{
-				driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
+				driveTrain.lineUpWithField(OI.priXboxController.getPOV(), mxp.getAngle());
 			}
 
 		}		  

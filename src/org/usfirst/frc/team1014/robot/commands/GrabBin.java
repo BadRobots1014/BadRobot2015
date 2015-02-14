@@ -22,7 +22,7 @@ public class GrabBin extends CommandBase {
 		// TODO Auto-generated method stub
 		// THIS IS WRONG, THIS WILL NOT WORK
 		// SOMEONE FIX THIS EVENTUALLY
-		winchLift.lift(OI.xboxController.getRightStickY());
+		winchLift.lift(OI.secXboxController.getRightStickY());
 	}
 
 	@Override
