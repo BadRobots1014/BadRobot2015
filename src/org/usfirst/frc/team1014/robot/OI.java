@@ -35,12 +35,13 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
 	public static DriverStation driverStation;
-	public static XboxMap xboxController;
+	public static XboxMap priXboxController, secXboxController;
 	
 	public static void init()
 	{
 		driverStation = DriverStation.getInstance();
-		xboxController = new XboxMap(0);
+		priXboxController = new XboxMap(0);
+		secXboxController = new XboxMap(1);
 	}
 }
 
