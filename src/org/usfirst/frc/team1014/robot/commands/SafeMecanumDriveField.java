@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class SafeMecanumDriveField extends CommandBase {
 
 	public static int soCounter;
+	public long time;
 	
 	public SafeMecanumDriveField()
 	{
@@ -18,6 +19,7 @@ public class SafeMecanumDriveField extends CommandBase {
 		driveTrain.tankDrive(0, 0);
 		mxp.getMXP().zeroYaw();
 		driveTrain.setInitalGyro((double)mxp.getMXP().getPitch(), (double)mxp.getMXP().getRoll());
+		time = System.currentTimeMillis();
 	}
 
 	@Override
@@ -43,7 +45,13 @@ public class SafeMecanumDriveField extends CommandBase {
 				driveTrain.lineUpWithField(OI.xboxController.getPOV(), mxp.getAngle());
 			}
 
-		}		  
+		}
+		if(OI.xboxController.isAButtonPressed()) {
+			if(System.currentTimeMillis() - time >= 1000) {
+				so(driveTrain.getLidarDistance());
+				time = System.currentTimeMillis();
+			}
+		}
 	}
 
 	@Override
