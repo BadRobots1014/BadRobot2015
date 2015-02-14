@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1014.robot.sensors;
+package org.usfirst.frc.team1014.robot.subsystems;
 
 import java.util.TimerTask;
 import edu.wpi.first.wpilibj.I2C;

@@ -2,7 +2,6 @@ package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
 import org.usfirst.frc.team1014.robot.commands.SafeMecanumDriveField;
-import org.usfirst.frc.team1014.robot.sensors.LIDAR;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.I2C;
