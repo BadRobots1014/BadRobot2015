@@ -2,8 +2,10 @@ package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
 import org.usfirst.frc.team1014.robot.commands.SafeMecanumDriveField;
+import org.usfirst.frc.team1014.robot.sensors.LIDAR;
 
 import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -15,6 +17,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	RobotDrive train;
 	Talon frontLeft, backLeft, frontRight, backRight;
 	double startPitch, startRoll;
+	LIDAR lidar;
 	
     public static MikeDriveTrain getInstance()
     {
@@ -44,6 +47,8 @@ public class MikeDriveTrain extends BadSubsystem {
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
     	train.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
+    	
+    	lidar = new LIDAR(I2C.Port.kMXP);
 	}
 
 	@Override
@@ -63,6 +68,14 @@ public class MikeDriveTrain extends BadSubsystem {
 	 * @param leftY
 	 * @param rightY
 	 */
+	
+	public double getLidarDistance() {//Return the distance read by the LIDAR sensor
+    	if(lidar.update()) {
+    		int distance = lidar.getDistance();
+    		return distance;
+    	}
+    	return 0.7;//basically an error message
+    }
 	
     public void tankDrive(double leftY, double rightY) //analogs
     {
