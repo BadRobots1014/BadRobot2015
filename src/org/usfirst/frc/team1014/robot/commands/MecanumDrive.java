@@ -52,25 +52,18 @@ public class MecanumDrive extends CommandBase {
 		else
 		{
 			targetAngle = -1;
-			driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX());
-//			if(OI.priXboxController.getPOV() == -1 && !OI.priXboxController.isAButtonPressed()) //Not using dpad and not holding A
-//			{
-//				if(driveTrain.speedHigh)//normal drive
-//					driveTrain.mecanumDriveCartesian(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX(), mxp.getAngle()); // just do mecanum	
-//				else
-//					driveTrain.mecanumDriveCartesian(OI.priXboxController.getLeftStickX() / 2, OI.priXboxController.getLeftStickY() / 2, OI.priXboxController.getRightStickX() / 2, mxp.getAngle());
-//			}
-//			else if(OI.priXboxController.getPOV() != -1 && !OI.priXboxController.isAButtonPressed())//using dpad
-//			{
-//				driveTrain.lineUpWithField(OI.priXboxController.getPOV(), mxp.getAngle());
-//			}
-//			else//a is held down and you are not using dpad = driving with a button down
-//			{
-//				if(driveTrain.speedHigh)
-//					driveTrain.mecanumDriveCartesian(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), deadzone(rotation()), mxp.getAngle());
-//				else
-//					driveTrain.mecanumDriveCartesian(OI.priXboxController.getLeftStickX() / 2, OI.priXboxController.getLeftStickY() / 2, deadzone(rotation()), mxp.getAngle());
-//			}
+			
+			if(OI.priXboxController.getPOV() == -1) //Not using dpad and not holding A
+			{
+				if(driveTrain.speedHigh)//normal drive
+					driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX()); // just do mecanum	
+				else
+					driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX() / 2, OI.priXboxController.getLeftStickY() / 2, OI.priXboxController.getRightStickX() / 2);
+			}
+			else if(OI.priXboxController.getPOV() != -1)//using dpad
+			{
+				driveTrain.rotateToAngle((double)OI.priXboxController.getPOV());
+			}
 
 		}		  
 	}

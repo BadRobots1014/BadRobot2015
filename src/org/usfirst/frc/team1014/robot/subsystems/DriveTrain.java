@@ -163,31 +163,28 @@ public class DriveTrain extends BadSubsystem {
      * 
      * Please don't look at it
      * too late, I did
-     * @param dpadAngle
+     * @param angle
      * @param mxpAngle
      */    
-    public void lineUpWithField(int dpadAngle, double mxpAngle)
+    public void rotateToAngle(double angle)
     {
-    	if(mxpAngle < 0) // makes mxpAngle comparable to gyro, works
-    	{
-        	mxpAngle = mxpAngle + 360;
-    	}
-    	if(!isNear(dpadAngle, mxpAngle))
+    	double mxpAngle = getAngle360();
+    	if(!isNear(angle, mxpAngle))
     	{
         	double angleDif = 0;
         	boolean turnLeft = false;
 
-        	if(dpadAngle == 0 && mxpAngle > 180)
+        	if(angle == 0 && mxpAngle > 180)
         	{
-        		angleDif = mxpAngle - dpadAngle;
+        		angleDif = mxpAngle - angle;
         		double motorSpeedToPut = convertToMotorSpeed(angleDif);
         		rotateRobotDifference(-motorSpeedToPut);
         	}
         	else
         	{
-            	if(dpadAngle > mxpAngle) // rotate left
+            	if(angle > mxpAngle) // rotate left
             	{
-            		angleDif = dpadAngle - mxpAngle;
+            		angleDif = angle - mxpAngle;
             		if(angleDif > 180)
             		{
             			angleDif = Math.abs(angleDif - 360);
@@ -197,7 +194,7 @@ public class DriveTrain extends BadSubsystem {
             	}
             	else
             	{
-            		angleDif = mxpAngle - dpadAngle;
+            		angleDif = mxpAngle - angle;
             		if(angleDif > 180)
             		{
             			angleDif = Math.abs(angleDif - 360);
