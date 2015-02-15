@@ -1,0 +1,19 @@
+BadRobot2015 Button Mapping File:
+This file contains the mapping for all the different buttons we are using in order to make the robot do stuff. 
+Last Updated: 2/15/2015
+
+Primary XBox Controller:
+Axes:
+  LeftStickX - controls the strafing of the robot, can take -1 to 1 speed
+  LeftStickY - controls the drive forward component of the robot drive, also from -1 to 1
+  RightStickX - controls the rotation of the robot or yaw of the robot, also -1 to 1
+Buttons:
+  A Button - used to activate the code that keeps the robot lined up in its current orientation, also used to disable anti-tipping code when we want to go up a scoring platform
+  B Button = basically resets what the robot thinks is straight ahead
+  RB Button - used to toggle between precise drive and speed drive, almost like shifting
+  DPad Angles - used to line the robot up with that specific angle (e.g. line up to 270 degrees)
+  
+Secondary XBox Controller:
+Axes:
+  LeftStickY: controls the speed and direction of the tote lifter, also called the slider
+  RightStickY: controls the speed andd direction of the winch lifter
