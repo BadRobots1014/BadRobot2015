@@ -18,6 +18,7 @@ public class MecanumDrive extends CommandBase {
 	protected void initialize() {
 		holdRB = false;
 		targetAngle = -1;
+		driveTrain.setAutoMode(true);
 	}
 
 	@Override
@@ -55,6 +56,7 @@ public class MecanumDrive extends CommandBase {
 			
 			if(OI.priXboxController.getPOV() == -1) //Not using dpad and not holding A
 			{
+				//System.out.println(driveTrain.getDistanceIn());
 				if(driveTrain.speedHigh)//normal drive
 					driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX()); // just do mecanum	
 				else

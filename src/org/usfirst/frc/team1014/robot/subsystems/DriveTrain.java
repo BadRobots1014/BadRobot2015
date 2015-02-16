@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 
 public class DriveTrain extends BadSubsystem {
 	private static DriveTrain instance;
@@ -20,6 +22,7 @@ public class DriveTrain extends BadSubsystem {
 	SpeedController frontLeft, backLeft, frontRight, backRight;
 	double startPitch, startRoll;
 	LIDAR lidarLeft, lidarRight;
+	Ultrasonic ultra;
 	public boolean speedHigh;
 	
 	IMU mxp;
@@ -59,12 +62,14 @@ public class DriveTrain extends BadSubsystem {
 
 		byte update_rate_hz = 127;
 		mxp = new IMU(serial_port,update_rate_hz);
-//        Timer.delay(0.3);
+		Timer.delay(0.3);
         mxp.zeroYaw();
         
 		tankDrive(0, 0);
 		resetGyro();
 		setInitalGyro(mxp.getPitch(), mxp.getRoll());
+		
+		ultra = new Ultrasonic(1,0);
 	}
 
 	@Override
@@ -368,6 +373,30 @@ public class DriveTrain extends BadSubsystem {
 	public static void so(Object so)
 	{
 		System.out.println("MikeDriveTrain: " + so);
+	}
+	public Ultrasonic getUltra()
+	{
+		return ultra;
+	}
+	public double getDistanceIn()
+	{
+		return ultra.getRangeInches();
+	}
+	public void setAutoMode(boolean on)
+	{
+		ultra.setAutomaticMode(on);
+	}
+	public void ping()
+	{
+		ultra.ping();
+	}
+	public double getDistanceMM()
+	{
+		return ultra.getRangeMM();
+	}
+	public void setUnits(Unit units)
+	{
+		ultra.setDistanceUnits(units);
 	}
 }
 
