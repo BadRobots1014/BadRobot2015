@@ -13,7 +13,6 @@ public class AutoStrafe extends CommandBase {
 	public AutoStrafe(double driveTime, double speed)
 	{
 		requires((Subsystem) driveTrain);
-		requires((Subsystem) mxp);
 		this.driveTime = driveTime;
 		this.speed = speed;
 	}
@@ -21,7 +20,7 @@ public class AutoStrafe extends CommandBase {
 	@Override
 	protected void initialize() {
 		driveTrain.tankDrive(0, 0);
-		mxp.resetGyro();// makes start angle zero
+		driveTrain.resetGyro();// makes start angle zero
 		startTime = Utility.getFPGATime();
 		passedTime = 0;		
 	}
@@ -34,7 +33,7 @@ public class AutoStrafe extends CommandBase {
 	@Override
 	protected void execute() {
 		passedTime = Utility.getFPGATime() - startTime;
-		driveTrain.mecanumDriveCartesian(speed, 0, deadzone(rotation()), 0);
+		driveTrain.mecanumDrive(speed, 0, deadzone(rotation()));
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class AutoStrafe extends CommandBase {
 	 */
 	public static double rotation()
 	{
-		return -(mxp.getAngle()/45);
+		return -(driveTrain.getAngle()/45);
 	}
 	
     public static double deadzone(double d) {
