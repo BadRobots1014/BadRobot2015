@@ -14,21 +14,22 @@ public class Grabber extends BadSubsystem {
 	
 	SpeedController lift1;// lift2, lift3;
 	DigitalInput retroSensor;//true means no retro 
-	
+	public int levelCount;
+	public static final int MAX_NUMBER_OF_LEVELS = 2;
 	
 	public static Grabber getInstance()
 	{
 		
         if (instance == null)
         {
-            instance = new Grabber();
+            instance = new Grabber(0);
         }
         return instance;
 	}
 	
-	public Grabber()
+	public Grabber(int startLevel)
 	{
-		
+		levelCount = startLevel;
 	}
 	@Override
 	protected void initialize() {
@@ -38,7 +39,7 @@ public class Grabber extends BadSubsystem {
 		lift2.set(0);
 		lift3 = new Talon(RobotMap.lift3);
 		lift3.set(0);*/
-		retroSensor = new DigitalInput(2);
+		retroSensor = new DigitalInput(RobotMap.retroSensor);
 		
 	}
 
@@ -49,7 +50,7 @@ public class Grabber extends BadSubsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		this.setDefaultCommand(new Grab()); 
+		this.setDefaultCommand(new Grab(0)); 
 		
 	}
 	
@@ -64,4 +65,5 @@ public class Grabber extends BadSubsystem {
 	{
 		return !retroSensor.get();
 	}
+	
 }

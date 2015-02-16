@@ -69,7 +69,7 @@ public class DriveTrain extends BadSubsystem {
 		resetGyro();
 		setInitalGyro(mxp.getPitch(), mxp.getRoll());
 		
-		ultra = new Ultrasonic(1,0);
+		ultra = new Ultrasonic(RobotMap.ultraPing, RobotMap.ultraEcho);
 	}
 
 	@Override
@@ -292,7 +292,7 @@ public class DriveTrain extends BadSubsystem {
     {
     	double rollAmount = startRoll - roll;
     	double pitchAmount = startPitch - pitch;
-    	System.out.println("Isn't safe to drive");
+    	//System.out.println("Isn't safe to drive");
     	
     	if(Math.abs(rollAmount) > 6)
     	{
