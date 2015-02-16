@@ -20,7 +20,6 @@ public class AutoTurn extends CommandBase {
 	public AutoTurn(double degree)
 	{
 		requires((Subsystem) driveTrain);
-		requires((Subsystem) mxp);
 		this.degree = degree;
 	}
 	
@@ -30,7 +29,7 @@ public class AutoTurn extends CommandBase {
 		this.difference = 0;
 		this.passedTime = 0;
 		this.startTime = Utility.getFPGATime();
-		mxp.resetGyro();		
+		driveTrain.resetGyro();		
 	}
 
 	@Override
@@ -41,8 +40,8 @@ public class AutoTurn extends CommandBase {
 	@Override
 	protected void execute() {
 		passedTime = Utility.getFPGATime() - startTime;
-		difference = mxp.getAngle() - degree;// negative for counterclockwise
-		driveTrain.mecanumDriveCartesian(0, 0, deadzone(rotation()), 0);
+		difference = driveTrain.getAngle() - degree;// negative for counterclockwise
+		driveTrain.mecanumDrive(0, 0, deadzone(rotation()));
 		
 	}
 
