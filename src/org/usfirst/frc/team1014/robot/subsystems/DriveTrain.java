@@ -1,18 +1,20 @@
 package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
+import org.usfirst.frc.team1014.robot.commands.MecanumDrive;
 import org.usfirst.frc.team1014.robot.commands.SafeMecanumDriveField;
 import org.usfirst.frc.team1014.robot.sensors.LIDAR;
-import edu.wpi.first.wpilibj.I2C;
+import org.usfirst.frc.team1014.robot.subsystems.IMU.IMU;
 
-import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Timer;
 
-public class MikeDriveTrain extends BadSubsystem {
-	private static MikeDriveTrain instance;
+public class DriveTrain extends BadSubsystem {
+	private static DriveTrain instance;
 	
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
@@ -20,16 +22,19 @@ public class MikeDriveTrain extends BadSubsystem {
 	LIDAR lidarLeft, lidarRight;
 	public boolean speedHigh;
 	
-    public static MikeDriveTrain getInstance()
+	IMU mxp;
+	SerialPort serial_port;
+	
+    public static DriveTrain getInstance()
     {
         if (instance == null)
         {
-            instance = new MikeDriveTrain();
+            instance = new DriveTrain();
         }
         return instance;
     }
 	
-    private MikeDriveTrain()
+    private DriveTrain()
     {
     	
     }
@@ -48,6 +53,18 @@ public class MikeDriveTrain extends BadSubsystem {
     	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
     	speedHigh = false;
+    	
+    	//mxp stuff
+    	serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
+
+		byte update_rate_hz = 127;
+		mxp = new IMU(serial_port,update_rate_hz);
+//        Timer.delay(0.3);
+        mxp.zeroYaw();
+        
+		tankDrive(0, 0);
+		resetGyro();
+		setInitalGyro(mxp.getPitch(), mxp.getRoll());
 	}
 
 	@Override
@@ -59,7 +76,7 @@ public class MikeDriveTrain extends BadSubsystem {
 	@Override
 	protected void initDefaultCommand() 
 	{
-		this.setDefaultCommand(new SafeMecanumDriveField()); 
+		this.setDefaultCommand(new MecanumDrive()); 
 	}
 	
 	/**
@@ -87,10 +104,25 @@ public class MikeDriveTrain extends BadSubsystem {
      * @param gyro
      */
     
-    public void mecanumDriveCartesian(double leftX, double leftY, double rightX, double gyro) 
+    public void mecanumDrive(double leftX, double leftY, double rightX) 
     {
-    	train.mecanumDrive_Cartesian(leftX, leftY, rightX, gyro);
+    	if(!speedHigh)
+        	train.mecanumDrive_Cartesian(leftX / 2, leftY / 2, rightX / 2, getAngle());
+    	else	
+    		train.mecanumDrive_Cartesian(leftX, leftY, rightX, getAngle());
     }
+    
+    public void mecanumDriveAntiTip(double leftX, double leftY, double rightX) 
+    {
+    	if(isSafeToDrive(mxp.getPitch(), mxp.getRoll()))
+    	{
+    		if(!speedHigh)
+    			train.mecanumDrive_Cartesian(leftX / 2, leftY / 2, rightX / 2, getAngle());
+    		else	
+    			train.mecanumDrive_Cartesian(leftX, leftY, rightX, getAngle());
+    	}
+    }
+    
     /**
      * Sets each motor speeds at a certain value
      * @param fl
@@ -121,36 +153,38 @@ public class MikeDriveTrain extends BadSubsystem {
     	backRight.set(speed);
     }
     
+    public void rotate(double targetAngle, double currentAngle)
+    {
+    	
+    }
+    
     /**
      * This method, using the gyro and the dpad, lines up the robot in orientation with the field.  
      * 
      * Please don't look at it
      * too late, I did
-     * @param dpadAngle
+     * @param angle
      * @param mxpAngle
      */    
-    public void lineUpWithField(int dpadAngle, double mxpAngle)
+    public void rotateToAngle(double angle)
     {
-    	if(mxpAngle < 0) // makes mxpAngle comparable to gyro, works
-    	{
-        	mxpAngle = mxpAngle + 360;
-    	}
-    	if(!isNear(dpadAngle, mxpAngle))
+    	double mxpAngle = getAngle360();
+    	if(!isNear(angle, mxpAngle))
     	{
         	double angleDif = 0;
         	boolean turnLeft = false;
 
-        	if(dpadAngle == 0 && mxpAngle > 180)
+        	if(angle == 0 && mxpAngle > 180)
         	{
-        		angleDif = mxpAngle - dpadAngle;
+        		angleDif = mxpAngle - angle;
         		double motorSpeedToPut = convertToMotorSpeed(angleDif);
         		rotateRobotDifference(-motorSpeedToPut);
         	}
         	else
         	{
-            	if(dpadAngle > mxpAngle) // rotate left
+            	if(angle > mxpAngle) // rotate left
             	{
-            		angleDif = dpadAngle - mxpAngle;
+            		angleDif = angle - mxpAngle;
             		if(angleDif > 180)
             		{
             			angleDif = Math.abs(angleDif - 360);
@@ -160,7 +194,7 @@ public class MikeDriveTrain extends BadSubsystem {
             	}
             	else
             	{
-            		angleDif = mxpAngle - dpadAngle;
+            		angleDif = mxpAngle - angle;
             		if(angleDif > 180)
             		{
             			angleDif = Math.abs(angleDif - 360);
@@ -235,7 +269,7 @@ public class MikeDriveTrain extends BadSubsystem {
      */
     
     
-    private double clampMotorValues(double value)
+    public double clampMotorValues(double value)
     {
 
         if (value > 1)
@@ -295,6 +329,7 @@ public class MikeDriveTrain extends BadSubsystem {
     
     public int getLidarLeft()
     {
+    	lidarLeft.update();
     	return lidarLeft.getDistance();
     }
     
@@ -302,6 +337,30 @@ public class MikeDriveTrain extends BadSubsystem {
     {
     	return 0.0;	
     }
+    
+ // Nav6 methods
+ 	public double getAngle()// return -180 - 180
+ 	{
+ 		return (double)mxp.getYaw();
+ 	}
+ 	
+ 	public double getAngle360() // returns 0 -360
+ 	{
+ 		if(mxp.getYaw() < 0)
+ 			return mxp.getYaw() + 360;
+ 		else
+ 			return mxp.getYaw();
+ 	}
+ 	
+ 	public IMU getMXP()
+ 	{
+ 		return mxp;
+ 	}
+ 	
+ 	public void resetGyro()
+ 	{
+ 		mxp.zeroYaw();
+ 	}
     
     /**
      *Used for easy output to the roboRIO
