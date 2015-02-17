@@ -41,6 +41,7 @@ public class WinchLift extends BadSubsystem {
 	}
 
 	
+	
 	public void lift(double speed)
 	{
 		winchLift.set(speed);

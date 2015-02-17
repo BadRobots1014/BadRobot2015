@@ -17,6 +17,8 @@ public class RobotMap {
 	public static int frontRightController = 3; 	// 3
 	public static int backRightController = 2; 	// 2
 	
+	public static int pancakeArm = 8;
+	
 	public static int lift1 = 5;
 	//public static int lift2 = 5;
 	//public static int lift3 = 5;

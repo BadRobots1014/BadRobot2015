@@ -2,7 +2,6 @@ package org.usfirst.frc.team1014.robot.subsystems;
 
 import org.usfirst.frc.team1014.robot.RobotMap;
 import org.usfirst.frc.team1014.robot.commands.Grab;
-import org.usfirst.frc.team1014.robot.commands.SafeMecanumDriveField;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -15,7 +14,7 @@ public class Grabber extends BadSubsystem {
 	SpeedController lift1;// lift2, lift3;
 	DigitalInput retroSensor;//true means no retro 
 	public int levelCount;
-	public static final int MAX_NUMBER_OF_LEVELS = 2;
+	public static final int MAX_NUMBER_OF_LEVELS = 7;
 	
 	public static Grabber getInstance()
 	{

@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Grab extends CommandBase {
 
 	public boolean holdY;
+	public boolean onRetro;
 	
 	public Grab(int startLevel)
 	{
 		grabber.levelCount = startLevel;
 		requires((Subsystem) grabber);
+		onRetro = false;
 	}
 	
 	@Override
@@ -32,7 +34,7 @@ public class Grab extends CommandBase {
 		if (OI.secXboxController.getRawButton(OI.secXboxController.Y_BUTTON)) {
 			holdY = true;
 		}
-		if (holdY && OI.secXboxController.getRawButton(OI.secXboxController.Y_BUTTON)) {
+		if (holdY && OI.secXboxController.getRawButton(OI.secXboxController.Y_BUTTON) && !onRetro && isSafeToLiftUp()) {
 			holdY = false;
 			raiseToTape();
 		}
@@ -40,11 +42,45 @@ public class Grab extends CommandBase {
 		if (OI.secXboxController.getRawButton(OI.secXboxController.A_BUTTON)) {
 			holdY = true;
 		}
-		if (holdY && OI.secXboxController.getRawButton(OI.secXboxController.A_BUTTON)) {
+		if (holdY && OI.secXboxController.getRawButton(OI.secXboxController.A_BUTTON) && !onRetro && isSafeToLiftDown()) {
 			holdY = false;
 			lowerToTape();
 		}
-		grabber.lift(-OI.secXboxController.getLeftStickY());
+
+		if(-OI.secXboxController.getLeftStickY() > 0 && !onRetro )//going up
+		{
+			if(grabber.isRetro())
+			{
+				grabber.levelCount += 1;
+				System.out.println("Added to Retro count: " + grabber.levelCount);
+				onRetro = true;
+			}
+			grabber.lift(-OI.secXboxController.getLeftStickY());
+		}
+		else if(-OI.secXboxController.getLeftStickY() < 0 && !onRetro)//going up
+		{
+			if(grabber.isRetro())
+			{
+				grabber.levelCount -= 1;
+				System.out.println("Subtracted from Retro count: " + grabber.levelCount);
+				onRetro = true;
+			}
+			grabber.lift(-OI.secXboxController.getLeftStickY());
+		}
+		else if(onRetro)
+		{
+			if(!grabber.isRetro())
+			{
+				System.out.println("Off Retro");
+				onRetro = false;
+			}
+			
+			grabber.lift(-OI.secXboxController.getLeftStickY());
+		}
+		else
+			grabber.lift(-OI.secXboxController.getLeftStickY());
+
+			
 			
 		
 		
@@ -53,8 +89,8 @@ public class Grab extends CommandBase {
 
 	public void raiseToTape()//negative is up
 	{
-		if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
-			return;
+		//if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
+			//return;
 		long startTime = Utility.getFPGATime();
 		long passedTime = 0;
 		double liftSpeed = .25; //startspeed
@@ -87,8 +123,8 @@ public class Grab extends CommandBase {
 	
 	public void lowerToTape()//negative is not up
 	{
-		if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
-			return;
+		//if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
+			//return;
 		double liftSpeed = -.25; //startspeed
 		long startTime = Utility.getFPGATime();
 		long passedTime = 0;
@@ -116,6 +152,20 @@ public class Grab extends CommandBase {
 		}
 
 	}
+	
+	public boolean isSafeToLiftUp()
+	{
+		if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
+			return false;
+		return true;
+	}
+	public boolean isSafeToLiftDown()
+	{
+		if(grabber.levelCount <= 0)
+			return false;
+		return true;
+	}
+	
 	
 	@Override
 	protected boolean isFinished() {

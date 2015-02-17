@@ -5,10 +5,12 @@ import edu.wpi.first.wpilibj.command.Command;
 
 
 
+
 //import MikeDriveTrain;
 import org.usfirst.frc.team1014.robot.OI;
 import org.usfirst.frc.team1014.robot.subsystems.Grabber;
 import org.usfirst.frc.team1014.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1014.robot.subsystems.PancakeArm;
 import org.usfirst.frc.team1014.robot.subsystems.WinchLift;
 
 public abstract class CommandBase extends Command {
@@ -17,13 +19,15 @@ public abstract class CommandBase extends Command {
     public static DriveTrain driveTrain;
     public static Grabber grabber;
     public static WinchLift winchLift;
+    public static PancakeArm pancake;
     
     public static void init() {
         //Final Subsystems
     	
     	driveTrain = DriveTrain.getInstance();
     	grabber = Grabber.getInstance();
-    	winchLift = new WinchLift();
+    	winchLift = WinchLift.getInstance();
+    	pancake = PancakeArm.getInstance();
     	
         // This MUST be here. If the OI creates Commands (which it very likely
         // will), constructing it during the construction of CommandBase (from

@@ -60,7 +60,7 @@ public class MecanumDrive extends CommandBase {
 				if(driveTrain.speedHigh)//normal drive
 					driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX()); // just do mecanum	
 				else
-					driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX() / 2, OI.priXboxController.getLeftStickY() / 2, OI.priXboxController.getRightStickX() / 2);
+					driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY() / 2, OI.priXboxController.getRightStickX() / 2);
 			}
 			else if(OI.priXboxController.getPOV() != -1)//using dpad
 			{
