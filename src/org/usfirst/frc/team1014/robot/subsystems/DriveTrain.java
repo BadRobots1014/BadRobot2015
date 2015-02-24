@@ -22,7 +22,7 @@ public class DriveTrain extends BadSubsystem {
 	double startPitch, startRoll;
 	LIDAR lidarLeft, lidarRight;
 	Ultrasonic ultra;
-	public boolean speedHigh;
+	public boolean speedHigh, fieldOrientated;
 	
 	IMU mxp;
 	SerialPort serial_port;
@@ -55,6 +55,7 @@ public class DriveTrain extends BadSubsystem {
     	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
     	speedHigh = false;
+    	fieldOrientated = true;
     	
     	//mxp stuff
     	serial_port = new SerialPort(57600,SerialPort.Port.kMXP);
@@ -89,9 +90,14 @@ public class DriveTrain extends BadSubsystem {
 	 * @param leftY
 	 * @param rightY
 	 */	
-	public void toggleSpeed()
+	public void toggleDriveSpeed()
 	{
 		speedHigh = !speedHigh;
+	}
+	
+	public void toggleDriveMode()
+	{
+		fieldOrientated = !fieldOrientated;
 	}
 	
     public void tankDrive(double leftY, double rightY) //analogs
@@ -124,6 +130,18 @@ public class DriveTrain extends BadSubsystem {
     			train.mecanumDrive_Cartesian(leftX / 2, leftY / 2, rightX / 2, getAngle());
     		else	
     			train.mecanumDrive_Cartesian(leftX, leftY, rightX, getAngle());
+    	}
+    }
+    
+    public void mecanumDriveBot(double leftX, double leftY, double rightX)
+    {
+    	if(isSafeToDrive(mxp.getPitch(), mxp.getRoll()))
+    	{
+    		
+    		if(!speedHigh)
+    			train.mecanumDrive_Cartesian(leftX/2, leftY/2, rightX, 0.0);
+    		else	
+    			train.mecanumDrive_Cartesian(leftX, leftY, rightX, 0.0);
     	}
     }
     
@@ -365,7 +383,7 @@ public class DriveTrain extends BadSubsystem {
  	{
  		mxp.zeroYaw();
  	}
-    
+ 	
     /**
      *Used for easy output to the roboRIO
      */

@@ -3,8 +3,10 @@ package org.usfirst.frc.team1014.robot.commands;
 import org.usfirst.frc.team1014.robot.OI;
 
 public class PancakeFlip extends CommandBase{
-
-	@Override
+	
+	public double speed;
+	
+	@Override	
 	protected void initialize() 
 	{
 		pancake.lift(0.0);
@@ -22,11 +24,23 @@ public class PancakeFlip extends CommandBase{
 	protected void execute() 
 	{
 		if(OI.secXboxController.getRawButton(OI.secXboxController.LB))
-			pancake.lift(1);
+		{
+			pancake.lift(speed);
+			speed += .01;
+		}
+
 		else if(OI.secXboxController.getRawButton(OI.secXboxController.RB))
-			pancake.lift(-1);
+		{
+			pancake.lift(-speed);
+			speed += .01;
+		}
+			
 		else
+		{
+			speed = .25;
 			pancake.lift(0);
+		}
+			
 		
 	}
 

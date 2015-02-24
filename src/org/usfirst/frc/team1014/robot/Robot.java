@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import org.usfirst.frc.team1014.robot.commands.CommandBase;
-import org.usfirst.frc.team1014.robot.commands.MikeDriveGroup;
+import org.usfirst.frc.team1014.robot.commands.DriveGroup;
 import org.usfirst.frc.team1014.robot.commands.autonomous.AutoTurn;
 import org.usfirst.frc.team1014.robot.commands.autonomous.DriveSquare;
 import org.usfirst.frc.team1014.robot.commands.autonomous.DriveStraightForward;
@@ -58,7 +58,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
 
-        Scheduler.getInstance().add(new MikeDriveGroup());
+        Scheduler.getInstance().add(new DriveGroup());
     }
 
     /**

@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class MecanumDrive extends CommandBase {
 
-	boolean holdRB;
+	boolean holdRB, holdSelect;
 	double targetAngle;
 	
 	public MecanumDrive()
@@ -17,6 +17,7 @@ public class MecanumDrive extends CommandBase {
 	@Override
 	protected void initialize() {
 		holdRB = false;
+		holdSelect = false;
 		targetAngle = -1;
 		driveTrain.setAutoMode(true);
 	}
@@ -34,13 +35,31 @@ public class MecanumDrive extends CommandBase {
 			driveTrain.resetGyro();
 		}
 		
-		// RB toggle code
+		/*// RB toggle code
 		if (OI.priXboxController.isRBButtonPressed()) {
 			holdRB = true;
 		}
 		if (holdRB && !OI.priXboxController.isRBButtonPressed()) {
 			holdRB = false;
-			driveTrain.toggleSpeed();
+			driveTrain.toggleDriveSpeed();
+			if(driveTrain.speedHigh)
+				System.out.println("High Speed");
+			else
+				System.out.println("Trigger Adjusted low speed");
+				
+		}*/
+		
+		// Select toggle code
+		if (OI.priXboxController.isSelectButtonPressed()) {
+			holdSelect = true;
+		}
+		if (holdRB && !OI.priXboxController.isSelectButtonPressed()) {
+			holdRB = false;
+			driveTrain.toggleDriveMode();
+			if(driveTrain.fieldOrientated)
+				System.out.println("Now Field Orientated");
+			else
+				System.out.println("Now Bot Orientated");
 		}
 		
 		if(OI.priXboxController.isAButtonPressed())
@@ -56,11 +75,29 @@ public class MecanumDrive extends CommandBase {
 			
 			if(OI.priXboxController.getPOV() == -1) //Not using dpad and not holding A
 			{
-				//System.out.println(driveTrain.getDistanceIn());
-				if(driveTrain.speedHigh)//normal drive
-					driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX()); // just do mecanum	
+				if(driveTrain.fieldOrientated)
+					driveTrain.mecanumDriveAntiTip(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
 				else
-					driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY() / 2, OI.priXboxController.getRightStickX() / 2);
+					driveTrain.mecanumDriveBot(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
+				
+				
+				/*//System.out.println(driveTrain.getDistanceIn());
+				if(driveTrain.speedHigh)
+				{
+					//normal drive
+					if(driveTrain.fieldOrientated)
+						driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX());
+					else
+						driveTrain.mecanumDriveBot(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX());
+					
+					//System.out.println(driveTrain.getDistanceIn());// just do mecanum
+					
+				}	
+				else
+					if(driveTrain.fieldOrientated)
+						driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX() / OI.priXboxController.getRightTrigger(), OI.priXboxController.getLeftStickY() / OI.priXboxController.getRightTrigger(), OI.priXboxController.getRightStickX() / OI.priXboxController.getRightTrigger());
+					else
+						driveTrain.mecanumDriveBot(OI.priXboxController.getLeftStickX() / OI.priXboxController.getRightTrigger(), OI.priXboxController.getLeftStickY() / OI.priXboxController.getRightTrigger(), OI.priXboxController.getRightStickX() / OI.priXboxController.getRightTrigger());*/
 			}
 			else if(OI.priXboxController.getPOV() != -1)//using dpad
 			{
@@ -99,6 +136,16 @@ public class MecanumDrive extends CommandBase {
 			rotateSpeed = 0;
 		
 		return rotateSpeed;
+	}
+	
+	public static double rightTriggerAdjustedSpeed(double stick)
+	{
+		if(stick > 0.0)//stick down or right 
+			return stick - OI.priXboxController.getRightTrigger();
+		else if(stick < 0.0)
+			return stick + OI.priXboxController.getRightTrigger();
+		else
+			return 0.0;
 	}
 	
 	@Override

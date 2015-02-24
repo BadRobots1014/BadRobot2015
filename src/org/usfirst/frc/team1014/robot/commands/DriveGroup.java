@@ -3,9 +3,9 @@ package org.usfirst.frc.team1014.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 
-public class MikeDriveGroup extends CommandGroup {
+public class DriveGroup extends CommandGroup {
 
-	public MikeDriveGroup()
+	public DriveGroup()
 	{
 		this.addParallel(new MecanumDrive());
 		this.addParallel(new Grab(0));

@@ -106,13 +106,18 @@ public class XboxMap extends Joystick
     public boolean isStartButtonPressed() {
         return this.getRawButton(START);
     }
-    
+    /**
+     * Gets analog trigger values.
+     * 
+     * 0 is unpressed and 1 is completely pressed in
+     * @return
+     */
     public double getRightTrigger() {
-    	return 0.0;
+    	return deadzone(this.getRawAxis(RIGHT_TRIGGER));
     }
 
     public double getLeftTrigger() {
-    	return 0.0;
+    	return deadzone(this.getRawAxis(LEFT_TRIGGER));
     }
     
     public void checkControllerPorts()

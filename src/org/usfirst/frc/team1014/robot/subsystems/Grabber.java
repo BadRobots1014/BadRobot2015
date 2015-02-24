@@ -14,6 +14,7 @@ public class Grabber extends BadSubsystem {
 	SpeedController lift1;// lift2, lift3;
 	DigitalInput retroSensor;//true means no retro 
 	public int levelCount;
+	public boolean onRetro;
 	public static final int MAX_NUMBER_OF_LEVELS = 7;
 	
 	public static Grabber getInstance()
@@ -60,9 +61,29 @@ public class Grabber extends BadSubsystem {
 		lift3.set(l);*/
 	}
 
-	public boolean isRetro()
+	public boolean isRetro(boolean goingUp)
 	{
-		return !retroSensor.get();
+		if(!onRetro)
+		{
+			if(!retroSensor.get())
+			{
+				if(goingUp)
+					levelCount += 1;
+				else
+					levelCount -= 1;
+				onRetro = true;
+				return true;
+			}
+		}
+		else//you're on the tape
+		{
+			if(retroSensor.get())
+			{
+				onRetro = false;
+				return false;
+			}		
+		}
+		return false;
 	}
 	
 }
