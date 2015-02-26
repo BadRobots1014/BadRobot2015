@@ -141,9 +141,12 @@ public class MecanumDrive extends CommandBase {
 	public static double rightTriggerAdjustedSpeed(double stick)
 	{
 		if(stick > 0.0)//stick down or right 
-			return stick - OI.priXboxController.getRightTrigger();
+		{
+			return (1-OI.priXboxController.getRightTrigger())*stick;
+		}
+
 		else if(stick < 0.0)
-			return stick + OI.priXboxController.getRightTrigger();
+			return (1-OI.priXboxController.getRightTrigger())*stick;
 		else
 			return 0.0;
 	}
