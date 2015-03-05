@@ -38,7 +38,7 @@ public class DriveStraightDistance extends CommandBase {
 
 	@Override
 	protected boolean isFinished() {
-		if(getSmallestLidarDistance() < stopDistance)
+		if(driveTrain.getLidarLeft() < stopDistance)
 		{
 			System.out.println(getConsoleIdentity() + " is done");
 			return true;

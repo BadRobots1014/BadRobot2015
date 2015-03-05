@@ -36,7 +36,8 @@ public abstract class CommandBase extends Command {
     	
     	grabber.setGrabberLevel((int) table.getNumber("grabberLevel", 0));
     	
-    	camera  = new AxisCamera("10.10.14.11");
+    	camera  = new AxisCamera("axis-camera.local");
+    	
     	
         // This MUST be here. If the OI creates Commands (which it very likely
         // will), constructing it during the construction of CommandBase (from

@@ -12,6 +12,6 @@ public class PickUpBin extends CommandGroup {
 
 	public PickUpBin()
 	{
-		this.addSequential(new AutoBinGrab(1.75, false));
+		this.addSequential(new AutoBinGrab(1.75, false));//lifts bin for 1.75 seconds
 	}
 }

@@ -37,6 +37,7 @@ public class Grab extends CommandBase {
 		
 		if (currentYButtonPressed && currentYButtonPressed != previousYButtonState)
 		{
+			System.out.println("Raising tape");
 			raiseToTape();
 		}
 		previousYButtonState = currentYButtonPressed;

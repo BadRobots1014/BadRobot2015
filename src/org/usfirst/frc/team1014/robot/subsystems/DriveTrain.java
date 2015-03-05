@@ -52,7 +52,7 @@ public class DriveTrain extends BadSubsystem {
         backRight = new Talon(RobotMap.backRightController); 
 
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
-    	lidarLeft = new LIDAR(I2C.Port.kMXP, 0x62); //lidarRight = new Lidar();
+    	//lidarLeft = new LIDAR(I2C.Port.kMXP, 0x62); //lidarRight = new Lidar();
     	
     	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
@@ -164,6 +164,11 @@ public class DriveTrain extends BadSubsystem {
     public void rotate(double targetAngle, double currentAngle)
     {
     	
+    }
+    
+    public double getUltraMM()
+    {
+    	return ultra.getRangeMM();
     }
     
     /**
@@ -290,7 +295,7 @@ public class DriveTrain extends BadSubsystem {
     	double pitchAmount = startPitch - pitch;
     	//System.out.println("Isn't safe to drive");
     	
-    	if(Math.abs(rollAmount) > 6)
+    	if(Math.abs(rollAmount) > 10)
     	{
     		if(startPitch - rollAmount > 0) // rolling left
     		{
@@ -305,7 +310,7 @@ public class DriveTrain extends BadSubsystem {
     		}
     		return false;
     	}
-    	if(Math.abs(pitchAmount) > 6)
+    	if(Math.abs(pitchAmount) > 10)
     	{
     		if(startPitch - pitch > 0) // pitching back
     		{

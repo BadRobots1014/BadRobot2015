@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class MecanumDrive extends CommandBase {
 
-	boolean holdRB, holdSelect;
+	boolean holdRB, holdSelect, holdX;
 	double targetAngle;
 	
 	public MecanumDrive()
@@ -35,6 +35,14 @@ public class MecanumDrive extends CommandBase {
 			driveTrain.resetGyro();;
 		}
 		
+		if(OI.priXboxController.isXButtonPressed())
+		{
+			if(targetAngle == -1)
+				targetAngle = driveTrain.getAngle360();
+				
+			if(driveTrain.getUltraMM() > 135)
+				driveTrain.mecanumDrive(0.0, .5, (rotation(targetAngle)));
+		}
 		/*// RB toggle code
 		if (OI.priXboxController.isRBButtonPressed()) {
 			holdRB = true;
@@ -53,13 +61,13 @@ public class MecanumDrive extends CommandBase {
 		if (OI.priXboxController.isSelectButtonPressed()) {
 			holdSelect = true;
 		}
-		if (holdRB && !OI.priXboxController.isSelectButtonPressed()) {
-			holdRB = false;
+		if (holdSelect && !OI.priXboxController.isSelectButtonPressed()) {
+			holdSelect = false;
 			driveTrain.toggleDriveMode();
 			if(driveTrain.fieldOrientated)
 				System.out.println("Now Field Orientated");
 			else
-				System.out.println("Now Bot Orientated");
+				System.out.println("Now Tank Drive");
 		}
 		
 		if(OI.priXboxController.isAButtonPressed())
@@ -78,7 +86,7 @@ public class MecanumDrive extends CommandBase {
 				if(driveTrain.fieldOrientated)
 					driveTrain.mecanumDriveAntiTip(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
 				else
-					driveTrain.mecanumDriveBot(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
+					driveTrain.tankDrive(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickY()));//driveTrain.mecanumDriveBot(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
 			}
 		}
 		

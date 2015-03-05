@@ -76,6 +76,7 @@ public class Grabber extends BadSubsystem {
 	
 	public boolean isRetro(boolean goingUp)
 	{
+		System.out.println("Checking Retro");
 		if(onRetro)
 			return true;
 		else

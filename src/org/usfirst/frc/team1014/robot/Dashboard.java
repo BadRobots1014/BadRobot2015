@@ -28,14 +28,14 @@ public class Dashboard
 		table.putNumber("frontRight", DriveTrain.getInstance().getFrontRight().get());
 		table.putNumber("backLeft", DriveTrain.getInstance().getBackLeft().get());
 		table.putNumber("backRight", DriveTrain.getInstance().getBackRight().get());
-		table.putNumber("grabberLevel", 0);
+		table.putNumber("grabberLevel", Grabber.getInstance().getLevelCount());
 		table.putBoolean("initializeKey", false);
-		try {
+		/*try {
 			table.putValue("AxisCamera", CommandBase.camera.getImage());
 		} catch (NIVisionException e) {
 			System.out.println("AxisCamera getImage did not work in setup()");
 			e.printStackTrace();
-		}
+		}*/
 		
 	}
 	/**
@@ -77,13 +77,13 @@ public class Dashboard
 		table.putNumber("backLeft", DriveTrain.getInstance().getBackLeft().get());
 		table.putNumber("backRight", DriveTrain.getInstance().getBackRight().get());
 		table.putNumber("GrabberLevel", Grabber.getInstance().getLevelCount());
-		try {
+		/*try {
 			table.putValue("AxisCamera", CommandBase.camera.getImage());
 		} catch (NIVisionException e) {
 			System.out.println("AxisCamera getImage did not work in update()");
 			e.printStackTrace();
-		}
-		
+		}*/
+		//System.out.println(CommandBase.camera.isFreshImage());
 	}
 	
 	
