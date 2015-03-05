@@ -19,7 +19,7 @@ public class MecanumDrive extends CommandBase {
 		holdRB = false;
 		holdSelect = false;
 		targetAngle = -1;
-		driveTrain.setAutoMode(true);
+		//driveTrain.setAutoMode(true);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class MecanumDrive extends CommandBase {
 		
 		if(OI.priXboxController.isBButtonPressed())// this line works
 		{
-			driveTrain.resetGyro();
+			driveTrain.resetGyro();;
 		}
 		
 		/*// RB toggle code
@@ -79,32 +79,28 @@ public class MecanumDrive extends CommandBase {
 					driveTrain.mecanumDriveAntiTip(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
 				else
 					driveTrain.mecanumDriveBot(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
-				
-				
-				/*//System.out.println(driveTrain.getDistanceIn());
-				if(driveTrain.speedHigh)
-				{
-					//normal drive
-					if(driveTrain.fieldOrientated)
-						driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX());
-					else
-						driveTrain.mecanumDriveBot(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), OI.priXboxController.getRightStickX());
-					
-					//System.out.println(driveTrain.getDistanceIn());// just do mecanum
-					
-				}	
-				else
-					if(driveTrain.fieldOrientated)
-						driveTrain.mecanumDriveAntiTip(OI.priXboxController.getLeftStickX() / OI.priXboxController.getRightTrigger(), OI.priXboxController.getLeftStickY() / OI.priXboxController.getRightTrigger(), OI.priXboxController.getRightStickX() / OI.priXboxController.getRightTrigger());
-					else
-						driveTrain.mecanumDriveBot(OI.priXboxController.getLeftStickX() / OI.priXboxController.getRightTrigger(), OI.priXboxController.getLeftStickY() / OI.priXboxController.getRightTrigger(), OI.priXboxController.getRightStickX() / OI.priXboxController.getRightTrigger());*/
 			}
-			else if(OI.priXboxController.getPOV() != -1)//using dpad
-			{
-				driveTrain.rotateToAngle((double)OI.priXboxController.getPOV());
-			}
-
-		}		  
+		}
+		
+		// Select toggle code
+		/*if (OI.priXboxController.isSelectButtonPressed()) {
+			holdSelect = true;
+			System.out.println("Select being held");
+		}
+		if (holdSelect && !OI.priXboxController.isSelectButtonPressed()) {
+			holdSelect = false;
+			driveTrain.toggleDriveMode();
+			if(driveTrain.fieldOrientated)
+				System.out.println("Now Mecanum");
+			else
+				System.out.println("Now Tank Drive");
+		}
+		
+		if(driveTrain.fieldOrientated)
+			driveTrain.mecanumDriveBot(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
+		else
+			driveTrain.tankDrive(-rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickY()));
+				  */
 	}
 
 	@Override
@@ -140,13 +136,8 @@ public class MecanumDrive extends CommandBase {
 	
 	public static double rightTriggerAdjustedSpeed(double stick)
 	{
-		if(stick > 0.0)//stick down or right 
-		{
-			return (1-OI.priXboxController.getRightTrigger())*stick;
-		}
-
-		else if(stick < 0.0)
-			return (1-OI.priXboxController.getRightTrigger())*stick;
+		if(stick != 0)
+			return ((1-OI.priXboxController.getRightTrigger()) + .1)*stick;
 		else
 			return 0.0;
 	}

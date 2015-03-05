@@ -4,13 +4,11 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import org.usfirst.frc.team1014.robot.commands.CommandBase;
 import org.usfirst.frc.team1014.robot.commands.DriveGroup;
-import org.usfirst.frc.team1014.robot.commands.autonomous.AutoTurn;
-import org.usfirst.frc.team1014.robot.commands.autonomous.DriveSquare;
-import org.usfirst.frc.team1014.robot.commands.autonomous.DriveStraightForward;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,6 +23,7 @@ public class Robot extends IterativeRobot {
 
     Command teleCommand;
     SendableChooser autoChooser;
+    NetworkTable table = NetworkTable.getTable("SmartDashboard");
 
     /**
      * This function is run when the robot is first started up and should be
@@ -32,7 +31,8 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		
-    	CommandBase.init();
+    	CommandBase.init(table);
+    	Dashboard.setup(table);
         // instantiate the command used for the autonomous period
     }
 	
@@ -42,7 +42,9 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
-    	Scheduler.getInstance().add(new DriveSquare(.5, .2, 90));
+    	//Scheduler.getInstance().add(new ScoreBin());
+    	Dashboard.parameterSetup(table);
+    	Dashboard.init(table);
     }
 
     /**
@@ -50,6 +52,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        Dashboard.update(table);
     }
 
     public void teleopInit() {

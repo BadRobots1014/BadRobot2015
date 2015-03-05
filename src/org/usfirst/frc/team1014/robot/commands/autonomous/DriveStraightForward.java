@@ -70,7 +70,9 @@ public class DriveStraightForward extends CommandBase {
 	
 	public static double rotation()
 	{
-		return -(driveTrain.getAngle()/45);
+		return 0.0;
+		
+		//return -(driveTrain.getGryo()/45);
 	}
 	
     public static double deadzone(double d) {

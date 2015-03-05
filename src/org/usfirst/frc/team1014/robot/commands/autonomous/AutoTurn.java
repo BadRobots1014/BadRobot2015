@@ -29,7 +29,8 @@ public class AutoTurn extends CommandBase {
 		this.difference = 0;
 		this.passedTime = 0;
 		this.startTime = Utility.getFPGATime();
-		driveTrain.resetGyro();		
+		driveTrain.resetGyro();	
+		//driveTrain.resetPwmGyro();		
 	}
 
 	@Override

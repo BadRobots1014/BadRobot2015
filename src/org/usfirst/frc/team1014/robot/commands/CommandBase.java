@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 
 
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+
 //import MikeDriveTrain;
 import org.usfirst.frc.team1014.robot.OI;
 import org.usfirst.frc.team1014.robot.subsystems.Grabber;
@@ -21,13 +23,15 @@ public abstract class CommandBase extends Command {
     public static WinchLift winchLift;
     public static PancakeArm pancake;
     
-    public static void init() {
+    public static void init(NetworkTable table) {
         //Final Subsystems
     	
     	driveTrain = DriveTrain.getInstance();
     	grabber = Grabber.getInstance();
     	winchLift = WinchLift.getInstance();
     	pancake = PancakeArm.getInstance();
+    	
+    	grabber.levelCount = (int) table.getNumber("grabberLevel", 0);
     	
         // This MUST be here. If the OI creates Commands (which it very likely
         // will), constructing it during the construction of CommandBase (from

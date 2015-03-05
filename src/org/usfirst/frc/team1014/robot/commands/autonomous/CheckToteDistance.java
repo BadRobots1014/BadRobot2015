@@ -22,7 +22,7 @@ public class CheckToteDistance extends CommandBase {
 	@Override
 	protected void execute() {
 		// TODO Auto-generated method stub
-		driveTrain.tankDrive(.1, .1);
+		driveTrain.tankDrive(.25 ,.25);
 	}
 
 	@Override

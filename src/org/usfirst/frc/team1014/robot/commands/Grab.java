@@ -7,12 +7,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Grab extends CommandBase {
 
-	public boolean holdY;
+	public boolean holdY, holdA;
 	public boolean onRetro;
 	
-	public Grab(int startLevel)
+	public Grab()
 	{
-		grabber.levelCount = startLevel;
 		requires((Subsystem) grabber);
 		onRetro = false;
 	}
@@ -31,58 +30,49 @@ public class Grab extends CommandBase {
 	@Override
 	protected void execute() 
 	{
+		if (OI.priXboxController.isYButtonPressed()) {
+			holdY = true;
+		}
+		if (holdY && !OI.priXboxController.isYButtonPressed()) {
+			holdY = false;
+			driveTrain.toggleDriveMode();
+			raiseToTape();
+		}
+		if (OI.priXboxController.isAButtonPressed()) {
+			holdA = true;
+		}
+		if (holdA && !OI.priXboxController.isAButtonPressed()) {
+			holdA = false;
+			driveTrain.toggleDriveMode();
+			lowerToTape();
+		}
 		grabber.lift(-OI.secXboxController.getLeftStickY());
 	}
 
-	public void raiseToTape()//negative is up
+	public void raiseToTape()//negative is down
 	{
 		//if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
 			//return;
 		double liftSpeed = .25; //startspeed
 		
-		while(1==1)
+		while(!grabber.isRetro(true) && OI.secXboxController.getLeftStickY() == 0)
 		{
-			if(OI.secXboxController.getLeftStickY() == 0)
-			{
-				if(!grabber.isRetro(true))
-				{
-					grabber.lift(liftSpeed);
-					liftSpeed += .001;
-				}
-				else
-				{
-					return;
-				}
-			}
-			else
-				return;
+			grabber.lift(liftSpeed);
+			liftSpeed += 01;
 		}
 
 	}
 	
-	public void lowerToTape()//negative is not up
+	public void lowerToTape()//negative is down
 	{
 		//if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
 			//return;
 		double liftSpeed = -.25; //startspeed
-		while(1==1)
+		while(!grabber.isRetro(false) && OI.secXboxController.getLeftStickY() == 0)
 		{
-			if(OI.secXboxController.getLeftStickY() == 0)
-			{
-				if(!grabber.isRetro(false))
-				{
-					grabber.lift(liftSpeed);
-					liftSpeed += -.001;
-				}
-				else
-				{
-					return;
-				}
-			}
-			else
-				return;
+			grabber.lift(liftSpeed);
+			liftSpeed -= 01;
 		}
-
 	}
 	
 	public boolean isSafeToLiftUp()

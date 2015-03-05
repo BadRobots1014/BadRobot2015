@@ -6,6 +6,7 @@ import org.usfirst.frc.team1014.robot.commands.Grab;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Grabber extends BadSubsystem {
 	
@@ -22,14 +23,14 @@ public class Grabber extends BadSubsystem {
 		
         if (instance == null)
         {
-            instance = new Grabber(0);
+            instance = new Grabber();
         }
         return instance;
 	}
 	
-	public Grabber(int startLevel)
+	public Grabber()
 	{
-		levelCount = startLevel;
+		levelCount = 0;
 	}
 	@Override
 	protected void initialize() {
@@ -50,7 +51,7 @@ public class Grabber extends BadSubsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		this.setDefaultCommand(new Grab(0)); 
+		this.setDefaultCommand(new Grab()); 
 		
 	}
 	
@@ -60,30 +61,33 @@ public class Grabber extends BadSubsystem {
 		/*lift2.set(l);
 		lift3.set(l);*/
 	}
-
+	
+	/**
+	 * This method takes care of the level count change and returns if you are 
+	 * on retro tape
+	 * 
+	 * @param goingUp
+	 * @return
+	 */
+	
 	public boolean isRetro(boolean goingUp)
 	{
-		if(!onRetro)
+		if(onRetro)
+			return true;
+		else
 		{
-			if(!retroSensor.get())
+			if(!retroSensor.get())//you are on the tape
 			{
-				if(goingUp)
-					levelCount += 1;
-				else
-					levelCount -= 1;
 				onRetro = true;
+				if(goingUp)
+					levelCount++;
+				else
+					levelCount--;
 				return true;
 			}
-		}
-		else//you're on the tape
-		{
-			if(retroSensor.get())
-			{
-				onRetro = false;
-				return false;
-			}		
-		}
 		return false;
+		}
+
 	}
 	
 }

@@ -19,9 +19,11 @@ public class RobotMap {
 	
 	public static int pancakeArm = 8;
 	
+	public static int gyro = 7;
+	
 	public static int lift1 = 5;
-	//public static int lift2 = 5;
-	//public static int lift3 = 5;
+	public static int lift2 = 6;
+	public static int lift3 = 7;
 	
 	public static int liftWinch = 6;
 	

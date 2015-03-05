@@ -5,6 +5,7 @@ import org.usfirst.frc.team1014.robot.commands.MecanumDrive;
 import org.usfirst.frc.team1014.robot.sensors.LIDAR;
 import org.usfirst.frc.team1014.robot.subsystems.IMU.IMU;
 
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -22,9 +23,10 @@ public class DriveTrain extends BadSubsystem {
 	double startPitch, startRoll;
 	LIDAR lidarLeft, lidarRight;
 	Ultrasonic ultra;
-	public boolean speedHigh, fieldOrientated;
+	public boolean fieldOrientated;
 	
 	IMU mxp;
+	Gyro gyro;
 	SerialPort serial_port;
 	
     public static DriveTrain getInstance()
@@ -54,7 +56,6 @@ public class DriveTrain extends BadSubsystem {
     	
     	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-    	speedHigh = false;
     	fieldOrientated = true;
     	
     	//mxp stuff
@@ -68,7 +69,7 @@ public class DriveTrain extends BadSubsystem {
 		tankDrive(0, 0);
 		resetGyro();
 		setInitalGyro(mxp.getPitch(), mxp.getRoll());
-		
+
 		ultra = new Ultrasonic(RobotMap.ultraPing, RobotMap.ultraEcho);
 	}
 
@@ -90,11 +91,6 @@ public class DriveTrain extends BadSubsystem {
 	 * @param leftY
 	 * @param rightY
 	 */	
-	public void toggleDriveSpeed()
-	{
-		speedHigh = !speedHigh;
-	}
-	
 	public void toggleDriveMode()
 	{
 		fieldOrientated = !fieldOrientated;
@@ -116,20 +112,14 @@ public class DriveTrain extends BadSubsystem {
     
     public void mecanumDrive(double leftX, double leftY, double rightX) 
     {
-    	if(!speedHigh)
-        	train.mecanumDrive_Cartesian(leftX / 2, leftY / 2, rightX / 2, getAngle());
-    	else	
-    		train.mecanumDrive_Cartesian(leftX, leftY, rightX, getAngle());
+    	train.mecanumDrive_Cartesian(leftX, leftY, rightX, getAngle());
     }
     
     public void mecanumDriveAntiTip(double leftX, double leftY, double rightX) 
     {
     	if(isSafeToDrive(mxp.getPitch(), mxp.getRoll()))
-    	{
-    		if(!speedHigh)
-    			train.mecanumDrive_Cartesian(leftX / 2, leftY / 2, rightX / 2, getAngle());
-    		else	
-    			train.mecanumDrive_Cartesian(leftX, leftY, rightX, getAngle());
+    	{	
+    		train.mecanumDrive_Cartesian(leftX, leftY, rightX, getAngle());
     	}
     }
     
@@ -137,11 +127,7 @@ public class DriveTrain extends BadSubsystem {
     {
     	if(isSafeToDrive(mxp.getPitch(), mxp.getRoll()))
     	{
-    		
-    		if(!speedHigh)
-    			train.mecanumDrive_Cartesian(leftX/2, leftY/2, rightX, 0.0);
-    		else	
-    			train.mecanumDrive_Cartesian(leftX, leftY, rightX, 0.0);
+    		train.mecanumDrive_Cartesian(leftX, leftY, rightX, 0.0);
     	}
     }
     
@@ -225,21 +211,14 @@ public class DriveTrain extends BadSubsystem {
             		turnLeft = true; 
             	}
             	
-            	
-            	
         		double motorSpeedToPut = convertToMotorSpeed(angleDif);
         		
         		if(turnLeft)
         			rotateRobotDifference(motorSpeedToPut);
         		else
         			rotateRobotDifference(-motorSpeedToPut);
-        	}
-        	
-
-        	
-        	
+        	}      	
     	}
-
     }
     
     /**
@@ -360,7 +339,7 @@ public class DriveTrain extends BadSubsystem {
     	return 0.0;	
     }
     
- // Nav6 methods
+    // Nav6 methods
  	public double getAngle()// return -180 - 180
  	{
  		return (double)mxp.getYaw();
@@ -384,36 +363,28 @@ public class DriveTrain extends BadSubsystem {
  		mxp.zeroYaw();
  	}
  	
+ 	public SpeedController getFrontLeft()
+ 	{
+ 		return frontLeft;
+ 	}
+ 	public SpeedController getFrontRight()
+ 	{
+ 		return frontRight;
+ 	}
+ 	public SpeedController getBackLeft()
+ 	{
+ 		return backLeft;
+ 	}
+ 	public SpeedController getBackRight()
+ 	{
+ 		return backRight;
+ 	}
     /**
      *Used for easy output to the roboRIO
      */
 	public static void so(Object so)
 	{
 		System.out.println("MikeDriveTrain: " + so);
-	}
-	public Ultrasonic getUltra()
-	{
-		return ultra;
-	}
-	public double getDistanceIn()
-	{
-		return ultra.getRangeInches();
-	}
-	public void setAutoMode(boolean on)
-	{
-		ultra.setAutomaticMode(on);
-	}
-	public void ping()
-	{
-		ultra.ping();
-	}
-	public double getDistanceMM()
-	{
-		return ultra.getRangeMM();
-	}
-	public void setUnits(Unit units)
-	{
-		ultra.setDistanceUnits(units);
 	}
 }
 

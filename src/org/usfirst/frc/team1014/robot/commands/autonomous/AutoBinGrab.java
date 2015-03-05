@@ -42,9 +42,9 @@ public class AutoBinGrab extends CommandBase {
 	protected void execute() {
 		// TODO Auto-generated method stub
 		passedTime = Utility.getFPGATime() - startTime;
-		double speed = .2;
+		double speed = .75;
 		if(!whichWay)
-			speed *= -1;
+			speed = -speed;
 		winchLift.lift(speed);
 	}
 

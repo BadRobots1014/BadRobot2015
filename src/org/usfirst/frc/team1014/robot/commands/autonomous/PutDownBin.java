@@ -12,6 +12,6 @@ public class PutDownBin extends CommandGroup {
 
 	public PutDownBin()
 	{
-		this.addSequential(new AutoBinGrab(.5, false));
+		this.addSequential(new AutoBinGrab(1.75, true));
 	}
 }

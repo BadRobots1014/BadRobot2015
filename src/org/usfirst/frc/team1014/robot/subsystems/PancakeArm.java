@@ -27,7 +27,6 @@ public class PancakeArm extends BadSubsystem  {
 	@Override
 	protected void initialize() {
 		lift = new Talon(RobotMap.pancakeArm);
-		
 	}
 
 	@Override
