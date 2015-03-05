@@ -14,7 +14,11 @@ public class Grabber extends BadSubsystem {
 	
 	SpeedController lift1;// lift2, lift3;
 	DigitalInput retroSensor;//true means no retro 
-	public int levelCount;
+	private int levelCount;
+	public int getLevelCount() {
+		return levelCount;
+	}
+
 	public boolean onRetro;
 	public static final int MAX_NUMBER_OF_LEVELS = 7;
 	
@@ -88,6 +92,14 @@ public class Grabber extends BadSubsystem {
 		return false;
 		}
 
+	}
+	
+	public boolean setGrabberLevel(int level)
+	{
+		if(level > MAX_NUMBER_OF_LEVELS || level < 0)
+			return false;
+		levelCount = level;
+		return true;
 	}
 	
 }

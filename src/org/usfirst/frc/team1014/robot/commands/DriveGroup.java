@@ -8,7 +8,7 @@ public class DriveGroup extends CommandGroup {
 	public DriveGroup()
 	{
 		this.addParallel(new MecanumDrive());
-		this.addParallel(new Grab(0));
+		this.addParallel(new Grab());
 		this.addParallel(new GrabBin());
 		this.addParallel(new PancakeFlip());
 	}

@@ -10,6 +10,8 @@ public class Grab extends CommandBase {
 	public boolean holdY, holdA;
 	public boolean onRetro;
 	
+	public boolean previousYButtonState, previousAButtonState;
+	
 	public Grab()
 	{
 		requires((Subsystem) grabber);
@@ -30,20 +32,29 @@ public class Grab extends CommandBase {
 	@Override
 	protected void execute() 
 	{
-		if (OI.priXboxController.isYButtonPressed()) {
-			holdY = true;
-		}
-		if (holdY && !OI.priXboxController.isYButtonPressed()) {
-			holdY = false;
-			driveTrain.toggleDriveMode();
+		boolean currentYButtonPressed = OI.priXboxController.isYButtonPressed();
+		boolean currentAButtonPressed = OI.priXboxController.isAButtonPressed();
+		
+		if (currentYButtonPressed && currentYButtonPressed != previousYButtonState)
+		{
 			raiseToTape();
 		}
+		previousYButtonState = currentYButtonPressed;
+		
+		if (currentAButtonPressed && currentAButtonPressed != previousAButtonState)
+		{
+			lowerToTape();
+		}
+		previousAButtonState = currentAButtonPressed;
+		
+		//Checks for the y button pressed to run the grabber to the next level of tape
+		if(OI.priXboxController.isYButtonPressed())
+			raiseToTape();
 		if (OI.priXboxController.isAButtonPressed()) {
 			holdA = true;
 		}
 		if (holdA && !OI.priXboxController.isAButtonPressed()) {
 			holdA = false;
-			driveTrain.toggleDriveMode();
 			lowerToTape();
 		}
 		grabber.lift(-OI.secXboxController.getLeftStickY());
@@ -58,7 +69,7 @@ public class Grab extends CommandBase {
 		while(!grabber.isRetro(true) && OI.secXboxController.getLeftStickY() == 0)
 		{
 			grabber.lift(liftSpeed);
-			liftSpeed += 01;
+			liftSpeed += .01;
 		}
 
 	}
@@ -71,19 +82,19 @@ public class Grab extends CommandBase {
 		while(!grabber.isRetro(false) && OI.secXboxController.getLeftStickY() == 0)
 		{
 			grabber.lift(liftSpeed);
-			liftSpeed -= 01;
+			liftSpeed -= .01;
 		}
 	}
 	
 	public boolean isSafeToLiftUp()
 	{
-		if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
+		if(grabber.getLevelCount() >= grabber.MAX_NUMBER_OF_LEVELS)
 			return false;
 		return true;
 	}
 	public boolean isSafeToLiftDown()
 	{
-		if(grabber.levelCount <= 0)
+		if(grabber.getLevelCount() <= 0)
 			return false;
 		return true;
 	}

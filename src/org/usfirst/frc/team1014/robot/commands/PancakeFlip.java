@@ -10,7 +10,7 @@ public class PancakeFlip extends CommandBase{
 	protected void initialize() 
 	{
 		pancake.lift(0.0);
-		
+		speed = .25;
 	}
 
 	@Override
@@ -23,19 +23,20 @@ public class PancakeFlip extends CommandBase{
 	@Override
 	protected void execute() 
 	{
-		if(OI.secXboxController.getRawButton(OI.secXboxController.LB))
+		//This checks the bumpers being pressed and runs the pancake arm accordingly
+		if(OI.secXboxController.getRawButton(OI.secXboxController.LB))//lower arm
 		{
 			pancake.lift(speed);
 			speed += .01;
 		}
 
-		else if(OI.secXboxController.getRawButton(OI.secXboxController.RB))
+		else if(OI.secXboxController.getRawButton(OI.secXboxController.RB))//raises arm
 		{
 			pancake.lift(-speed);
 			speed += .01;
 		}
 			
-		else
+		else//stop speed
 		{
 			speed = .25;
 			pancake.lift(0);
