@@ -31,6 +31,8 @@ public class RobotMap {
 	public static int ultraEcho = 0;
 	public static int retroSensor = 2;
 	
+	
+	
 
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:

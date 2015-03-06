@@ -16,7 +16,7 @@ public class AutoGrab extends CommandBase {
 	{
 		requires((Subsystem) grabber);
 		time = grabTime;
-		whichWay = direction;
+		whichWay = direction;// very bad manu
 	}
 	
 	@Override
@@ -42,9 +42,9 @@ public class AutoGrab extends CommandBase {
 	protected void execute() {
 		// TODO Auto-generated method stub
 		passedTime = Utility.getFPGATime() - startTime;
-		double speed = .2;
+		double speed = .75;
 		if(!whichWay)
-			speed *= -1;
+			speed = -speed;//was bad manu
 		grabber.lift(speed);
 	}
 
@@ -59,7 +59,7 @@ public class AutoGrab extends CommandBase {
 		// TODO Auto-generated method stub
 		if((passedTime / 1000000) > time)
 		{
-			System.out.println(getConsoleIdentity() + "I'm done");
+			System.out.println(getConsoleIdentity() + ": I'm done");
 			return true;
 		}
 		

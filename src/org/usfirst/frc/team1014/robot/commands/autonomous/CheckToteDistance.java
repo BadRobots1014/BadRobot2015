@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class CheckToteDistance extends CommandBase {
 
-	public static double PERFECT_DISTANCE_FOR_TOTES = 10;
-	
+	public static double PERFECT_DISTANCE_FOR_TOTES_MM = 100;
+	public static double PERFECT_DISTANCE_FOR_TOTES_IN = 4.2;//this is not right
 	public CheckToteDistance()
 	{
 		requires((Subsystem) driveTrain);
@@ -22,7 +22,10 @@ public class CheckToteDistance extends CommandBase {
 	@Override
 	protected void execute() {
 		// TODO Auto-generated method stub
-		driveTrain.tankDrive(.25 ,.25);
+		driveTrain.tankDrive(.5 ,-.5);
+		System.out.println(driveTrain.getUltraMM());
+		System.out.println(driveTrain.getUltraIN());
+		System.out.println(driveTrain.getRangeValid() + "\n");
 	}
 
 	@Override
@@ -40,11 +43,13 @@ public class CheckToteDistance extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		if(driveTrain.getLidarLeft() <= PERFECT_DISTANCE_FOR_TOTES && atSameDistance())
+		if(driveTrain.getUltraMM() <= PERFECT_DISTANCE_FOR_TOTES_MM)
 		{
 			return true;
 		}
+		System.out.println(driveTrain.getUltraMM());
 		return false;
+		
 	}
 
 	@Override
@@ -53,9 +58,5 @@ public class CheckToteDistance extends CommandBase {
 		return "CheckToteDistance";
 	}
 	
-	public boolean atSameDistance()
-	{
-		return driveTrain.getLidarLeft() == driveTrain.getLidarRight();
-	}
 
 }

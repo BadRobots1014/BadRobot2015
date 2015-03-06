@@ -13,8 +13,8 @@ public class ScoreBin extends CommandGroup {
 		
 		this.addSequential(new PickUpBin());
 		this.addSequential(new AutoTurn(30));
-		this.addSequential(new DriveStraightForward(2.0, .5));
-		this.addSequential(new PutDownBin());;
+		this.addSequential(new DriveStraightForward(2.0, .5));//drives backwards
+		this.addSequential(new PutDownBin());
 	}
 
 }

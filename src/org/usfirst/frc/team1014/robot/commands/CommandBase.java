@@ -7,13 +7,14 @@ import edu.wpi.first.wpilibj.command.Command;
 
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-
 import edu.wpi.first.wpilibj.vision.AxisCamera;
+
 
 //import MikeDriveTrain;
 import org.usfirst.frc.team1014.robot.OI;
 import org.usfirst.frc.team1014.robot.subsystems.Grabber;
 import org.usfirst.frc.team1014.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1014.robot.subsystems.Lights;
 import org.usfirst.frc.team1014.robot.subsystems.PancakeArm;
 import org.usfirst.frc.team1014.robot.subsystems.WinchLift;
 
@@ -25,18 +26,19 @@ public abstract class CommandBase extends Command {
     public static WinchLift winchLift;
     public static PancakeArm pancake;
     public static AxisCamera camera;
-    
+    public static Lights lights;
     public static void init(NetworkTable table) {
-        //Final Subsystems
+        //Final Subsystemss
     	
     	driveTrain = DriveTrain.getInstance();
     	grabber = Grabber.getInstance();
     	winchLift = WinchLift.getInstance();
     	pancake = PancakeArm.getInstance();
-    	
+    	lights = Lights.getInstance();
     	grabber.setGrabberLevel((int) table.getNumber("grabberLevel", 0));
+    	lights.setColor(255d,255d,255d);
     	
-    	camera  = new AxisCamera("axis-camera.local");
+    	//camera  = new AxisCamera("axis-camera.local");
     	
     	
         // This MUST be here. If the OI creates Commands (which it very likely

@@ -5,6 +5,8 @@ import org.usfirst.frc.team1014.robot.commands.MecanumDrive;
 import org.usfirst.frc.team1014.robot.sensors.LIDAR;
 import org.usfirst.frc.team1014.robot.subsystems.IMU.IMU;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -21,9 +23,10 @@ public class DriveTrain extends BadSubsystem {
 	RobotDrive train;
 	SpeedController frontLeft, backLeft, frontRight, backRight;
 	double startPitch, startRoll;
-	LIDAR lidarLeft, lidarRight;
+	LIDAR lidar;
 	Ultrasonic ultra;
 	public boolean fieldOrientated;
+	DigitalOutput blue1, blue2, red1, red2, green1, green2;
 	
 	IMU mxp;
 	Gyro gyro;
@@ -52,7 +55,7 @@ public class DriveTrain extends BadSubsystem {
         backRight = new Talon(RobotMap.backRightController); 
 
     	train = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
-    	//lidarLeft = new LIDAR(I2C.Port.kMXP, 0x62); //lidarRight = new Lidar();
+    	lidar = new LIDAR(I2C.Port.kMXP, 0x62); //lidarRight = new Lidar();
     	
     	train.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); 
     	train.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
@@ -71,12 +74,13 @@ public class DriveTrain extends BadSubsystem {
 		setInitalGyro(mxp.getPitch(), mxp.getRoll());
 
 		ultra = new Ultrasonic(RobotMap.ultraPing, RobotMap.ultraEcho);
+		ultra.setAutomaticMode(true);
 	}
 
 	@Override
 	public String getConsoleIdentity() 
 	{
-		return "MikeDriveTrain";
+		return "DriveTrain";
 	}
 
 	@Override
@@ -169,6 +173,14 @@ public class DriveTrain extends BadSubsystem {
     public double getUltraMM()
     {
     	return ultra.getRangeMM();
+    }
+    public double getUltraIN()
+    {
+    	return ultra.getRangeInches();
+    }
+    public boolean getRangeValid()
+    {
+    	return ultra.isRangeValid();
     }
     
     /**
@@ -333,15 +345,10 @@ public class DriveTrain extends BadSubsystem {
     	startRoll = roll;
     }
     
-    public int getLidarLeft()
+    public int getLidarDistanceInches()
     {
-    	lidarLeft.update();
-    	return lidarLeft.getDistance();
-    }
-    
-    public double getLidarRight()
-    {
-    	return 0.0;	
+    	lidar.update();
+    	return lidar.getDistance();
     }
     
     // Nav6 methods

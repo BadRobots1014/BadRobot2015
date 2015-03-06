@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.usfirst.frc.team1014.robot.commands.CommandBase;
 import org.usfirst.frc.team1014.robot.commands.DriveGroup;
 import org.usfirst.frc.team1014.robot.commands.autonomous.ScoreBin;
+import org.usfirst.frc.team1014.robot.commands.autonomous.ScoreToteFromLow;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,8 +47,6 @@ public class Robot extends IterativeRobot {
     	//Scheduler.getInstance().add(new ScoreBin());
     	//Dashboard.parameterSetup(table);
     	Dashboard.init(table);
-    	if(table.getBoolean("ScoreBin") && table.getBoolean("ScoreBinAndTote"))
-    		Scheduler.getInstance().add(new ScoreBin());
     	//Scheduler.getInstance().add(new ScoreBin());
     }
 

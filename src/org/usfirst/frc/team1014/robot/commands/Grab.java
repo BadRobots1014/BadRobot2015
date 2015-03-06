@@ -32,32 +32,23 @@ public class Grab extends CommandBase {
 	@Override
 	protected void execute() 
 	{
-		boolean currentYButtonPressed = OI.priXboxController.isYButtonPressed();
-		boolean currentAButtonPressed = OI.priXboxController.isAButtonPressed();
-		
-		if (currentYButtonPressed && currentYButtonPressed != previousYButtonState)
-		{
-			System.out.println("Raising tape");
+		if (OI.secXboxController.isYButtonPressed()) {
+			holdY = true;
+		}
+		if (holdY && !OI.secXboxController.isYButtonPressed()) {
+			holdY = false;
 			raiseToTape();
 		}
-		previousYButtonState = currentYButtonPressed;
-		
-		if (currentAButtonPressed && currentAButtonPressed != previousAButtonState)
-		{
-			lowerToTape();
-		}
-		previousAButtonState = currentAButtonPressed;
-		
-		//Checks for the y button pressed to run the grabber to the next level of tape
-		if(OI.priXboxController.isYButtonPressed())
-			raiseToTape();
-		if (OI.priXboxController.isAButtonPressed()) {
+		if (OI.secXboxController.isAButtonPressed()) {
 			holdA = true;
 		}
-		if (holdA && !OI.priXboxController.isAButtonPressed()) {
+		if (holdA && !OI.secXboxController.isAButtonPressed()) {
 			holdA = false;
 			lowerToTape();
 		}
+		
+		
+		//Checks for the y button pressed to run the grabber to the next level of tape
 		grabber.lift(-OI.secXboxController.getLeftStickY());
 	}
 
@@ -66,9 +57,16 @@ public class Grab extends CommandBase {
 		//if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
 			//return;
 		double liftSpeed = .25; //startspeed
-		
-		while(!grabber.isRetro(true) && OI.secXboxController.getLeftStickY() == 0)
+		System.out.println("In raiseToTape");
+		while(grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0)
 		{
+			System.out.println("In first while");
+			grabber.lift(liftSpeed);
+			liftSpeed += .01;
+		}
+		while(!grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0)
+		{
+			System.out.println("In second while");
 			grabber.lift(liftSpeed);
 			liftSpeed += .01;
 		}
@@ -80,7 +78,12 @@ public class Grab extends CommandBase {
 		//if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
 			//return;
 		double liftSpeed = -.25; //startspeed
-		while(!grabber.isRetro(false) && OI.secXboxController.getLeftStickY() == 0)
+		while(grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0)
+		{
+			grabber.lift(liftSpeed);
+			liftSpeed -= .01;
+		}
+		while(!grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0)
 		{
 			grabber.lift(liftSpeed);
 			liftSpeed -= .01;

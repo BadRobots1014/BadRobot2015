@@ -32,17 +32,17 @@ public class MecanumDrive extends CommandBase {
 		
 		if(OI.priXboxController.isBButtonPressed())// this line works
 		{
-			driveTrain.resetGyro();;
+			driveTrain.resetGyro();
 		}
 		
-		if(OI.priXboxController.isXButtonPressed())
+		/*if(OI.priXboxController.isXButtonPressed())
 		{
 			if(targetAngle == -1)
 				targetAngle = driveTrain.getAngle360();
 				
 			if(driveTrain.getUltraMM() > 135)
 				driveTrain.mecanumDrive(0.0, .5, (rotation(targetAngle)));
-		}
+		}*/
 		/*// RB toggle code
 		if (OI.priXboxController.isRBButtonPressed()) {
 			holdRB = true;
@@ -77,16 +77,24 @@ public class MecanumDrive extends CommandBase {
 			
 			driveTrain.mecanumDrive(OI.priXboxController.getLeftStickX(), OI.priXboxController.getLeftStickY(), rotation(targetAngle));
 		} 
+		else if(!driveTrain.fieldOrientated && (OI.priXboxController.isRBButtonPressed() || OI.priXboxController.isLBButtonPressed()))//in tank mode and you are pressing one of the bumpers
+		{
+			if(targetAngle == -1)
+				targetAngle = driveTrain.getAngle360();
+			if(OI.priXboxController.isRBButtonPressed())//I know this is bad but I don't wanna change the targetAngle logic
+				driveTrain.mecanumDrive(-rightTriggerAdjustedSpeed(-0.75), 0.0, rotation(targetAngle));
+			else//the LB button is pressed
+				driveTrain.mecanumDrive(rightTriggerAdjustedSpeed(0.75), 0.0, rotation(targetAngle));
+		}	
 		else
 		{
 			targetAngle = -1;
-			
 			if(OI.priXboxController.getPOV() == -1) //Not using dpad and not holding A
 			{
 				if(driveTrain.fieldOrientated)
 					driveTrain.mecanumDriveAntiTip(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
 				else
-					driveTrain.tankDrive(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickY()));//driveTrain.mecanumDriveBot(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
+					driveTrain.tankDrive(-rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickY()));//driveTrain.mecanumDriveBot(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
 			}
 		}
 		
@@ -144,10 +152,10 @@ public class MecanumDrive extends CommandBase {
 	
 	public static double rightTriggerAdjustedSpeed(double stick)
 	{
-		if(stick != 0)
-			return ((1-OI.priXboxController.getRightTrigger()) + .1)*stick;
+		if(OI.priXboxController.getRightTrigger() > .5)
+			return stick/2;//return ((1-OI.priXboxController.getRightTrigger()) + .1)*stick;
 		else
-			return 0.0;
+			return stick;
 	}
 	
 	@Override

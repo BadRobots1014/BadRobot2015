@@ -74,24 +74,20 @@ public class Grabber extends BadSubsystem {
 	 * @return
 	 */
 	
-	public boolean isRetro(boolean goingUp)
+	public boolean isRetro()
 	{
 		System.out.println("Checking Retro");
-		if(onRetro)
+		/*if(onRetro)
 			return true;
 		else
-		{
-			if(!retroSensor.get())//you are on the tape
+			if(!retroSensor.get())//ON THE TAPE
 			{
 				onRetro = true;
-				if(goingUp)
-					levelCount++;
-				else
-					levelCount--;
 				return true;
 			}
-		return false;
-		}
+			else//!onRetro && retroSensor is not tape
+				return false;*/
+		return !retroSensor.get();
 
 	}
 	
