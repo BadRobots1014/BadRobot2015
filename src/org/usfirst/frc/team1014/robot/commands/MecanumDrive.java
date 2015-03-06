@@ -92,7 +92,7 @@ public class MecanumDrive extends CommandBase {
 			if(OI.priXboxController.getPOV() == -1) //Not using dpad and not holding A
 			{
 				if(driveTrain.fieldOrientated)
-					driveTrain.mecanumDriveAntiTip(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
+					driveTrain.mecanumDriveAntiTip(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX())*.75);
 				else
 					driveTrain.tankDrive(-rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickY()));//driveTrain.mecanumDriveBot(rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickX()), rightTriggerAdjustedSpeed(OI.priXboxController.getLeftStickY()), rightTriggerAdjustedSpeed(OI.priXboxController.getRightStickX()));
 			}

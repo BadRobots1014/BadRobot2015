@@ -4,11 +4,12 @@ import org.usfirst.frc.team1014.robot.commands.CommandBase;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class CheckToteDistance extends CommandBase {
+public class CheckBinDistance extends CommandBase {
 
-	public static double PERFECT_DISTANCE_FOR_TOTES_MM = 100;
-	public static double PERFECT_DISTANCE_FOR_TOTES_IN = 4.2;//this is not right
-	public CheckToteDistance()
+	//public static double PERFECT_DISTANCE_FOR_TOTES_MM = 110;
+	public static double PERFECT_DISTANCE_FOR_TOTES_IN = 2;
+	
+	public CheckBinDistance()
 	{
 		requires((Subsystem) driveTrain);
 	}
@@ -22,7 +23,8 @@ public class CheckToteDistance extends CommandBase {
 	@Override
 	protected void execute() {
 		// TODO Auto-generated method stub
-		driveTrain.tankDrive(.65 ,-.65);
+		driveTrain.tankDrive(-.5 ,.5);
+		System.out.println(driveTrain.getLidarDistanceInches());
 	}
 
 	@Override
@@ -40,10 +42,11 @@ public class CheckToteDistance extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		if(driveTrain.getUltraMM() <= PERFECT_DISTANCE_FOR_TOTES_MM)
+		if(driveTrain.getLidarDistanceInches() <= PERFECT_DISTANCE_FOR_TOTES_IN)
 		{
 			return true;
 		}
+		System.out.println(driveTrain.getLidarDistanceInches());
 		return false;
 		
 	}
