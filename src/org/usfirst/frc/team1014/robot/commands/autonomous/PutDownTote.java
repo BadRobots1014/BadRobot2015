@@ -13,6 +13,6 @@ public class PutDownTote extends CommandGroup {
 
 	public PutDownTote()
 	{
-		this.addSequential(new AutoGrab(1.65, false));
+		this.addSequential(new AutoGrab(2.5, false));
 	}
 }

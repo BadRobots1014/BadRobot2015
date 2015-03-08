@@ -14,7 +14,7 @@ public class ScoreToteFromLow extends CommandGroup
 	{
 		this.addSequential(new CheckToteDistance());
 		this.addSequential(new PickUpTote());
-		this.addSequential(new DriveStraightForward(2.0, -.5));
+		this.addSequential(new DriveStraightForward(2.5, -.42));
 		//this.addSequential(new Turn180());//good manu
 		this.addSequential(new PutDownTote());
 	}

@@ -12,6 +12,6 @@ public class PickUpTote extends CommandGroup {
 
 	public PickUpTote()
 	{
-		this.addSequential(new AutoGrab(1.65, true));
+		this.addSequential(new AutoGrab(2.5, true));
 	}
 }

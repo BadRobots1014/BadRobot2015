@@ -20,7 +20,6 @@ public class ScoreBinAndTote extends CommandGroup {
 	public ScoreBinAndTote()
 	{
 		this.addSequential(new CheckToteDistance());
-		this.addSequential(new PutDownTote());
 		this.addSequential(new PickUpTote());
 		this.addSequential(new AutoTurn(-210));//this.addSequential(new AutoTurn(-180));//turns away from tote
 		this.addSequential(new DriveStraightForward(.5, -.25));//this.addSequential(new AutoStrafe(.5, -.2));//needs to be checked

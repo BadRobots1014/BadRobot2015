@@ -7,20 +7,20 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Grab extends CommandBase {
 
-	public boolean holdY, holdA;
-	public boolean onRetro;
-	
-	public boolean previousYButtonState, previousAButtonState;
+	public boolean holdY, holdA, isDown, isUp;
 	
 	public Grab()
 	{
 		requires((Subsystem) grabber);
-		onRetro = false;
+		if(grabber.isRetro())
+			isDown = true;
 	}
 	
 	@Override
 	protected void initialize() {
 		grabber.lift(0);
+		if(grabber.isRetro())
+			isDown = true;
 		
 	}
 
@@ -48,8 +48,37 @@ public class Grab extends CommandBase {
 		}
 		
 		
-		//Checks for the y button pressed to run the grabber to the next level of tape
-		grabber.lift(-OI.secXboxController.getLeftStickY());
+		//Checks for the y button pressed to run the grabber to the next level of tape//grabber.lift(-OI.secXboxController.getLeftStickY());
+		if(isUp && OI.secXboxController.getLeftStickY() > 0)
+			grabber.lift(-OI.secXboxController.getLeftStickY());
+		else if(isDown && OI.secXboxController.getLeftStickY() < 0)
+			grabber.lift(-OI.secXboxController.getLeftStickY());
+		else if((!isDown && !isUp))
+		{
+			grabber.lift(-OI.secXboxController.getLeftStickY());
+			if(grabber.isRetro() && OI.secXboxController.getLeftStickY() < 0)
+			{
+				grabber.lift(0);
+				isUp = true;
+				isDown = false;
+			}
+			if(grabber.isRetro() && OI.secXboxController.getLeftStickY() > 0)
+			{
+				grabber.lift(0);
+				isUp = false;
+				isDown = true;
+			}
+		}
+		else
+		{
+			if(!grabber.isRetro())
+			{
+				isUp = false;
+				isDown = false;
+			}
+			grabber.lift(0);
+		}
+			
 	}
 
 	public void raiseToTape()//negative is down
@@ -58,18 +87,18 @@ public class Grab extends CommandBase {
 			//return;
 		double liftSpeed = .25; //startspeed
 		System.out.println("In raiseToTape");
-		while(grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0)
+		while(grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0 && !isUp)
 		{
-			System.out.println("In first while");
 			grabber.lift(liftSpeed);
 			liftSpeed += .01;
 		}
-		while(!grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0)
+		while(!grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0 && !isUp)
 		{
-			System.out.println("In second while");
 			grabber.lift(liftSpeed);
 			liftSpeed += .01;
 		}
+		if(grabber.isRetro())
+			isUp = true;
 
 	}
 	
@@ -78,16 +107,18 @@ public class Grab extends CommandBase {
 		//if(grabber.levelCount >= grabber.MAX_NUMBER_OF_LEVELS)
 			//return;
 		double liftSpeed = -.25; //startspeed
-		while(grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0)
+		while(grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0 && !isDown)
 		{
 			grabber.lift(liftSpeed);
 			liftSpeed -= .01;
 		}
-		while(!grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0)
+		while(!grabber.isRetro() && OI.secXboxController.getLeftStickY() == 0 && !isDown)
 		{
 			grabber.lift(liftSpeed);
 			liftSpeed -= .01;
 		}
+		if(grabber.isRetro())
+			isDown = true;
 	}
 	
 	public boolean isSafeToLiftUp()

@@ -27,6 +27,7 @@ public class DriveTrain extends BadSubsystem {
 	Ultrasonic ultra;
 	public boolean fieldOrientated;
 	DigitalOutput blue1, blue2, red1, red2, green1, green2;
+	double[] lastThreeUltraRangesMM;
 	
 	IMU mxp;
 	Gyro gyro;
@@ -75,6 +76,7 @@ public class DriveTrain extends BadSubsystem {
 
 		ultra = new Ultrasonic(RobotMap.ultraPing, RobotMap.ultraEcho);
 		ultra.setAutomaticMode(true);
+		lastThreeUltraRangesMM = new double[3];
 	}
 
 	@Override

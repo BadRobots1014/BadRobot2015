@@ -8,6 +8,7 @@ public class CheckToteDistance extends CommandBase {
 
 	public static double PERFECT_DISTANCE_FOR_TOTES_MM = 100;
 	public static double PERFECT_DISTANCE_FOR_TOTES_IN = 4.2;//this is not right
+	private int numberOfGoodRanges = 0;
 	public CheckToteDistance()
 	{
 		requires((Subsystem) driveTrain);
@@ -22,7 +23,9 @@ public class CheckToteDistance extends CommandBase {
 	@Override
 	protected void execute() {
 		// TODO Auto-generated method stub
-		driveTrain.tankDrive(.65 ,-.65);
+		driveTrain.tankDrive(.5 ,-.5);
+		if(isGoodRange())
+			numberOfGoodRanges++;
 	}
 
 	@Override
@@ -40,7 +43,7 @@ public class CheckToteDistance extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		if(driveTrain.getUltraMM() <= PERFECT_DISTANCE_FOR_TOTES_MM)
+		if(numberOfGoodRanges  >= 3)
 		{
 			return true;
 		}
@@ -53,6 +56,11 @@ public class CheckToteDistance extends CommandBase {
 		// TODO Auto-generated method stub
 		return "CheckToteDistance";
 	}
-	
+    public boolean isGoodRange()
+    {
+    	if(driveTrain.getUltraMM() <= PERFECT_DISTANCE_FOR_TOTES_MM)
+    		return true;
+    	return false;
+    }
 
 }
