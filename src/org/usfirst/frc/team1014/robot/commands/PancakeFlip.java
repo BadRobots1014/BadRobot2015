@@ -2,6 +2,16 @@ package org.usfirst.frc.team1014.robot.commands;
 
 import org.usfirst.frc.team1014.robot.OI;
 
+/**
+ * This code controls the pancake flipper, which
+ * is supposed to flip over totes, specifically
+ * from the landfill. Currently, it is made such that
+ * the arm moves faster the longer it is active. This
+ * is done so that the arm has enough power to flip 
+ * the bins over completely. 
+ * @author Stev
+ *
+ */
 public class PancakeFlip extends CommandBase{
 	
 	public double speed;
@@ -27,17 +37,19 @@ public class PancakeFlip extends CommandBase{
 		if(OI.secXboxController.getRawButton(OI.secXboxController.LB))//lower arm
 		{
 			pancake.lift(speed);
-			speed += .01;
+			speed += .01; // increases the speed
 		}
 
 		else if(OI.secXboxController.getRawButton(OI.secXboxController.RB))//raises arm
 		{
 			pancake.lift(-speed);
-			speed += .01;
+			speed -= .01; // also increases the speed 
 		}
 			
-		else//stop speed
+		else
 		{
+			// stop the arm 
+			// reset the speed
 			speed = .25;
 			pancake.lift(0);
 		}
@@ -53,6 +65,10 @@ public class PancakeFlip extends CommandBase{
 	}
 
 	@Override
+	/**
+	 * This is teleop command, so
+	 * end is not neccesary
+	 */
 	protected void end()
 	{
 		// TODO Auto-generated method stub
@@ -62,7 +78,7 @@ public class PancakeFlip extends CommandBase{
 	@Override
 	protected void interrupted() {
 		// TODO Auto-generated method stub
-		
+		System.out.println(getConsoleIdentity() + ": I have been interrupted");
 	}
 
 }

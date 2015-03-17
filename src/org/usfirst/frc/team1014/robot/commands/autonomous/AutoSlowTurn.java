@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class AutoSlowTurn extends CommandBase {
 
-	public double degree;
+	public double target;
 	public double difference;	
 	
 	public double startTime, passedTime;
@@ -20,7 +20,7 @@ public class AutoSlowTurn extends CommandBase {
 	public AutoSlowTurn(double degree)
 	{
 		requires((Subsystem) driveTrain);
-		this.degree = degree;
+		this.difference = degree;
 	}
 	
 	@Override
@@ -41,7 +41,7 @@ public class AutoSlowTurn extends CommandBase {
 	@Override
 	protected void execute() {
 		passedTime = Utility.getFPGATime() - startTime;
-		difference = driveTrain.getAngle() - degree;// negative for counterclockwise
+		difference = driveTrain.getAngle() - target;// negative for counterclockwise
 		driveTrain.mecanumDrive(0, 0, deadzone(rotation()));
 		
 	}
