@@ -3,10 +3,11 @@ package org.usfirst.frc.team1014.robot;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
+ *This class outlines an XboxController as seen by the FRC driverstation in 2015
  *
  * @author Isaac
  */
-public class XboxMap extends Joystick
+public class XboxController extends Joystick
 {
     public static double DEADZONE_MAGIC_NUMBER = .15;
     
@@ -15,11 +16,9 @@ public class XboxMap extends Joystick
                         LB = 5, RB = 6, SELECT = 7, START = 8, LEFT_JOY_CLICK = 9, RIGHT_JOY_CLICK = 10;
     private static int LEFT_TRIGGER = 2, RIGHT_TRIGGER = 3;
     
-    /*
-     * The dpad gives int angles where 0 is up and adds clockwise.  -1 is center
-     */
+    private long lastTimeXHeld, timeXHeld;
     
-    public XboxMap(int port)
+    public XboxController(int port)
     {
         super(port);
     }
@@ -106,10 +105,20 @@ public class XboxMap extends Joystick
     public boolean isStartButtonPressed() {
         return this.getRawButton(START);
     }
+    
+    /**
+     * This method  returns if the Xbutton was clicked(pressed and released within a half second)
+     * @return
+     */
+    public boolean isXButtonClicked()
+    {
+    	return false;
+    }
+    
     /**
      * Gets analog trigger values.
      * 
-     * 0 is unpressed and 1 is completely pressed in
+     * 0 is unpressed and 1 is completely pressed in on the Right trigger
      * @return
      */
     public double getRightTrigger() {
@@ -118,10 +127,5 @@ public class XboxMap extends Joystick
 
     public double getLeftTrigger() {
     	return deadzone(this.getRawAxis(LEFT_TRIGGER));
-    }
-    
-    public void checkControllerPorts()
-    {
-        
     }
 }

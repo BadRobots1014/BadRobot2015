@@ -113,7 +113,7 @@ public class DriveTrain extends BadSubsystem {
      * @param leftX
      * @param leftY
      * @param rightX
-     * @param gyro
+     * @param gyro (nav6 MXP)
      */
     
     public void mecanumDrive(double leftX, double leftY, double rightX) 

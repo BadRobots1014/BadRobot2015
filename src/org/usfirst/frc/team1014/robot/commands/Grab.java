@@ -32,6 +32,8 @@ public class Grab extends CommandBase {
 	@Override
 	protected void execute() 
 	{
+		
+		//Checks for the y button pressed to run the grabber to the next level of tape //grabber.lift(-OI.secXboxController.getLeftStickY());
 		if (OI.secXboxController.isYButtonPressed()) {
 			holdY = true;
 		}
@@ -39,6 +41,7 @@ public class Grab extends CommandBase {
 			holdY = false;
 			raiseToTape();
 		}
+		//checks for a button to run grabber to lower tape
 		if (OI.secXboxController.isAButtonPressed()) {
 			holdA = true;
 		}
@@ -48,7 +51,7 @@ public class Grab extends CommandBase {
 		}
 		
 		
-		//Checks for the y button pressed to run the grabber to the next level of tape//grabber.lift(-OI.secXboxController.getLeftStickY());
+
 		if(isUp && OI.secXboxController.getLeftStickY() > 0)
 			grabber.lift(-OI.secXboxController.getLeftStickY());
 		else if(isDown && OI.secXboxController.getLeftStickY() < 0)

@@ -3,6 +3,7 @@ package org.usfirst.frc.team1014.robot;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
+ * This class outlines the Extreme 3D Pro flight joystick to be used for FRC driving as of 2015
  * 
  * @author Manu S.
  *
@@ -45,30 +46,51 @@ public class Extreme3DPro extends Joystick {
             * ((Math.abs(d) - DEADZONE_MAGIC_NUMBER) / (1 - DEADZONE_MAGIC_NUMBER)); //scales it
     }
     
+    /**
+     * This returns the deadzoned flight stick x-axis
+     * @return
+     */
     public double getStickX()
     {
     	return deadzone(this.getRawAxis(STICK_X));
     }
     
+    /**
+     * This returns the deadzoned flight stick y-axis
+     * @return
+     */
     public double getStickY()
     {
     	return deadzone(this.getRawAxis(STICK_Y));
     }
     
+    /**
+     * This reutrns the deadzoned twist of the joystick
+     * @return
+     */
     public double getTwist()
     {
     	return deadzone(this.getRawAxis(TWIST));
     }
     
+    /**
+     * This returns the deadzoned value of the slider
+     * @return
+     */
     public double getSlider()
     {
     	return deadzone(this.getRawAxis(SLIDER));
     }
 	
+    /**
+     * This gets if the trigger is pressed down or not
+     * @return
+     */
     public boolean getTriggerButton()
     {
     	return this.getRawButton(TRIGGER);
     }
+    
     
     public boolean getButton2()
     {

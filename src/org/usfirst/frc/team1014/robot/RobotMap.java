@@ -11,7 +11,7 @@ public class RobotMap {
     // public static int leftMotor = 1;
     // public static int rightMotor = 2;
 	
-	//Analogs					// These are for the practice bot
+	//PWM				// These are for the practice bot
 	public static int backLeftController = 1; 	// 1
 	public static int frontLeftController = 4; 	// 4
 	public static int frontRightController = 3; 	// 3
@@ -19,14 +19,13 @@ public class RobotMap {
 	
 	public static int pancakeArm = 8;
 	
-	public static int gyro = 7;
-	
 	public static int lift1 = 5;
-	public static int lift2 = 6;
-	public static int lift3 = 7;
+	/*public static int lift2 = 6;
+	public static int lift3 = 7;*///pulled motors together through one PWM
 	
 	public static int liftWinch = 6;
 	
+	//DIOs
 	public static int ultraPing = 1;
 	public static int ultraEcho = 0;
 	public static int retroSensor = 2;
